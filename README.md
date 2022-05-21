@@ -71,11 +71,9 @@ It is open source, and it's Github Repo can be found [here](https://github.com/c
 
 Quick start options:
 
-- `npm i nextjs-material-dashboard`
-- Clone the repo: `git clone https://github.com/creativetimofficial/nextjs-material-dashboard.git`.
-- [Download from Github](https://github.com/creativetimofficial/nextjs-material-dashboard/archive/master.zip).
-- [Download from Creative Tim](https://www.creative-tim.com/product/nextjs-material-dashboard).
-
+- Ensure that you are in the DiamondHands repo.
+- Run `npm install` to install the dependencies required for the project. 
+- Run `npm start` to start the server. 
 
 ## Documentation
 The documentation for the Material Dashboard React is hosted at our [website](https://www.creative-tim.com/learning-lab/nextjs/overview/material-dashboard).
