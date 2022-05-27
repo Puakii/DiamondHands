@@ -2,7 +2,9 @@
 
 :root {
     --primary: rgb(0, 255, 242);
-    --background: #f5f8ff;
+    /* change background to black */
+    --background: #121212;
+    color: #fff;
 }
 
 .primary {
@@ -43,25 +45,21 @@ code {
 }
 
 h1 {
-    color: white;
     font-size: 3.5rem;
     line-height: 1.2;
 }
 
 h2 {
-    color: white;
     font-size: 2.4rem;
     line-height: 1.2;
 }
 
 h5 {
-    color: white;
     font-size: 1.1rem;
     line-height: 1.2;
 }
 
 p {
-    color: white;
     font-size: 1.2rem;
 }
 
