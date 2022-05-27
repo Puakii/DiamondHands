@@ -3,6 +3,7 @@
 :root {
     --primary: rgb(0, 255, 242);
     --background: #121212;
+    background: #121212;
     color: #fff;
 }
 
@@ -14,7 +15,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background: #121212;
+    /* background: #121212;
+    color: #fff; */
 }
 
 ul {
@@ -66,8 +68,9 @@ p {
     padding: 14px 32px;
     border: 1px solid var(--primary);
     background-color: var(--primary);
+    background-color: rgba(0, 255, 242, 0.596);
     color: #fff;
-    border-radius: 24px 4px;
+    border-radius: 100px 100px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
@@ -77,7 +80,7 @@ p {
     box-shadow: rgb(0 0 0 / 15%) 0px 8px 24px;
 }
 
-input {
+/* input {
     padding: 12px 32px;
     border: 1px solid var(--primary);
     background: transparent;
@@ -85,7 +88,7 @@ input {
     font-size: 1rem;
     margin-right: 0.8rem;
     font-family: "Poppins", sans-serif;
-}
+} */
 
 @media screen and (max-width: 768px) {
     h1 {

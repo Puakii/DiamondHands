@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import "./Navbar.css";
 
 const Navbar = () => {
     const [click, setClick] = useState(false);
     const handleClick = () => setClick(!click);
+
+    let navigate = useNavigate();
 
     return (
         <div className="header">
@@ -31,7 +34,9 @@ const Navbar = () => {
                 </ul>
 
                 <div className="btn-group">
-                    <button className="btn">Login</button>
+                    <button className="btn" onClick={() => navigate("/signin")}>
+                        Login
+                    </button>
                 </div>
 
                 <div className="hamburger" onClick={handleClick}>
