@@ -22,6 +22,7 @@
 
 .cryptoAPI .left .btn {
     align-self: flex-start;
+    margin-top: 15px;
 }
 
 .cryptoAPI .right {

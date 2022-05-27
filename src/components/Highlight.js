@@ -1,8 +1,10 @@
 import React from "react";
-import "./Hero.css";
-import Crypto from "../assets/diamondhands.png";
+import "./Highlight.css";
+import Crypto from "../assets/crypto.png";
+import { useNavigate } from "react-router-dom";
 
-const Hero = () => {
+const Highlight = () => {
+    let navigate = useNavigate();
     return (
         <div className="hero">
             <div className="container">
@@ -19,7 +21,12 @@ const Hero = () => {
                         crypto exchanges
                     </p>
                     <div className="input-container">
-                        <button className="btn">Sign Up</button>
+                        <button
+                            className="btn"
+                            onClick={() => navigate("/signup")}
+                        >
+                            Sign Up
+                        </button>
                     </div>
                 </div>
 
@@ -34,4 +41,4 @@ const Hero = () => {
     );
 };
 
-export default Hero;
+export default Highlight;
