@@ -6,7 +6,7 @@ const Footer = () => {
     return (
         <div className="footer">
             <div className="container">
-                <div className="col col-1">
+                <div className="col-1">
                     <h1>
                         Crypto<span className="primary">Universe</span>
                     </h1>
