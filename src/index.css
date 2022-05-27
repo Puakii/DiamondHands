@@ -2,7 +2,6 @@
 
 :root {
     --primary: rgb(0, 255, 242);
-    /* change background to black */
     --background: #121212;
     color: #fff;
 }
