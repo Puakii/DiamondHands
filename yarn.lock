@@ -1565,7 +1565,7 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@supabase/gotrue-js@^1.22.14":
+"@supabase/gotrue-js@^1.22.14", "@supabase/gotrue-js@^1.22.15":
   version "1.22.15"
   resolved "https://registry.yarnpkg.com/@supabase/gotrue-js/-/gotrue-js-1.22.15.tgz#7eed7bcbc6ed7d59217efffb7492a6911d8b63f0"
   integrity sha512-7/mwnd1hR/bpkCmbDvjnwPfWyRcE2B1ZnfxthqgVaZ5oJHS/CQibyuLBL8DA75fxmgY9nIfednDZSydSm6zK0w==

@@ -7,13 +7,19 @@ import { supabase } from "../supabaseClient";
 const SignInPage = () => {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-    const handleLogin = async (e) => {
+    const handleMagicLogin = async (e) =>
         e.preventDefault();
 
         try {
             setLoading(true);
-            const { error } = await supabase.auth.signIn({ email });
+            const { error } = await supabase.auth.signIn(
+                {
+                    email: email,
+                },
+                { redirectTo: "http://localhost:3001/signin" }
+            );
             if (error) throw error;
             alert("Check your email for the login link!");
         } catch (error) {
@@ -22,6 +28,24 @@ const SignInPage = () => {
             setLoading(false);
         }
     };
+
+    const handlePasswordLogin = async (e) => {
+        e.preventDefault();
+
+        try {
+            const { error } = await supabase.auth.signIn(
+                {
+                    email: email,
+                    password: password,
+                },
+                { redirectTo: "http://localhost:3001/signin" }
+            );
+            if (error) throw error;
+        } catch (error) {
+            alert(error.error_description || error.message);
+        }
+    };
+
     let navigate = useNavigate();
     return (
         <div className="form-login">
@@ -29,7 +53,7 @@ const SignInPage = () => {
                 {loading ? (
                     "Sending magic link..."
                 ) : (
-                    <form onSubmit={handleLogin}>
+                    <form onSubmit={handleMagicLogin}>
                         <h1>Sign In</h1>
                         <div className="row">
                             <label>Email</label>
@@ -45,10 +69,17 @@ const SignInPage = () => {
                             <input
                                 type={"Password"}
                                 placeholder={"Enter your password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
                         <div>
-                            <button className="btn-signIn">Sign in</button>
+                            <button
+                                className="btn-signIn"
+                                onClick={handlePasswordLogin}
+                            >
+                                Sign in
+                            </button>
                         </div>
                         <div>
                             <button className="btn-signIn" type="submit">
