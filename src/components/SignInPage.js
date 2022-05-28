@@ -20,10 +20,12 @@ const SignInPage = () => {
                     />
                 </div>
                 <div>
-                    <button className="btn">Sign in</button>
+                    <button className="btn-signIn">Sign in</button>
                 </div>
                 <div>
-                    <button className="btn">Sign in with magic link</button>
+                    <button className="btn-signIn">
+                        Sign in with magic link
+                    </button>
                 </div>
                 <div className="signUp">
                     <h2>New to CryptoUniverse?</h2>

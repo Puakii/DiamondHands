@@ -14,7 +14,7 @@
 
 .form-signup .container {
     width: 400px;
-    height: 40%;
+    height: 370px;
     margin: 100px auto;
     background-color: rgb(217, 234, 236);
     border-radius: 10px;
@@ -52,7 +52,7 @@
     border-color: black;
 }
 
-.form-signup .btn {
+.form-signup .btn-signUp {
     padding: 8px 32px;
     border: 1px solid var(--primary);
     background-color: rgba(0, 255, 242, 0.596);

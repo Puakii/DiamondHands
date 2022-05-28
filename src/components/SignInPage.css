@@ -14,7 +14,7 @@
 
 .form-login .container {
     width: 400px;
-    height: 60%;
+    height: 550px;
     margin: 100px auto;
     background-color: rgb(217, 234, 236);
     border-radius: 10px;
@@ -52,7 +52,7 @@
     border-color: black;
 }
 
-.form-login .btn {
+.form-login .btn-signIn {
     padding: 8px 32px;
     border: 1px solid var(--primary);
     background-color: rgba(0, 255, 242, 0.596);
@@ -71,6 +71,7 @@
     align-items: center;
     justify-content: center;
     margin-top: 4%;
+    margin-top: 10px;
 }
 
 .form-login h2 {

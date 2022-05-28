@@ -19,7 +19,7 @@ const SignUpPage = () => {
                     />
                 </div>
                 <div>
-                    <button className="btn">Join</button>
+                    <button className="btn-signUp">Join</button>
                 </div>
                 <div className="signUp">
                     <h2>Already on CryptoUniverse?</h2>
