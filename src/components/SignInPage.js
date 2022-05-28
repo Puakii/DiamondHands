@@ -9,7 +9,7 @@ const SignInPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleMagicLogin = async (e) => {
+    const handleMagicLogin = async (e) =>
         e.preventDefault();
 
         try {
