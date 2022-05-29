@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import CryptoAPI from "../components/CryptoAPI";
 import Highlight from "../components/Highlight";
 
-const Home = () => {
+const HomePage = () => {
     return (
         <>
             <Navbar />
@@ -15,4 +15,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default HomePage;

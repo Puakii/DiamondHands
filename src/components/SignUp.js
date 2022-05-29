@@ -1,5 +1,5 @@
 import React from "react";
-import "./SignUpPage.css";
+import "./SignUp.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { supabase } from "../supabaseClient";
@@ -59,6 +59,7 @@ const SignUpPage = () => {
                     <h2>Already on CryptoUniverse?</h2>
                     <button
                         className="btn-2"
+                        type="button"
                         onClick={() => navigate("/signin")}
                     >
                         Sign in
