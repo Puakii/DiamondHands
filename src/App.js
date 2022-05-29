@@ -10,12 +10,14 @@ import { supabase } from "./supabaseClient";
 
 function App() {
     const [session, setSession] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         setSession(supabase.auth.session());
 
         supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session);
+            setLoading(false);
         });
     }, []);
 
@@ -31,7 +33,7 @@ function App() {
                 <Route path="/signup" element={<SignUpPage />} />
                 <Route
                     path="/account"
-                    element={<AccountPage session={session} />}
+                    element={!loading && <AccountPage session={session} />}
                 />
                 <Route path="*" element={<ErrorPage />} />
             </Routes>

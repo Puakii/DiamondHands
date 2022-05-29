@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { supabase } from "../supabaseClient";
 
-const SignInPage = () => {
+const SignIn = () => {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -34,13 +34,10 @@ const SignInPage = () => {
         e.preventDefault();
 
         try {
-            const { error } = await supabase.auth.signIn(
-                {
-                    email: email,
-                    password: password,
-                },
-                { redirectTo: "http://localhost:3001/account" }
-            );
+            const { error } = await supabase.auth.signIn({
+                email: email,
+                password: password,
+            });
             if (error) throw error;
             navigate("/account");
         } catch (error) {
@@ -48,7 +45,7 @@ const SignInPage = () => {
         }
     };
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     return (
         <div className="form-login">
             <div className="container">
@@ -105,7 +102,7 @@ const SignInPage = () => {
     );
 };
 
-export default SignInPage;
+export default SignIn;
 
 // import React from "react";
 // import "./SignInPage.css";
