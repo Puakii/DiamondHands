@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { supabase } from "./supabaseClient";
+import { supabase } from "../supabaseClient";
+import { Navigate } from "react-router-dom";
 
 const Account = ({ session }) => {
     const [loading, setLoading] = useState(true);
@@ -8,20 +9,20 @@ const Account = ({ session }) => {
     const [avatar_url, setAvatarUrl] = useState(null);
 
     useEffect(() => {
-        getProfile();
+        if (session) {
+            getProfile();
+        }
     }, [session]);
 
     const getProfile = async () => {
         try {
             setLoading(true);
             const user = supabase.auth.user();
-
             let { data, error, status } = await supabase
                 .from("profiles")
-                .select(`username, website, avatar_url`)
+                .select("username, website, avatar_url")
                 .eq("id", user.id)
                 .single();
-
             if (error && status !== 406) {
                 throw error;
             }
@@ -66,6 +67,10 @@ const Account = ({ session }) => {
             setLoading(false);
         }
     };
+
+    if (!session) {
+        return <Navigate to="/signin" />;
+    }
 
     return (
         <div aria-live="polite">
