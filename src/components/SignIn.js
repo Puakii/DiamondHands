@@ -91,7 +91,7 @@ const SignIn = () => {
                             type="button"
                             onClick={handleMagicLogin}
                         >
-                            Sign in with magic link
+                            Sign in with magic link (Upcoming feature)
                         </button>
                     </div>
                     <div className="signUp">
