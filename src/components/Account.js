@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Account = ({ session }) => {
     const [loading, setLoading] = useState(true);
     const [username, setUsername] = useState(null);
     const [website, setWebsite] = useState(null);
     const [avatar_url, setAvatarUrl] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (session) {
@@ -18,6 +19,12 @@ const Account = ({ session }) => {
         try {
             setLoading(true);
             const user = supabase.auth.user();
+            const { error2 } = await supabase.from("profiles").upsert([
+                {
+                    id: user.id,
+                },
+            ]);
+            if (error2) throw error2;
             let { data, error, status } = await supabase
                 .from("profiles")
                 .select("username, website, avatar_url")
@@ -26,7 +33,6 @@ const Account = ({ session }) => {
             if (error && status !== 406) {
                 throw error;
             }
-
             if (data) {
                 setUsername(data.username);
                 setWebsite(data.website);
@@ -75,7 +81,7 @@ const Account = ({ session }) => {
     return (
         <div aria-live="polite">
             {loading ? (
-                "Saving ..."
+                "Fetching data ..."
             ) : (
                 <form onSubmit={updateProfile} className="form-widget">
                     <div>Email: {session.user.email}</div>
@@ -113,6 +119,13 @@ const Account = ({ session }) => {
                 onClick={() => supabase.auth.signOut()}
             >
                 Sign Out
+            </button>
+            <button
+                type="button"
+                className="button block"
+                onClick={() => navigate("/home")}
+            >
+                Back to Home
             </button>
         </div>
     );
