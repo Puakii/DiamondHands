@@ -20,7 +20,7 @@ const SignIn = () => {
                 },
                 {
                     redirectTo:
-                        "https://crypto-universe-1mm9c8l6n-puakii.vercel.app/account",
+                        "https://crypto-universe-orbital.vercel.app/account",
                 }
             );
 
