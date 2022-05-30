@@ -17,8 +17,8 @@ function App() {
 
         supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session);
-            setLoading(false);
         });
+        setLoading(false);
     }, []);
 
     return (

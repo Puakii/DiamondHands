@@ -18,7 +18,7 @@ const SignIn = () => {
                 {
                     email: email,
                 },
-                { redirectTo: "http://localhost:3001/account" }
+                { redirectTo: "/account" }
             );
 
             if (error) throw error;
@@ -34,12 +34,16 @@ const SignIn = () => {
         e.preventDefault();
 
         try {
-            const { error } = await supabase.auth.signIn({
-                email: email,
-                password: password,
-            });
-            if (error) throw error;
-            navigate("/account");
+            if (password === "") {
+                alert("key in your password");
+            } else {
+                const { error } = await supabase.auth.signIn({
+                    email: email,
+                    password: password,
+                });
+                if (error) throw error;
+                navigate("/account");
+            }
         } catch (error) {
             alert(error.error_description || error.message);
         }
