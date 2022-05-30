@@ -81,7 +81,7 @@ const Account = ({ session }) => {
     return (
         <div aria-live="polite">
             {loading ? (
-                "Saving ..."
+                "Fetching data ..."
             ) : (
                 <form onSubmit={updateProfile} className="form-widget">
                     <div>Email: {session.user.email}</div>
