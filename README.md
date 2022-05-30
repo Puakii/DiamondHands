@@ -1,70 +1,33 @@
-# Getting Started with Create React App
+<h1>CryptoUniverse</h1>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+| Item | Link |
+| --- | ----------- |
+| Poster | [Poster Link](https://drive.google.com/file/d/1FD3GrL6DdfVXVAtxMRNbnQe3FcEPNiot/view) |
+| Github Repo | [Github Repo Link](https://github.com/Puakii/DiamondHands)|
 
-## Available Scripts
+<h2>Poster</h2>
 
-In the project directory, you can run:
+![diamond hands orbital](https://user-images.githubusercontent.com/84946905/170957809-9ead1344-dec0-404b-a6b6-3192581d2141.jpg)
 
-### `yarn start`
+  
+  ### Features Implemented In MileStone 1
+- [x] Implemented Front End Of Home Page, Login Page and Sign Up Page with Reactjs and CSS
+- [x] Implemented Highlight Feature With Live CryptoPrice Update Using API from COINGECKO
+- [x] Set Up Routing Between The Pages And Buttons With React Router Dom
+- [x] Set Up Back End Of Our Account/Login With Supabase
+- [x] Implemented Magic Link Login As Well As Normal Signing Up And Logging In 
+- [x] Linked Front End Of Our Login System With Supabase
+- [x] Perform comprehensive testing
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### To Do In MileStone 2 and 3
+- [x] Implement Account Page After Signing In
+- [x] Implement CryptoCurrency Pages For Users To View CryptoCurrencies
+- [x] Implement WatchList Feature With Alerts 
+- [x] Implement News Page For Users To Keep Up With Latest CryptoCurrency News
+- [x] Implement Forum Page For Users To Interact With Like Minded People
+- [x] Perform System And User Testing 
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `yarn test`
+<hr>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Developed by Tee Yi Teng & Desmond Yong Shao Tian
