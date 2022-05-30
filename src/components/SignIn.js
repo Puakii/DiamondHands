@@ -18,7 +18,7 @@ const SignIn = () => {
                 {
                     email: email,
                 },
-                { redirectTo: "http://localhost:3001/account" }
+                { redirectTo: "/account" }
             );
 
             if (error) throw error;
