@@ -1,10 +1,10 @@
 import React from "react";
 import "./SignIn.css";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { supabase } from "../supabaseClient";
 
-const SignIn = () => {
+const SignIn = ({ session }) => {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -14,6 +14,7 @@ const SignIn = () => {
 
         try {
             setLoading(true);
+
             const { error } = await supabase.auth.signIn(
                 {
                     email: email,
@@ -27,6 +28,7 @@ const SignIn = () => {
             if (error) throw error;
             alert("Check your email for the login link!");
         } catch (error) {
+            // alert(error.message !== "" ? error.message : errorForEmptyPassword);
             alert(error.error_description || error.message);
         } finally {
             setLoading(false);
@@ -36,23 +38,31 @@ const SignIn = () => {
     const handlePasswordLogin = async (e) => {
         e.preventDefault();
 
+        let gotError = false;
+
         try {
-            if (password === "") {
-                alert("Key in your password");
-            } else {
-                const { error } = await supabase.auth.signIn({
-                    email: email,
-                    password: password,
-                });
-                if (error) throw error;
-                navigate("/account");
-            }
+            const { error } = await supabase.auth.signIn({
+                email: email,
+                password: password,
+            });
+            if (error) throw error;
+            navigate("/account");
         } catch (error) {
+            gotError = true;
             alert(error.error_description || error.message);
+        } finally {
+            if (!gotError && password === "") {
+                alert("Please key in your password");
+            }
         }
     };
 
     const navigate = useNavigate();
+
+    if (session) {
+        return <Navigate to="/account" />;
+    }
+
     return (
         <div className="form-login">
             {loading ? (
@@ -80,20 +90,27 @@ const SignIn = () => {
                             />
                         </div>
                         <div>
-                            <button className="btn-signIn" type="submit">
+                            <button
+                                className="btn-signIn"
+                                type="submit"
+                                // onClick={handlePasswordLogin}
+                            >
                                 Sign in
                             </button>
                         </div>
+                        {/* position 1 */}
+                        {/* </form> */}
+                        <div>
+                            <button
+                                className="btn-signIn"
+                                type="button"
+                                onClick={handleMagicLogin}
+                            >
+                                Sign in with magic link
+                            </button>
+                        </div>
+                        {/* positon 2 */}
                     </form>
-                    <div>
-                        <button
-                            className="btn-signIn"
-                            type="button"
-                            onClick={handleMagicLogin}
-                        >
-                            Sign in with magic link (Upcoming feature)
-                        </button>
-                    </div>
                     <div className="signUp">
                         <h2>New to CryptoUniverse?</h2>
                         <button
