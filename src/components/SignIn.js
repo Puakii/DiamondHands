@@ -21,7 +21,8 @@ const SignIn = ({ session }) => {
                 },
                 {
                     redirectTo:
-                        "https://crypto-universe-orbital.vercel.app/account",
+                        "https://diamond-hands-forked.vercel.app/account",
+                    // https://diamond-hands-forked.vercel.app/signin,
                 }
             );
 
