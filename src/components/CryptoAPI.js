@@ -9,6 +9,7 @@ const CryptoAPI = () => {
     const url =
         "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=6&page=1&sparkline=false";
 
+    //i think here with currency change need edit the dependecies in use effect
     useEffect(() => {
         axios
             .get(url)
