@@ -152,6 +152,7 @@ const CoinsTable = () => {
                                                         component="th"
                                                         scope="row"
                                                         style={{
+                                                            position: "sticky",
                                                             display: "flex",
                                                             columnGap: 15,
                                                         }}

@@ -2,15 +2,15 @@
 
 .bannerBackground {
     background-image: url("../../assets/bannerBackground.jpg");
-    height: 400px;
-    width: 100%;
+    /* height: 400px; */
+    /* width: 100%; */
 }
 
 .bannerContent {
-    /* height: 400px; */
+    height: 400px;
     display: flex;
     flex-direction: column;
-    padding-top: 40px;
+    padding-top: 25px;
     justify-content: space-around;
 }
 
