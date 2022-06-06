@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&family=Roboto:wght@100&display=swap");
+
+.crypto-prices-all .pricesContainer {
+    font-family: "Montserrat";
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 25px;
+    width: 70%;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+    /* margin auto on left and right centralises it */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.coin-row {
+    cursor: pointer;
+    background-color: #121212;
+    font-family: "Montserrat";
+}
+
+.coin-row .green {
+    color: rgb(23, 204, 7);
+}
+
+.coin-row .red {
+    color: red;
+}
+
+/* CANNOT STYLE PROPERLY changed to use sx in js  */
+/* .coin-row :hover {
+    background-color: #16171a;
+} */
