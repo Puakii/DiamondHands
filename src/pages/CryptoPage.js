@@ -6,7 +6,7 @@ import CoinsTable from "../components/CryptoCurrencies/CoinsTable";
 const CryptoPage = () => {
     return (
         <>
-            <CryptoNavbar />
+            {/* <CryptoNavbar /> */}
             <Banner />
             <CoinsTable />
         </>
