@@ -20,59 +20,82 @@
     margin: auto;
 }
 
-.colors {
+.crypto-header .colors {
     color: var(--primary);
 }
 
-.nav-menu {
+.crypto-header .nav-menu {
     display: flex;
 }
 
-.nav-menu li {
-    padding: 0 1rem;
+.crypto-header .nav-menu li {
+    padding: 0.7rem 1rem 0;
 }
 
-.nav-menu a {
+.crypto-header .nav-menu a {
     font-size: 1rem;
     font-weight: 600;
     color: white;
 }
 
-.hamburger {
+.crypto-header .nav-menu .btn-group {
+    margin-left: 1rem;
+}
+
+.crypto-header .hamburger {
     display: none;
     cursor: pointer;
 }
 
-@media screen and (max-width: 1240px) {
-    .hamburger {
-        display: flex;
+@media screen and (max-width: 1280px) {
+    .crypto-header .container {
+        padding-left: 1rem;
+    }
+    .crypto-header h1 {
+        font-size: 1.8rem;
     }
 
-    .nav-menu {
+    .crypto-header .hamburger {
+        display: flex;
+        padding-right: 0.7rem;
+    }
+
+    .crypto-header .nav-menu {
+        display: none !important;
+    }
+
+    .crypto-header .nav-menu.active {
+        display: flex !important;
         position: absolute;
         flex-direction: column;
-        justify-content: start;
+        justify-content: flex-start;
         top: 90px;
-        right: -100%;
-        width: 50%;
+        width: 100%;
+        right: 0;
         height: 100vh;
         transition: 0.4s;
         z-index: 2;
         background: #121212;
-        border-left: 1px solid white;
+        border: 1px solid black;
     }
 
-    .nav-menu.active {
-        right: 0;
-    }
-
-    .nav-menu li {
+    .crypto-header .nav-menu.active li {
         padding: 1rem;
         width: 100%;
-        border-bottom: 1px solid white;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.32);
     }
 
-    .nav-menu a {
+    .crypto-header .nav-menu.active a {
         font-size: 1.2rem;
+    }
+
+    .crypto-header .nav-menu.active .btn-group {
+        padding: 0;
+        margin: 1.2rem 3%;
+    }
+
+    .crypto-header .nav-menu.active .btn {
+        width: 100%;
+        margin: 0;
     }
 }

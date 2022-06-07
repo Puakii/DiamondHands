@@ -47,12 +47,21 @@ const Navbar = () => {
                         <li>
                             <a href="/">Forum</a>
                         </li>
+
+                        <div className="btn-group">
+                            <button
+                                className="btn"
+                                onClick={() => navigate("/signin")}
+                            >
+                                Profile
+                            </button>
+                        </div>
                     </ul>
 
                     <Select
                         variant="outlined"
                         style={{
-                            width: 100,
+                            width: 80,
                             height: 40,
                             marginLeft: 0,
                         }}
@@ -62,15 +71,6 @@ const Navbar = () => {
                         <MenuItem value={"USD"}>USD</MenuItem>
                         <MenuItem value={"SGD"}>SGD</MenuItem>
                     </Select>
-
-                    <div className="btn-group">
-                        <button
-                            className="btn"
-                            onClick={() => navigate("/signin")}
-                        >
-                            Profile
-                        </button>
-                    </div>
 
                     <div className="hamburger" onClick={handleClick}>
                         {click ? (
