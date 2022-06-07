@@ -3,7 +3,7 @@
 .bannerBackground {
     background-image: url("../../assets/bannerBackground.jpg");
     /* height: 400px; */
-    /* width: 100%; */
+    width: 100%;
 }
 
 .bannerContent {
