@@ -16,6 +16,7 @@ import {
     TextField,
     ThemeProvider,
 } from "@mui/material";
+
 import "./CoinsTable.css";
 
 const darkTheme = createTheme({
@@ -116,24 +117,33 @@ const CoinsTable = () => {
                                     }}
                                 >
                                     <TableRow>
+                                        <TableCell
+                                            sx={{
+                                                color: "black",
+                                                fontWeight: "700",
+                                                fontFamily: "Montserrat",
+                                                position: "sticky",
+                                                left: 0,
+                                                backgroundColor:
+                                                    "rgba(0, 255, 242)",
+                                            }}
+                                            align={"left"}
+                                        >
+                                            Coin
+                                        </TableCell>
                                         {[
-                                            "Coin",
                                             "Price",
                                             "24h Change",
                                             "Market Cap",
                                         ].map((head) => (
                                             <TableCell
-                                                style={{
+                                                sx={{
                                                     color: "black",
                                                     fontWeight: "700",
                                                     fontFamily: "Montserrat",
                                                 }}
                                                 key={head}
-                                                align={
-                                                    head === "Coin"
-                                                        ? "left"
-                                                        : "right"
-                                                }
+                                                align={"right"}
                                             >
                                                 {head}
                                             </TableCell>
@@ -173,12 +183,10 @@ const CoinsTable = () => {
                                                         sx={{
                                                             display: "flex",
                                                             columnGap: "15px",
-                                                            "& .MuiTableCell-root coin-row":
-                                                                {
-                                                                    position:
-                                                                        "sticky",
-                                                                    color: "white",
-                                                                },
+                                                            position: "sticky",
+                                                            left: 0,
+                                                            backgroundColor:
+                                                                "#121212",
                                                         }}
                                                     >
                                                         <img
