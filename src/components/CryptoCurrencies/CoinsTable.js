@@ -35,7 +35,7 @@ const CoinsTable = () => {
     const [search, setSearch] = useState("");
 
     // for pagination
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     //get currency from contextAPI
@@ -68,13 +68,6 @@ const CoinsTable = () => {
                 coin.symbol.toLowerCase().includes(search.toLowerCase())
         );
     };
-    // const handleSearch = () => {
-    //     return data.filter(
-    //         (coin) =>
-    //             coin.name.toLowerCase().includes(search.toLowerCase()) ||
-    //             coin.symbol.toLowerCase().includes(search.toLowerCase())
-    //     );
-    // };
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -177,10 +170,15 @@ const CoinsTable = () => {
                                                         // specify component and scope for semantics
                                                         component="th"
                                                         scope="row"
-                                                        style={{
+                                                        sx={{
                                                             display: "flex",
-                                                            columnGap: 15,
-                                                            // position: "absolute",
+                                                            columnGap: "15px",
+                                                            "& .MuiTableCell-root coin-row":
+                                                                {
+                                                                    position:
+                                                                        "sticky",
+                                                                    color: "white",
+                                                                },
                                                         }}
                                                     >
                                                         <img
