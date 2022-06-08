@@ -16,6 +16,7 @@ import {
     TextField,
     ThemeProvider,
 } from "@mui/material";
+
 import "./CoinsTable.css";
 
 const darkTheme = createTheme({
@@ -35,7 +36,7 @@ const CoinsTable = () => {
     const [search, setSearch] = useState("");
 
     // for pagination
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     //get currency from contextAPI
@@ -123,24 +124,33 @@ const CoinsTable = () => {
                                     }}
                                 >
                                     <TableRow>
+                                        <TableCell
+                                            sx={{
+                                                color: "black",
+                                                fontWeight: "700",
+                                                fontFamily: "Montserrat",
+                                                position: "sticky",
+                                                left: 0,
+                                                backgroundColor:
+                                                    "rgba(0, 255, 242)",
+                                            }}
+                                            align={"left"}
+                                        >
+                                            Coin
+                                        </TableCell>
                                         {[
-                                            "Coin",
                                             "Price",
                                             "24h Change",
                                             "Market Cap",
                                         ].map((head) => (
                                             <TableCell
-                                                style={{
+                                                sx={{
                                                     color: "black",
                                                     fontWeight: "700",
                                                     fontFamily: "Montserrat",
                                                 }}
                                                 key={head}
-                                                align={
-                                                    head === "Coin"
-                                                        ? "left"
-                                                        : "right"
-                                                }
+                                                align={"right"}
                                             >
                                                 {head}
                                             </TableCell>
@@ -177,10 +187,13 @@ const CoinsTable = () => {
                                                         // specify component and scope for semantics
                                                         component="th"
                                                         scope="row"
-                                                        style={{
+                                                        sx={{
                                                             display: "flex",
-                                                            columnGap: 15,
-                                                            // position: "absolute",
+                                                            columnGap: "15px",
+                                                            position: "sticky",
+                                                            left: 0,
+                                                            backgroundColor:
+                                                                "#121212",
                                                         }}
                                                     >
                                                         <img
