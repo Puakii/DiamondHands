@@ -70,7 +70,7 @@ p {
     background-color: var(--primary);
     background-color: rgba(0, 255, 242, 0.596);
     color: #fff;
-    border-radius: 100px 100px;
+    border-radius: 15px 15px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
@@ -79,16 +79,6 @@ p {
 .btn:hover {
     box-shadow: rgb(0 0 0 / 15%) 0px 8px 24px;
 }
-
-/* input {
-    padding: 12px 32px;
-    border: 1px solid var(--primary);
-    background: transparent;
-    border-radius: 24px 4px;
-    font-size: 1rem;
-    margin-right: 0.8rem;
-    font-family: "Poppins", sans-serif;
-} */
 
 @media screen and (max-width: 768px) {
     h1 {

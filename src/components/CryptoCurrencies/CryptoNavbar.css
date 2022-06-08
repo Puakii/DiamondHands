@@ -47,12 +47,12 @@
     cursor: pointer;
 }
 
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 1200px) {
     .crypto-header .container {
         padding-left: 1rem;
     }
     .crypto-header h1 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
     }
 
     .crypto-header .hamburger {
@@ -61,11 +61,11 @@
     }
 
     .crypto-header .nav-menu {
-        display: none !important;
+        display: none;
     }
 
     .crypto-header .nav-menu.active {
-        display: flex !important;
+        display: flex;
         position: absolute;
         flex-direction: column;
         justify-content: flex-start;
@@ -91,7 +91,7 @@
 
     .crypto-header .nav-menu.active .btn-group {
         padding: 0;
-        margin: 1.2rem 3%;
+        margin: 1.2rem 5%;
     }
 
     .crypto-header .nav-menu.active .btn {

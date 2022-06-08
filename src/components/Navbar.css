@@ -48,7 +48,7 @@
     cursor: pointer;
 }
 
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 1200px) {
     .header .container {
         padding-left: 1rem;
     }
@@ -59,11 +59,11 @@
     }
 
     .header .nav-menu {
-        display: none !important;
+        display: none;
     }
 
     .header .nav-menu.active {
-        display: flex !important;
+        display: flex;
         position: absolute;
         flex-direction: column;
         justify-content: flex-start;
@@ -71,7 +71,7 @@
         width: 100%;
         right: 0;
         height: 100vh;
-        transition: 0.4s;
+        /* transition: 0.4s; */
         z-index: 2;
         background: #121212;
         border: 1px solid black;
@@ -97,125 +97,3 @@
         margin: 0;
     }
 }
-
-/* .header {
-    width: 100%;
-    height: 90px;
-    border-bottom: 1px solid #eee;
-    background: #121212;
-    position: sticky;
-    top: 0;
-    left: 0;
-    z-index: 10;
-}
-
-.header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-    padding: 1rem;
-}
-
-.colors {
-    color: var(--primary);
-}
-
-.nav-menu {
-    display: flex;
-}
-
-.nav-menu li {
-    padding: 0 1rem;
-}
-
-.nav-menu a {
-    font-size: 1rem;
-    font-weight: 600;
-    color: white;
-}
-
-.nav-menu.active {
-    display: flex;
-}
-
-.nav-menu.active li {
-    padding: 0 1rem;
-    padding-top: 12px;
-}
-
-.nav-menu.active a {
-    font-size: 1rem;
-    font-weight: 600;
-    color: white;
-}
-
-.nav-menu.active .btn-active {
-    padding-left: 40px;
-}
-
-.hamburger {
-    display: none;
-    cursor: pointer;
-}
-
-@media screen and (max-width: 1240px) {
-    .hamburger {
-        display: flex;
-    }
-
-    .nav-menu {
-        display: none !important;
-    }
-
-    .nav-menu.active {
-        display: flex !important;
-        position: absolute;
-        flex-direction: column;
-        justify-content: flex-start;
-        top: 90px;
-        width: 100%;
-        height: 100vh;
-        transition: 0.4s;
-        z-index: 2;
-        background: #121212;
-        border: 1px solid black;
-    }
-
-    .nav-menu.active li {
-        padding: 1rem;
-        width: 100%;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.224);
-    }
-
-    .nav-menu.active li:hover {
-        border-bottom: 1px solid white;
-    }
-
-    .nav-menu.active a {
-        font-size: 1.2rem;
-    }
-
-    .nav-menu li {
-        padding: 1rem;
-        width: 100%;
-        border-bottom: 1px solid white;
-    }
-
-    .nav-menu a {
-        font-size: 1.2rem;
-    }
-
-    .btn-group {
-        display: none;
-    }
-
-    .btn-active {
-
-    }
-
-    .btn {
-        width: 100%;
-        margin: 1rem 0;
-    }
-} */
