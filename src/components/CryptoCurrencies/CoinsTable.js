@@ -11,6 +11,7 @@ import {
     TableCell,
     TableContainer,
     TableHead,
+    TablePagination,
     TableRow,
     TextField,
     ThemeProvider,
@@ -33,6 +34,10 @@ const CoinsTable = () => {
     //default state for search should be "" instead of null .includes will return true for "" but false for null
     const [search, setSearch] = useState("");
 
+    // for pagination
+    const [page, setPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
     //get currency from contextAPI
     const { currency, symbol } = CryptoState();
 
@@ -54,14 +59,30 @@ const CoinsTable = () => {
     // use if statement to hide error
     if (!data) return null;
 
-    // console.log(data);
+    console.log(data);
 
-    const handleSearch = () => {
-        return data.filter(
+    const handleSearch = (inputData) => {
+        return inputData.filter(
             (coin) =>
                 coin.name.toLowerCase().includes(search.toLowerCase()) ||
                 coin.symbol.toLowerCase().includes(search.toLowerCase())
         );
+    };
+    // const handleSearch = () => {
+    //     return data.filter(
+    //         (coin) =>
+    //             coin.name.toLowerCase().includes(search.toLowerCase()) ||
+    //             coin.symbol.toLowerCase().includes(search.toLowerCase())
+    //     );
+    // };
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
     };
 
     return (
@@ -130,7 +151,12 @@ const CoinsTable = () => {
                                 <TableBody>
                                     {
                                         //return us an array of the coins that match the search
-                                        handleSearch().map((coin) => {
+                                        handleSearch(
+                                            data.slice(
+                                                page * rowsPerPage,
+                                                page * rowsPerPage + rowsPerPage
+                                            )
+                                        ).map((coin) => {
                                             return (
                                                 <TableRow
                                                     sx={{
@@ -154,6 +180,7 @@ const CoinsTable = () => {
                                                         style={{
                                                             display: "flex",
                                                             columnGap: 15,
+                                                            // position: "absolute",
                                                         }}
                                                     >
                                                         <img
@@ -239,6 +266,15 @@ const CoinsTable = () => {
                             </Table>
                         )}
                     </TableContainer>
+
+                    <TablePagination
+                        component="div"
+                        count={100}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        rowsPerPage={rowsPerPage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
                 </div>
             </div>
         </ThemeProvider>
