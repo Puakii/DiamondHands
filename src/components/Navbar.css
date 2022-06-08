@@ -14,62 +14,86 @@
     justify-content: space-between;
     align-items: center;
     height: 100%;
-    padding: 1rem;
+    padding: 1rem, 1.2rem;
 }
 
-.colors {
+.header .colors {
     color: var(--primary);
 }
 
-.nav-menu {
+.header .nav-menu {
     display: flex;
 }
 
-.nav-menu li {
-    padding: 0 1rem;
+.header .nav-menu li {
+    padding: 0.6rem 1rem 0;
 }
 
-.nav-menu a {
+.header .nav-menu a {
     font-size: 1rem;
     font-weight: 600;
     color: white;
 }
 
-.hamburger {
+.header .nav-menu .btn-group {
+    margin-left: 1rem;
+}
+
+.header .nav-menu .btn {
+    padding: 10px 24px;
+}
+
+.header .hamburger {
     display: none;
     cursor: pointer;
 }
 
-@media screen and (max-width: 1240px) {
-    .hamburger {
-        display: flex;
+@media screen and (max-width: 1200px) {
+    .header .container {
+        padding-left: 1rem;
     }
 
-    .nav-menu {
+    .header .hamburger {
+        display: flex;
+        padding-right: 1rem;
+    }
+
+    .header .nav-menu {
+        display: none;
+    }
+
+    .header .nav-menu.active {
+        display: flex;
         position: absolute;
         flex-direction: column;
-        justify-content: start;
+        justify-content: flex-start;
         top: 90px;
-        right: -100%;
-        width: 50%;
+        width: 100%;
+        right: 0;
         height: 100vh;
-        transition: 0.4s;
+        /* transition: 0.4s; */
         z-index: 2;
         background: #121212;
-        border-left: 1px solid white;
+        border: 1px solid black;
     }
 
-    .nav-menu.active {
-        right: 0;
-    }
-
-    .nav-menu li {
+    .header .nav-menu.active li {
         padding: 1rem;
         width: 100%;
-        border-bottom: 1px solid white;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.32);
     }
 
-    .nav-menu a {
+    .header .nav-menu.active a {
         font-size: 1.2rem;
+    }
+
+    .header .nav-menu.active .btn-group {
+        padding: 0;
+        margin: 1.2rem 3%;
+    }
+
+    .header .nav-menu.active .btn {
+        width: 100%;
+        margin: 0;
     }
 }

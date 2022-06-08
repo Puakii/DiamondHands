@@ -31,13 +31,25 @@ const Navbar = () => {
                     <li>
                         <a href="/">Forum</a>
                     </li>
-                </ul>
 
-                <div className="btn-group">
-                    <button className="btn" onClick={() => navigate("/signin")}>
-                        Login
-                    </button>
-                </div>
+                    <div className="btn-group">
+                        <button
+                            className="btn"
+                            onClick={() => navigate("/signin")}
+                        >
+                            Login
+                        </button>
+                    </div>
+
+                    <div className="btn-group">
+                        <button
+                            className="btn"
+                            onClick={() => navigate("/signup")}
+                        >
+                            Sign Up
+                        </button>
+                    </div>
+                </ul>
 
                 <div className="hamburger" onClick={handleClick}>
                     {click ? (
