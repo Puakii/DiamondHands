@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { Navigate, useNavigate } from "react-router-dom";
+import { CryptoState } from "../pages/CryptoContext";
 
-const Account = ({ session }) => {
+const Account = () => {
     const [loading, setLoading] = useState(true);
     const [username, setUsername] = useState(null);
     const [website, setWebsite] = useState(null);
     const [avatar_url, setAvatarUrl] = useState(null);
     const navigate = useNavigate();
+    const { session } = CryptoState();
 
     useEffect(() => {
         if (session) {
@@ -116,7 +118,11 @@ const Account = ({ session }) => {
             <button
                 type="button"
                 className="button block"
-                onClick={() => supabase.auth.signOut()}
+                onClick={() => {
+                    supabase.auth.signOut();
+                    alert("You have successfully signed out!");
+                    navigate("/home");
+                }}
             >
                 Sign Out
             </button>

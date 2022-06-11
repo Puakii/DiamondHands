@@ -1,12 +1,10 @@
 import React from "react";
 import Account from "../components/Account";
+import { CryptoState } from "./CryptoContext";
 
-const AccountPage = (props) => {
-    return (
-        <>
-            <Account session={props.session} />
-        </>
-    );
+const AccountPage = () => {
+    const { loading } = CryptoState();
+    return <>{!loading && <Account />}</>;
 };
 
 export default AccountPage;

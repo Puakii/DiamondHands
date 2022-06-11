@@ -5,37 +5,20 @@ import SignUpPage from "./pages/SignUpPage";
 import AccountPage from "./pages/AccountPage";
 import ErrorPage from "./pages/ErrorPage";
 import SignInPage from "./pages/SignInPage";
-import { useState, useEffect } from "react";
-import { supabase } from "./supabaseClient";
 import CryptoPage from "./pages/CryptoPage";
+import { CryptoState } from "./pages/CryptoContext";
 
 function App() {
-    const [session, setSession] = useState(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        setSession(supabase.auth.session());
-
-        supabase.auth.onAuthStateChange((_event, session) => {
-            setSession(session);
-        });
-        setLoading(false);
-    }, []);
+    const { loading } = CryptoState();
 
     return (
         <Router>
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/home" element={<HomePage />} />
-                <Route
-                    path="/signin"
-                    element={<SignInPage session={session} />}
-                />
+                <Route path="/signin" element={<SignInPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
-                <Route
-                    path="/account"
-                    element={!loading && <AccountPage session={session} />}
-                />
+                <Route path="/account" element={!loading && <AccountPage />} />
                 <Route path="/cryptocurrencies" element={<CryptoPage />} />
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
