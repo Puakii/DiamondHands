@@ -40,7 +40,7 @@ const CoinsTable = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     //get currency from contextAPI
-    const { currency, symbol } = CryptoState();
+    const { currency, symbol, session } = CryptoState();
 
     const navigate = useNavigate();
 
