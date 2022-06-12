@@ -1,10 +1,10 @@
 import React from "react";
 import SignIn from "../components/SignIn";
 
-const SignInPage = (props) => {
+const SignInPage = () => {
     return (
         <>
-            <SignIn session={props.session} />
+            <SignIn />
         </>
     );
 };

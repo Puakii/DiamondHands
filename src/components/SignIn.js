@@ -3,11 +3,13 @@ import "./SignIn.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { supabase } from "../supabaseClient";
+import { CryptoState } from "../pages/CryptoContext";
 
-const SignIn = ({ session }) => {
+const SignIn = () => {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const { session } = CryptoState();
 
     const handleMagicLogin = async (e) => {
         e.preventDefault();

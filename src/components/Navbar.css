@@ -39,6 +39,10 @@
     margin-left: 1rem;
 }
 
+.header .nav-menu .btn-group2 {
+    margin-left: 5rem;
+}
+
 .header .nav-menu .btn {
     padding: 10px 24px;
 }
@@ -88,6 +92,11 @@
     }
 
     .header .nav-menu.active .btn-group {
+        padding: 0;
+        margin: 1.2rem 3%;
+    }
+
+    .header .nav-menu.active .btn-group2 {
         padding: 0;
         margin: 1.2rem 3%;
     }

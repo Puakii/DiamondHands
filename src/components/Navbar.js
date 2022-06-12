@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { CryptoState } from "../pages/CryptoContext";
 import "./Navbar.css";
 
 const Navbar = () => {
     const [click, setClick] = useState(false);
     const handleClick = () => setClick(!click);
-
+    const { session } = CryptoState();
     let navigate = useNavigate();
 
     return (
@@ -20,7 +21,7 @@ const Navbar = () => {
                         <a href="/">Home</a>
                     </li>
                     <li>
-                        <a href="/">Cryptocurrencies</a>
+                        <a href="/cryptocurrencies">Cryptocurrencies</a>
                     </li>
                     <li>
                         <a href="/">Watchlist</a>
@@ -31,24 +32,36 @@ const Navbar = () => {
                     <li>
                         <a href="/">Forum</a>
                     </li>
+                    {session ? (
+                        <div className="btn-group2">
+                            <button
+                                className="btn"
+                                onClick={() => navigate("/account")}
+                            >
+                                Profile
+                            </button>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="btn-group">
+                                <button
+                                    className="btn"
+                                    onClick={() => navigate("/signin")}
+                                >
+                                    Login
+                                </button>
+                            </div>
 
-                    <div className="btn-group">
-                        <button
-                            className="btn"
-                            onClick={() => navigate("/signin")}
-                        >
-                            Login
-                        </button>
-                    </div>
-
-                    <div className="btn-group">
-                        <button
-                            className="btn"
-                            onClick={() => navigate("/signup")}
-                        >
-                            Sign Up
-                        </button>
-                    </div>
+                            <div className="btn-group">
+                                <button
+                                    className="btn"
+                                    onClick={() => navigate("/signup")}
+                                >
+                                    Sign Up
+                                </button>
+                            </div>
+                        </>
+                    )}
                 </ul>
 
                 <div className="hamburger" onClick={handleClick}>

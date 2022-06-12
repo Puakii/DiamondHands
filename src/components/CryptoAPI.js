@@ -5,6 +5,7 @@ import { FiArrowUp, FiArrowDown } from "react-icons/fi";
 import { CryptoState } from "../pages/CryptoContext";
 import { createTheme, MenuItem, Select, ThemeProvider } from "@mui/material";
 import { HighLightCoins } from "../config/api";
+import { useNavigate } from "react-router-dom";
 
 const darkTheme = createTheme({
     palette: {
@@ -20,6 +21,7 @@ const CryptoAPI = () => {
     const [data, setData] = useState(null);
     //use the setCurrency from contextAPI to change
     const { currency, setCurrency } = CryptoState();
+    const navigate = useNavigate();
 
     // const url =
     //     "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=6&page=1&sparkline=false";
@@ -49,7 +51,12 @@ const CryptoAPI = () => {
                             Check Out Latest Prices Of Cryptocurrencies Here
                         </h2>
                         <div className="with-currency">
-                            <button className="btn">Explore More Coins</button>
+                            <button
+                                className="btn"
+                                onClick={() => navigate("/cryptocurrencies")}
+                            >
+                                Explore More Coins
+                            </button>
 
                             <Select
                                 variant="outlined"
