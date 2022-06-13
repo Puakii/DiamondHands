@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Checkbox from "@mui/material/Checkbox";
 import { CoinList } from "../../config/api";
 import { CryptoState } from "../../pages/CryptoContext";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../../supabaseClient";
 import {
     createTheme,
     LinearProgress,
@@ -34,6 +36,7 @@ const CoinsTable = () => {
     const [loading, setLoading] = useState(false);
     //default state for search should be "" instead of null .includes will return true for "" but false for null
     const [search, setSearch] = useState("");
+    const [watchlist, setWatchlist] = useState([]);
 
     // for pagination
     const [page, setPage] = useState(0);
@@ -53,14 +56,160 @@ const CoinsTable = () => {
             })
             .catch((error) => {
                 console.log(error);
+                console.log("hehe");
             });
         setLoading(false);
     }, [currency]);
 
+    useEffect(() => {
+        if (session && data) {
+            getWatchlist();
+        }
+    }, [session, data]);
+
     // use if statement to hide error
     if (!data) return null;
 
-    console.log(data);
+    const getWatchlist = async () => {
+        try {
+            setLoading(true);
+            const user = supabase.auth.user();
+            // const { error2 } = await supabase.from("profiles").upsert([
+            //     {
+            //         id: user.id,
+            //     },
+            // ]);
+            // if (error2) throw error2;
+            let { data, error, status } = await supabase
+                .from("profiles")
+                .select("watchlist")
+                .eq("id", user.id)
+                .single();
+            if (error && status !== 406) {
+                throw error;
+            }
+            if (data) {
+                console.log(watchlist);
+                if (!watchlist) {
+                    setWatchlist(data.watchlist);
+                }
+            }
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleChangeBox = (val, coin) => {
+        if (session) {
+            if (val) {
+                removeFromWatchlist(coin);
+            } else {
+                addToWatchlist(coin);
+            }
+        } else {
+            navigate("/signin");
+        }
+    };
+
+    const addToWatchlist = async (coin) => {
+        setWatchlist([...watchlist, coin.name]);
+        try {
+            const user = supabase.auth.user();
+            const { error } = await supabase
+                .from("profiles")
+                .update({
+                    watchlist: watchlist,
+                })
+                .match({ id: user.id });
+            // console.log(user.id);
+            if (error) throw error;
+
+            //   setAlert({
+            //     open: true,
+            //     message: `${coin.name} Added to the Watchlist !`,
+            //     type: "success",
+            //   });
+        } catch (error) {
+            //   setAlert({
+            //     open: true,
+            //     message: error.message,
+            //     type: "error",
+            //   });
+            alert(error.error_description || error.message);
+        } finally {
+            // getWatchlist();
+        }
+    };
+
+    const removeFromWatchlist = async (coin) => {
+        setWatchlist(watchlist.filter((wish) => wish !== coin.name));
+        try {
+            const user = supabase.auth.user();
+            const { error } = await supabase
+                .from("profiles")
+                .update({
+                    watchlist: watchlist,
+                })
+                .match({ id: user.id });
+            if (error) throw error;
+
+            //   setAlert({
+            //     open: true,
+            //     message: `${coin.name} Added to the Watchlist !`,
+            //     type: "success",
+            //   });
+        } catch (error) {
+            //   setAlert({
+            //     open: true,
+            //     message: error.message,
+            //     type: "error",
+            //   });
+            alert(error.error_description || error.message);
+        } finally {
+            // getWatchlist();
+        }
+    };
+
+    // const removeFromWatchlist = async (coin) => {
+    //     try {
+    //         const user = supabase.auth.user();
+    //         let { data, error, status } = await supabase
+    //             .from("profiles")
+    //             .select("watchlist")
+    //             .eq("id", user.id)
+    //             .single();
+    //         if (error && status !== 406) {
+    //             throw error;
+    //         }
+    //         const { error2 } = await supabase
+    //             .from("profiles")
+    //             .update({
+    //                 watchlist: data.watchlist.filter(
+    //                     (wish) => wish !== coin.name
+    //                 ),
+    //             })
+    //             .match({ id: user.id });
+
+    //         if (error2) throw error2;
+
+    //         //   setAlert({
+    //         //     open: true,
+    //         //     message: `${coin.name} Added to the Watchlist !`,
+    //         //     type: "success",
+    //         //   });
+    //     } catch (error) {
+    //         //   setAlert({
+    //         //     open: true,
+    //         //     message: error.message,
+    //         //     type: "error",
+    //         //   });
+    //         alert(error.error_description || error.message);
+    //     } finally {
+    //         getWatchlist();
+    //     }
+    // };
 
     const handleSearch = (inputData) => {
         return inputData.filter(
@@ -78,6 +227,10 @@ const CoinsTable = () => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
+
+    const inWatchlist = (coin) => watchlist.includes(coin.name);
+
+    console.log(watchlist);
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -117,6 +270,14 @@ const CoinsTable = () => {
                                     }}
                                 >
                                     <TableRow>
+                                        <TableCell
+                                            sx={{
+                                                color: "black",
+                                                fontWeight: "700",
+                                                fontFamily: "Montserrat",
+                                            }}
+                                            align={"right"}
+                                        ></TableCell>
                                         <TableCell
                                             sx={{
                                                 color: "black",
@@ -168,14 +329,24 @@ const CoinsTable = () => {
                                                                 "#16171a",
                                                         },
                                                     }}
-                                                    onClick={() =>
-                                                        navigate(
-                                                            `/coins/${coin.id}`
-                                                        )
-                                                    }
                                                     className="coin-row"
                                                     key={coin.name}
                                                 >
+                                                    <TableCell align="center">
+                                                        <Checkbox
+                                                            checked={inWatchlist(
+                                                                coin
+                                                            )}
+                                                            onChange={() =>
+                                                                handleChangeBox(
+                                                                    inWatchlist(
+                                                                        coin
+                                                                    ),
+                                                                    coin
+                                                                )
+                                                            }
+                                                        ></Checkbox>
+                                                    </TableCell>
                                                     <TableCell
                                                         // specify component and scope for semantics
                                                         component="th"
@@ -188,6 +359,11 @@ const CoinsTable = () => {
                                                             backgroundColor:
                                                                 "#121212",
                                                         }}
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/coins/${coin.id}`
+                                                            )
+                                                        }
                                                     >
                                                         <img
                                                             src={coin?.image}
@@ -226,7 +402,14 @@ const CoinsTable = () => {
                                                         </div>
                                                     </TableCell>
 
-                                                    <TableCell align="right">
+                                                    <TableCell
+                                                        align="right"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/coins/${coin.id}`
+                                                            )
+                                                        }
+                                                    >
                                                         {symbol}{" "}
                                                         {coin.current_price.toLocaleString(
                                                             undefined,
@@ -237,7 +420,14 @@ const CoinsTable = () => {
                                                         )}
                                                     </TableCell>
 
-                                                    <TableCell align="right">
+                                                    <TableCell
+                                                        align="right"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/coins/${coin.id}`
+                                                            )
+                                                        }
+                                                    >
                                                         {coin.price_change_percentage_24h <
                                                         0 ? (
                                                             <span className="red">
@@ -257,7 +447,14 @@ const CoinsTable = () => {
                                                         )}
                                                     </TableCell>
 
-                                                    <TableCell align="right">
+                                                    <TableCell
+                                                        align="right"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/coins/${coin.id}`
+                                                            )
+                                                        }
+                                                    >
                                                         {symbol}{" "}
                                                         {coin.market_cap
                                                             .toLocaleString()
