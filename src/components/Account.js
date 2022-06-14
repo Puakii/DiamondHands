@@ -1,58 +1,31 @@
-// ORIGINAL 3.10pm
-import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { Navigate } from "react-router-dom";
 import { CryptoState } from "../pages/CryptoContext";
-import { Box, Typography, Avatar, TextField } from "@mui/material";
+import { Box, Typography, TextField } from "@mui/material";
+import AccountAvatar from "./AccountAvatar";
+import { useState } from "react";
 
 const Account = () => {
-    const [loading, setLoading] = useState(true);
-    const [username, setUsername] = useState(null);
-    const [website, setWebsite] = useState(null);
-    const [avatar_url, setAvatarUrl] = useState(null);
-    const { session } = CryptoState();
+    //for keeping track if a profile is done being retrieved
+    const [profileRetrieving, setProfileRetrieving] = useState(false);
 
-    useEffect(() => {
-        if (session) {
-            getProfile();
-        }
-    }, [session]);
+    const {
+        session,
+        username,
+        //we are using this to update the username in the account form
+        setUsername,
+        //no need website actually
+        website,
+        avatar_url,
 
-    const getProfile = async () => {
-        try {
-            setLoading(true);
-            const user = supabase.auth.user();
-            const { error2 } = await supabase.from("profiles").upsert([
-                {
-                    id: user.id,
-                },
-            ]);
-            if (error2) throw error2;
-            let { data, error, status } = await supabase
-                .from("profiles")
-                .select("username, website, avatar_url")
-                .eq("id", user.id)
-                .single();
-            if (error && status !== 406) {
-                throw error;
-            }
-            if (data) {
-                setUsername(data.username);
-                setWebsite(data.website);
-                setAvatarUrl(data.avatar_url);
-            }
-        } catch (error) {
-            alert(error.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+        setAvatarUrl,
+    } = CryptoState();
 
     const updateProfile = async (e) => {
         e.preventDefault();
 
         try {
-            setLoading(true);
+            setProfileRetrieving(true);
             const user = supabase.auth.user();
 
             const updates = {
@@ -73,7 +46,7 @@ const Account = () => {
         } catch (error) {
             alert(error.message);
         } finally {
-            setLoading(false);
+            setProfileRetrieving(false);
         }
     };
 
@@ -83,7 +56,7 @@ const Account = () => {
 
     return (
         <div aria-live="polite">
-            {loading ? (
+            {profileRetrieving ? (
                 "Fetching data ..."
             ) : (
                 <Box
@@ -123,43 +96,23 @@ const Account = () => {
                     >
                         Avatar
                     </Typography>
-                    <Box
-                        display="flex"
-                        paddingTop="0.7rem"
-                        paddingLeft="1.3rem"
-                        alignItems="center"
-                    >
-                        <Avatar
-                            alt={"avatar"}
-                            src={avatar_url}
-                            sx={{
-                                marginRight: "1rem",
-                                height: "50px",
-                                width: "50px",
-                            }}
-                        >
-                            {username.toUpperCase().charAt(0)}
-                        </Avatar>
-
-                        <button
-                            className="btn"
-                            style={{
-                                height: "40px",
-                                width: "110px",
-                                borderRadius: "10px",
-                                padding: "0",
-                                fontSize: "1rem",
-                            }}
-                        >
-                            Edit Avatar
-                        </button>
-                    </Box>
-
-                    <br></br>
+                    <AccountAvatar
+                        url={avatar_url}
+                        username={username}
+                        onUpload={(url) => {
+                            setAvatarUrl(url);
+                            updateProfile({
+                                username,
+                                //no need website actually
+                                // website,
+                                avatar_url: url,
+                            });
+                        }}
+                    />
 
                     <form
                         onSubmit={updateProfile}
-                        style={{ paddingLeft: "1.3rem" }}
+                        style={{ paddingLeft: "1.3rem", paddingTop: "1.5rem" }}
                     >
                         {/* wrapperbox for username */}
                         <Box marginBottom="0.8rem">
@@ -209,6 +162,7 @@ const Account = () => {
 
                         <button
                             className="btn"
+                            type="submit"
                             style={{
                                 margin: "2rem 0",
                                 height: "35px",
@@ -229,6 +183,7 @@ const Account = () => {
 
 export default Account;
 
+//original before push
 // import { useState, useEffect } from "react";
 // import { supabase } from "../supabaseClient";
 // import { Navigate } from "react-router-dom";
@@ -236,27 +191,53 @@ export default Account;
 // import { Box, Typography, Avatar, TextField } from "@mui/material";
 
 // const Account = () => {
-//     // const [loading, setLoading] = useState(true);
-//     // const [username, setUsername] = useState(null);
-//     // const [website, setWebsite] = useState(null);
-//     // const [avatar_url, setAvatarUrl] = useState(null);
-//     const {
-//         session,
-//         username,
-//         setUsername,
-//         website,
-//         setWebsite,
-//         avatar_url,
-//         setAvatarUrl,
-//         profileLoading,
-//         setProfileLoading,
-//     } = CryptoState();
+//     const [loading, setLoading] = useState(true);
+//     const [username, setUsername] = useState(null);
+//     const [website, setWebsite] = useState(null);
+//     const [avatar_url, setAvatarUrl] = useState(null);
+//     const { session } = CryptoState();
+
+//     useEffect(() => {
+//         if (session) {
+//             getProfile();
+//         }
+//     }, [session]);
+
+//     const getProfile = async () => {
+//         try {
+//             setLoading(true);
+//             const user = supabase.auth.user();
+//             const { error2 } = await supabase.from("profiles").upsert([
+//                 {
+//                     id: user.id,
+//                 },
+//             ]);
+//             if (error2) throw error2;
+//             let { data, error, status } = await supabase
+//                 .from("profiles")
+//                 .select("username, website, avatar_url")
+//                 .eq("id", user.id)
+//                 .single();
+//             if (error && status !== 406) {
+//                 throw error;
+//             }
+//             if (data) {
+//                 setUsername(data.username);
+//                 setWebsite(data.website);
+//                 setAvatarUrl(data.avatar_url);
+//             }
+//         } catch (error) {
+//             alert(error.message);
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
 
 //     const updateProfile = async (e) => {
 //         e.preventDefault();
 
 //         try {
-//             setProfileLoading(true);
+//             setLoading(true);
 //             const user = supabase.auth.user();
 
 //             const updates = {
@@ -277,7 +258,7 @@ export default Account;
 //         } catch (error) {
 //             alert(error.message);
 //         } finally {
-//             setProfileLoading(false);
+//             setLoading(false);
 //         }
 //     };
 
@@ -287,7 +268,7 @@ export default Account;
 
 //     return (
 //         <div aria-live="polite">
-//             {profileLoading ? (
+//             {loading ? (
 //                 "Fetching data ..."
 //             ) : (
 //                 <Box

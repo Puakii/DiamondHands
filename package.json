@@ -8,6 +8,7 @@
     "@mui/icons-material": "^5.8.3",
     "@mui/lab": "^5.0.0-alpha.84",
     "@mui/material": "^5.8.2",
+    "@reach/visually-hidden": "^0.17.0",
     "@supabase/gotrue-js": "^1.22.15",
     "@supabase/supabase-js": "^1.35.3",
     "@testing-library/jest-dom": "^5.14.1",

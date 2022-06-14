@@ -1,5 +1,5 @@
-// original 3.10pm
-import React, { useState } from "react";
+//6.15pm version
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { CryptoState } from "../pages/CryptoContext";
@@ -21,8 +21,8 @@ const Navbar = () => {
     const [click, setClick] = useState(false);
     const handleClick = () => setClick(!click);
 
-    //change here
-    const { session } = CryptoState();
+    const [navBarAvatar, setNavBarAvatar] = useState(null);
+    const { session, username, avatar_url } = CryptoState();
     let navigate = useNavigate();
 
     //for profile
@@ -36,6 +36,27 @@ const Navbar = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    //for downloading avatar image
+    const downloadImage = async (path) => {
+        try {
+            const { data, error } = await supabase.storage
+                .from("avatars")
+                .download(path);
+            if (error) {
+                throw error;
+            }
+
+            const url = URL.createObjectURL(data);
+            setNavBarAvatar(url);
+        } catch (error) {
+            console.log("Error downloading image: ", error.message);
+        }
+    };
+
+    useEffect(() => {
+        if (avatar_url) downloadImage(avatar_url);
+    }, [avatar_url]);
 
     return (
         <div className="header">
@@ -79,8 +100,12 @@ const Navbar = () => {
                                             open ? "true" : undefined
                                         }
                                     >
-                                        <Avatar sx={{ width: 40, height: 40 }}>
-                                            M
+                                        <Avatar
+                                            sx={{ width: 40, height: 40 }}
+                                            alt={"avatar"}
+                                            src={navBarAvatar}
+                                        >
+                                            {username.toUpperCase().charAt(0)}
                                         </Avatar>
                                     </IconButton>
                                 </Tooltip>
@@ -233,6 +258,8 @@ const Navbar = () => {
 
 export default Navbar;
 
+//original beforer push
+
 // import React, { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 // import { FaBars, FaTimes } from "react-icons/fa";
@@ -256,7 +283,7 @@ export default Navbar;
 //     const handleClick = () => setClick(!click);
 
 //     //change here
-//     const { session, avatar_url } = CryptoState();
+//     const { session } = CryptoState();
 //     let navigate = useNavigate();
 
 //     //for profile
@@ -313,11 +340,7 @@ export default Navbar;
 //                                             open ? "true" : undefined
 //                                         }
 //                                     >
-//                                         <Avatar
-//                                             sx={{ width: 40, height: 40 }}
-//                                             alt={"avatar"}
-//                                             src={avatar_url}
-//                                         >
+//                                         <Avatar sx={{ width: 40, height: 40 }}>
 //                                             M
 //                                         </Avatar>
 //                                     </IconButton>
