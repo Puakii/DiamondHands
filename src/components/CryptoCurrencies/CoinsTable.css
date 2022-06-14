@@ -27,7 +27,18 @@
     color: red;
 }
 
-/* CANNOT STYLE PROPERLY changed to use sx in js  */
-/* .coin-row :hover {
-    background-color: #16171a;
-} */
+.crypto-prices-all .pricesContainer .with-currency {
+    display: flex;
+    justify-content: center;
+}
+
+@media screen and (max-width: 940px) {
+    .crypto-prices-all .pricesContainer .with-currency {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 478px) {
+}

@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import {
     createTheme,
     LinearProgress,
+    MenuItem,
+    Select,
     Table,
     TableBody,
     TableCell,
@@ -40,7 +42,7 @@ const CoinsTable = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     //get currency from contextAPI
-    const { currency, symbol } = CryptoState();
+    const { currency, symbol, setCurrency } = CryptoState();
 
     const navigate = useNavigate();
 
@@ -83,7 +85,32 @@ const CoinsTable = () => {
         <ThemeProvider theme={darkTheme}>
             <div className="crypto-prices-all">
                 <div className="pricesContainer">
-                    <h3>CryptoCurrencies Prices By Market Cap</h3>
+                    <div className="with-currency">
+                        <h3>CryptoCurrencies Prices By Market Cap</h3>
+
+                        <Select
+                            variant="outlined"
+                            style={{
+                                width: 120,
+                                height: 45,
+                            }}
+                            sx={{
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                    borderColor: "rgb(0, 255, 242)",
+                                },
+                                "& .MuiSvgIcon-root": {
+                                    color: "rgb(0, 255, 242)",
+                                },
+                                marginLeft: { xs: "0px", md: "20px" },
+                                marginTop: { xs: "20px", md: "0px" },
+                            }}
+                            value={currency}
+                            onChange={(e) => setCurrency(e.target.value)}
+                        >
+                            <MenuItem value={"USD"}>USD</MenuItem>
+                            <MenuItem value={"SGD"}>SGD</MenuItem>
+                        </Select>
+                    </div>
 
                     <TextField
                         label="Search For a Crypto Currency.."
