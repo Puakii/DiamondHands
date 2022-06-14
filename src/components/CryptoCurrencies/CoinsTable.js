@@ -18,6 +18,8 @@ import {
     TextField,
     ThemeProvider,
 } from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 import "./CoinsTable.css";
 
@@ -56,50 +58,48 @@ const CoinsTable = () => {
             })
             .catch((error) => {
                 console.log(error);
-                console.log("hehe");
             });
         setLoading(false);
     }, [currency]);
 
     useEffect(() => {
+        const getWatchlist = async () => {
+            try {
+                setLoading(true);
+                const user = supabase.auth.user();
+                // const { error2 } = await supabase.from("profiles").upsert([
+                //     {
+                //         id: user.id,
+                //     },
+                // ]);
+                // if (error2) throw error2;
+                let { data, error, status } = await supabase
+                    .from("profiles")
+                    .select("watchlist")
+                    .eq("id", user.id)
+                    .single();
+                if (error && status !== 406) {
+                    throw error;
+                }
+
+                if (data) {
+                    setWatchlist(data.watchlist);
+                }
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
         if (session && data) {
             getWatchlist();
         }
     }, [session, data]);
 
+    useEffect(() => {}, [watchlist]);
+
     // use if statement to hide error
     if (!data) return null;
-
-    const getWatchlist = async () => {
-        try {
-            setLoading(true);
-            const user = supabase.auth.user();
-            // const { error2 } = await supabase.from("profiles").upsert([
-            //     {
-            //         id: user.id,
-            //     },
-            // ]);
-            // if (error2) throw error2;
-            let { data, error, status } = await supabase
-                .from("profiles")
-                .select("watchlist")
-                .eq("id", user.id)
-                .single();
-            if (error && status !== 406) {
-                throw error;
-            }
-            if (data) {
-                console.log(watchlist);
-                if (!watchlist) {
-                    setWatchlist(data.watchlist);
-                }
-            }
-        } catch (error) {
-            alert(error.message);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const handleChangeBox = (val, coin) => {
         if (session) {
@@ -114,13 +114,13 @@ const CoinsTable = () => {
     };
 
     const addToWatchlist = async (coin) => {
-        setWatchlist([...watchlist, coin.name]);
+        const newWatchlist = [...watchlist, coin.id];
         try {
             const user = supabase.auth.user();
             const { error } = await supabase
                 .from("profiles")
                 .update({
-                    watchlist: watchlist,
+                    watchlist: newWatchlist,
                 })
                 .match({ id: user.id });
             // console.log(user.id);
@@ -140,17 +140,18 @@ const CoinsTable = () => {
             alert(error.error_description || error.message);
         } finally {
             // getWatchlist();
+            setWatchlist(newWatchlist);
         }
     };
 
     const removeFromWatchlist = async (coin) => {
-        setWatchlist(watchlist.filter((wish) => wish !== coin.name));
+        const newWatchlist = watchlist.filter((wish) => wish !== coin.id);
         try {
             const user = supabase.auth.user();
             const { error } = await supabase
                 .from("profiles")
                 .update({
-                    watchlist: watchlist,
+                    watchlist: newWatchlist,
                 })
                 .match({ id: user.id });
             if (error) throw error;
@@ -169,47 +170,9 @@ const CoinsTable = () => {
             alert(error.error_description || error.message);
         } finally {
             // getWatchlist();
+            setWatchlist(newWatchlist);
         }
     };
-
-    // const removeFromWatchlist = async (coin) => {
-    //     try {
-    //         const user = supabase.auth.user();
-    //         let { data, error, status } = await supabase
-    //             .from("profiles")
-    //             .select("watchlist")
-    //             .eq("id", user.id)
-    //             .single();
-    //         if (error && status !== 406) {
-    //             throw error;
-    //         }
-    //         const { error2 } = await supabase
-    //             .from("profiles")
-    //             .update({
-    //                 watchlist: data.watchlist.filter(
-    //                     (wish) => wish !== coin.name
-    //                 ),
-    //             })
-    //             .match({ id: user.id });
-
-    //         if (error2) throw error2;
-
-    //         //   setAlert({
-    //         //     open: true,
-    //         //     message: `${coin.name} Added to the Watchlist !`,
-    //         //     type: "success",
-    //         //   });
-    //     } catch (error) {
-    //         //   setAlert({
-    //         //     open: true,
-    //         //     message: error.message,
-    //         //     type: "error",
-    //         //   });
-    //         alert(error.error_description || error.message);
-    //     } finally {
-    //         getWatchlist();
-    //     }
-    // };
 
     const handleSearch = (inputData) => {
         return inputData.filter(
@@ -228,9 +191,7 @@ const CoinsTable = () => {
         setPage(0);
     };
 
-    const inWatchlist = (coin) => watchlist.includes(coin.name);
-
-    console.log(watchlist);
+    const inWatchlist = (coin) => watchlist.includes(coin.id);
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -344,6 +305,12 @@ const CoinsTable = () => {
                                                                     ),
                                                                     coin
                                                                 )
+                                                            }
+                                                            icon={
+                                                                <StarBorderIcon />
+                                                            }
+                                                            checkedIcon={
+                                                                <StarIcon />
                                                             }
                                                         ></Checkbox>
                                                     </TableCell>

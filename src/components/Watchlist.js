@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import {
     createTheme,
+    IconButton,
     LinearProgress,
     Table,
     TableBody,
@@ -17,6 +18,7 @@ import {
     TextField,
     ThemeProvider,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const darkTheme = createTheme({
     palette: {
@@ -58,43 +60,72 @@ const Watchlist = () => {
     }, [currency]);
 
     useEffect(() => {
+        const getWatchlist = async () => {
+            try {
+                setLoading(true);
+                const user = supabase.auth.user();
+                // const { error2 } = await supabase.from("profiles").upsert([
+                //     {
+                //         id: user.id,
+                //     },
+                // ]);
+                // if (error2) throw error2;
+                let { data, error, status } = await supabase
+                    .from("profiles")
+                    .select("watchlist")
+                    .eq("id", user.id)
+                    .single();
+                if (error && status !== 406) {
+                    throw error;
+                }
+
+                if (data) {
+                    setWatchlist(data.watchlist);
+                }
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
         if (session && coins) {
             getWatchlist();
         }
     }, [session, coins]);
 
+    useEffect(() => {}, [watchlist]);
+
     if (!coins) return null;
 
-    console.log(coins);
-
-    const getWatchlist = async () => {
+    const removeFromWatchlist = async (coin) => {
+        const newWatchlist = watchlist.filter((wish) => wish !== coin.id);
         try {
-            setLoading(true);
             const user = supabase.auth.user();
-            // const { error2 } = await supabase.from("profiles").upsert([
-            //     {
-            //         id: user.id,
-            //     },
-            // ]);
-            // if (error2) throw error2;
-            let { data, error, status } = await supabase
+            const { error } = await supabase
                 .from("profiles")
-                .select("watchlist")
-                .eq("id", user.id)
-                .single();
-            if (error && status !== 406) {
-                throw error;
-            }
-            if (data) {
-                setWatchlist(data.watchlist);
-            }
+                .update({
+                    watchlist: newWatchlist,
+                })
+                .match({ id: user.id });
+            if (error) throw error;
+
+            //   setAlert({
+            //     open: true,
+            //     message: `${coin.name} Added to the Watchlist !`,
+            //     type: "success",
+            //   });
         } catch (error) {
-            alert(error.message);
+            //   setAlert({
+            //     open: true,
+            //     message: error.message,
+            //     type: "error",
+            //   });
+            alert(error.error_description || error.message);
         } finally {
-            setLoading(false);
+            // getWatchlist();
+            setWatchlist(newWatchlist);
         }
     };
-
     const handleSearch = (inputData) => {
         return inputData.filter(
             (coin) =>
@@ -159,6 +190,14 @@ const Watchlist = () => {
                                                 color: "black",
                                                 fontWeight: "700",
                                                 fontFamily: "Montserrat",
+                                            }}
+                                            align={"right"}
+                                        ></TableCell>
+                                        <TableCell
+                                            sx={{
+                                                color: "black",
+                                                fontWeight: "700",
+                                                fontFamily: "Montserrat",
                                                 position: "sticky",
                                                 left: 0,
                                                 backgroundColor:
@@ -192,128 +231,154 @@ const Watchlist = () => {
                                     {
                                         //return us an array of the coins that match the search
                                         handleSearch(
-                                            coins.slice(
-                                                page * rowsPerPage,
-                                                page * rowsPerPage + rowsPerPage
-                                            )
+                                            coins
+                                                .filter((wish) =>
+                                                    watchlist.includes(wish.id)
+                                                )
+                                                .slice(
+                                                    page * rowsPerPage,
+                                                    page * rowsPerPage +
+                                                        rowsPerPage
+                                                )
                                         ).map((coin) => {
-                                            if (watchlist.includes(coin.id)) {
-                                                return (
-                                                    <TableRow
+                                            return (
+                                                <TableRow
+                                                    sx={{
+                                                        "&: hover": {
+                                                            backgroundColor:
+                                                                "#16171a",
+                                                        },
+                                                    }}
+                                                    className="coin-row"
+                                                    key={coin.name}
+                                                >
+                                                    <TableCell align="center">
+                                                        <IconButton
+                                                            onClick={() =>
+                                                                removeFromWatchlist(
+                                                                    coin
+                                                                )
+                                                            }
+                                                        >
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                    </TableCell>
+                                                    <TableCell
+                                                        // specify component and scope for semantics
+                                                        component="th"
+                                                        scope="row"
                                                         sx={{
-                                                            "&: hover": {
-                                                                backgroundColor:
-                                                                    "#16171a",
-                                                            },
+                                                            display: "flex",
+                                                            columnGap: "15px",
+                                                            position: "sticky",
+                                                            left: 0,
+                                                            backgroundColor:
+                                                                "#121212",
                                                         }}
                                                         onClick={() =>
                                                             navigate(
                                                                 `/coins/${coin.id}`
                                                             )
                                                         }
-                                                        className="coin-row"
-                                                        key={coin.name}
                                                     >
-                                                        <TableCell
-                                                            // specify component and scope for semantics
-                                                            component="th"
-                                                            scope="row"
-                                                            sx={{
+                                                        <img
+                                                            src={coin?.image}
+                                                            alt={coin.name}
+                                                            height="50"
+                                                            style={{
+                                                                marginBottom: 10,
+                                                            }}
+                                                        />
+
+                                                        <div
+                                                            style={{
                                                                 display: "flex",
-                                                                columnGap:
-                                                                    "15px",
-                                                                position:
-                                                                    "sticky",
-                                                                left: 0,
-                                                                backgroundColor:
-                                                                    "#121212",
+                                                                flexDirection:
+                                                                    "column",
                                                             }}
                                                         >
-                                                            <img
-                                                                src={
-                                                                    coin?.image
-                                                                }
-                                                                alt={coin.name}
-                                                                height="50"
+                                                            <span
                                                                 style={{
-                                                                    marginBottom: 10,
-                                                                }}
-                                                            />
-
-                                                            <div
-                                                                style={{
-                                                                    display:
-                                                                        "flex",
-                                                                    flexDirection:
-                                                                        "column",
+                                                                    textTransform:
+                                                                        "uppercase",
+                                                                    fontSize: 22,
                                                                 }}
                                                             >
-                                                                <span
-                                                                    style={{
-                                                                        textTransform:
-                                                                            "uppercase",
-                                                                        fontSize: 22,
-                                                                    }}
-                                                                >
-                                                                    {
-                                                                        coin.symbol
-                                                                    }
-                                                                </span>
+                                                                {coin.symbol}
+                                                            </span>
 
-                                                                <span
-                                                                    style={{
-                                                                        color: "darkgrey",
-                                                                        fontSize: 13,
-                                                                    }}
-                                                                >
-                                                                    {coin.name}
-                                                                </span>
-                                                            </div>
-                                                        </TableCell>
+                                                            <span
+                                                                style={{
+                                                                    color: "darkgrey",
+                                                                    fontSize: 13,
+                                                                }}
+                                                            >
+                                                                {coin.name}
+                                                            </span>
+                                                        </div>
+                                                    </TableCell>
 
-                                                        <TableCell align="right">
-                                                            {symbol}{" "}
-                                                            {coin.current_price.toLocaleString(
-                                                                undefined,
-                                                                {
-                                                                    minimumFractionDigits: 2,
-                                                                    maximumFractionDigits: 2,
-                                                                }
-                                                            )}
-                                                        </TableCell>
+                                                    <TableCell
+                                                        align="right"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/coins/${coin.id}`
+                                                            )
+                                                        }
+                                                    >
+                                                        {symbol}{" "}
+                                                        {coin.current_price.toLocaleString(
+                                                            undefined,
+                                                            {
+                                                                minimumFractionDigits: 2,
+                                                                maximumFractionDigits: 2,
+                                                            }
+                                                        )}
+                                                    </TableCell>
 
-                                                        <TableCell align="right">
-                                                            {coin.price_change_percentage_24h <
-                                                            0 ? (
-                                                                <span className="red">
-                                                                    {coin.price_change_percentage_24h.toFixed(
-                                                                        2
-                                                                    )}
-                                                                    %
-                                                                </span>
-                                                            ) : (
-                                                                <span className="green">
-                                                                    +
-                                                                    {coin.price_change_percentage_24h.toFixed(
-                                                                        2
-                                                                    )}
-                                                                    %
-                                                                </span>
-                                                            )}
-                                                        </TableCell>
+                                                    <TableCell
+                                                        align="right"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/coins/${coin.id}`
+                                                            )
+                                                        }
+                                                    >
+                                                        {coin.price_change_percentage_24h <
+                                                        0 ? (
+                                                            <span className="red">
+                                                                {coin.price_change_percentage_24h.toFixed(
+                                                                    2
+                                                                )}
+                                                                %
+                                                            </span>
+                                                        ) : (
+                                                            <span className="green">
+                                                                +
+                                                                {coin.price_change_percentage_24h.toFixed(
+                                                                    2
+                                                                )}
+                                                                %
+                                                            </span>
+                                                        )}
+                                                    </TableCell>
 
-                                                        <TableCell align="right">
-                                                            {symbol}{" "}
-                                                            {coin.market_cap
-                                                                .toLocaleString()
-                                                                .slice(0, -6)}
-                                                            M
-                                                        </TableCell>
-                                                    </TableRow>
-                                                );
-                                            } else {
-                                                return <></>;
-                                            }
+                                                    <TableCell
+                                                        align="right"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/coins/${coin.id}`
+                                                            )
+                                                        }
+                                                    >
+                                                        {symbol}{" "}
+                                                        {coin.market_cap
+                                                            .toLocaleString()
+                                                            .slice(0, -6)}
+                                                        M
+                                                    </TableCell>
+                                                </TableRow>
+                                            );
                                         })
                                     }
                                 </TableBody>
