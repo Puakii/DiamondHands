@@ -6,11 +6,9 @@ import AccountPage from "./pages/AccountPage";
 import ErrorPage from "./pages/ErrorPage";
 import SignInPage from "./pages/SignInPage";
 import CryptoPage from "./pages/CryptoPage";
-import { CryptoState } from "./pages/CryptoContext";
+import WatchlistPage from "./pages/WatchlistPage";
 
 function App() {
-    const { loading } = CryptoState();
-
     return (
         <Router>
             <Routes>
@@ -18,8 +16,9 @@ function App() {
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/signin" element={<SignInPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
-                <Route path="/account" element={!loading && <AccountPage />} />
+                <Route path="/account" element={<AccountPage />} />
                 <Route path="/cryptocurrencies" element={<CryptoPage />} />
+                <Route path="/watchlist" element={<WatchlistPage />} />
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
         </Router>

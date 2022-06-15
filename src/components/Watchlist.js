@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Checkbox from "@mui/material/Checkbox";
-import { CoinList } from "../../config/api";
-import { CryptoState } from "../../pages/CryptoContext";
+import { CoinList } from "../config/api";
+import { CryptoState } from "../pages/CryptoContext";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../../supabaseClient";
+import { supabase } from "../supabaseClient";
 import {
     createTheme,
+    IconButton,
     LinearProgress,
     Table,
     TableBody,
@@ -18,10 +18,7 @@ import {
     TextField,
     ThemeProvider,
 } from "@mui/material";
-import StarIcon from "@mui/icons-material/Star";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
-
-import "./CoinsTable.css";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const darkTheme = createTheme({
     palette: {
@@ -33,10 +30,11 @@ const darkTheme = createTheme({
     },
 });
 
-const CoinsTable = () => {
-    const [data, setData] = useState(null);
+const Watchlist = () => {
+    const [coins, setCoins] = useState(null);
     const [loading, setLoading] = useState(false);
-    //default state for search should be "" instead of null .includes will return true for "" but false for null
+    //default state for search should be "" instead of null .includes will
+    //return true for "" but false for null
     const [search, setSearch] = useState("");
     const [watchlist, setWatchlist] = useState([]);
 
@@ -44,7 +42,6 @@ const CoinsTable = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-    //get currency from contextAPI
     const { currency, symbol, session } = CryptoState();
 
     const navigate = useNavigate();
@@ -54,7 +51,7 @@ const CoinsTable = () => {
         axios
             .get(CoinList(currency))
             .then((response) => {
-                setData(response.data);
+                setCoins(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -91,58 +88,14 @@ const CoinsTable = () => {
                 setLoading(false);
             }
         };
-        if (session && data) {
+        if (session && coins) {
             getWatchlist();
         }
-    }, [session, data]);
+    }, [session, coins]);
 
     useEffect(() => {}, [watchlist]);
 
-    // use if statement to hide error
-    if (!data) return null;
-
-    const handleChangeBox = (val, coin) => {
-        if (session) {
-            if (val) {
-                removeFromWatchlist(coin);
-            } else {
-                addToWatchlist(coin);
-            }
-        } else {
-            navigate("/signin");
-        }
-    };
-
-    const addToWatchlist = async (coin) => {
-        const newWatchlist = [...watchlist, coin.id];
-        try {
-            const user = supabase.auth.user();
-            const { error } = await supabase
-                .from("profiles")
-                .update({
-                    watchlist: newWatchlist,
-                })
-                .match({ id: user.id });
-            // console.log(user.id);
-            if (error) throw error;
-
-            //   setAlert({
-            //     open: true,
-            //     message: `${coin.name} Added to the Watchlist !`,
-            //     type: "success",
-            //   });
-        } catch (error) {
-            //   setAlert({
-            //     open: true,
-            //     message: error.message,
-            //     type: "error",
-            //   });
-            alert(error.error_description || error.message);
-        } finally {
-            // getWatchlist();
-            setWatchlist(newWatchlist);
-        }
-    };
+    if (!coins) return null;
 
     const removeFromWatchlist = async (coin) => {
         const newWatchlist = watchlist.filter((wish) => wish !== coin.id);
@@ -173,7 +126,6 @@ const CoinsTable = () => {
             setWatchlist(newWatchlist);
         }
     };
-
     const handleSearch = (inputData) => {
         return inputData.filter(
             (coin) =>
@@ -191,13 +143,15 @@ const CoinsTable = () => {
         setPage(0);
     };
 
-    const inWatchlist = (coin) => watchlist.includes(coin.id);
+    if (!session) {
+        navigate("/signin");
+    }
 
     return (
         <ThemeProvider theme={darkTheme}>
             <div className="crypto-prices-all">
                 <div className="pricesContainer">
-                    <h3>CryptoCurrencies Prices By Market Cap</h3>
+                    <h3>Your Watchlist</h3>
 
                     <TextField
                         label="Search For a Crypto Currency.."
@@ -277,10 +231,15 @@ const CoinsTable = () => {
                                     {
                                         //return us an array of the coins that match the search
                                         handleSearch(
-                                            data.slice(
-                                                page * rowsPerPage,
-                                                page * rowsPerPage + rowsPerPage
-                                            )
+                                            coins
+                                                .filter((wish) =>
+                                                    watchlist.includes(wish.id)
+                                                )
+                                                .slice(
+                                                    page * rowsPerPage,
+                                                    page * rowsPerPage +
+                                                        rowsPerPage
+                                                )
                                         ).map((coin) => {
                                             return (
                                                 <TableRow
@@ -294,25 +253,15 @@ const CoinsTable = () => {
                                                     key={coin.name}
                                                 >
                                                     <TableCell align="center">
-                                                        <Checkbox
-                                                            checked={inWatchlist(
-                                                                coin
-                                                            )}
-                                                            onChange={() =>
-                                                                handleChangeBox(
-                                                                    inWatchlist(
-                                                                        coin
-                                                                    ),
+                                                        <IconButton
+                                                            onClick={() =>
+                                                                removeFromWatchlist(
                                                                     coin
                                                                 )
                                                             }
-                                                            icon={
-                                                                <StarBorderIcon />
-                                                            }
-                                                            checkedIcon={
-                                                                <StarIcon />
-                                                            }
-                                                        ></Checkbox>
+                                                        >
+                                                            <DeleteIcon />
+                                                        </IconButton>
                                                     </TableCell>
                                                     <TableCell
                                                         // specify component and scope for semantics
@@ -451,4 +400,4 @@ const CoinsTable = () => {
     );
 };
 
-export default CoinsTable;
+export default Watchlist;
