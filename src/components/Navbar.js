@@ -72,7 +72,7 @@ const Navbar = () => {
                         <a href="/cryptocurrencies">Cryptocurrencies</a>
                     </li>
                     <li>
-                        <a href="/">Watchlist</a>
+                        <a href="/watchlist">Watchlist</a>
                     </li>
                     <li>
                         <a href="/">News</a>

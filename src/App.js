@@ -6,8 +6,12 @@ import AccountPage from "./pages/AccountPage";
 import ErrorPage from "./pages/ErrorPage";
 import SignInPage from "./pages/SignInPage";
 import CryptoPage from "./pages/CryptoPage";
+
 import { createTheme, ThemeProvider } from "@mui/material";
 import { CryptoState } from "./pages/CryptoContext";
+
+import WatchlistPage from "./pages/WatchlistPage";
+
 
 const darkTheme = createTheme({
     palette: {
@@ -30,6 +34,7 @@ const darkTheme = createTheme({
 });
 
 function App() {
+
     const { loading } = CryptoState();
     return (
         <ThemeProvider theme={darkTheme}>
@@ -44,10 +49,12 @@ function App() {
                         element={!loading && <AccountPage />}
                     />
                     <Route path="/cryptocurrencies" element={<CryptoPage />} />
+                     <Route path="/watchlist" element={<WatchlistPage />} />
                     <Route path="*" element={<ErrorPage />} />
                 </Routes>
             </Router>
         </ThemeProvider>
+
     );
 }
 
