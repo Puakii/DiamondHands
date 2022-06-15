@@ -1,12 +1,12 @@
 import React from "react";
-import CryptoNavbar from "../components/CryptoCurrencies/CryptoNavbar";
 import Banner from "../components/CryptoCurrencies/Banner";
 import CoinsTable from "../components/CryptoCurrencies/CoinsTable";
+import Navbar from "../components/Navbar";
 
 const CryptoPage = () => {
     return (
         <>
-            <CryptoNavbar />
+            <Navbar />
             <Banner />
             <CoinsTable />
         </>

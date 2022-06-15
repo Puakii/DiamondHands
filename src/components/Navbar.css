@@ -23,10 +23,11 @@
 
 .header .nav-menu {
     display: flex;
+    margin-left: 2%;
 }
 
 .header .nav-menu li {
-    padding: 0.6rem 1rem 0;
+    padding: 0.8rem 1rem 0;
 }
 
 .header .nav-menu a {
@@ -35,9 +36,10 @@
     color: white;
 }
 
+/* removed this
 .header .nav-menu .btn-group {
     margin-left: 1rem;
-}
+} */
 
 .header .nav-menu .btn-group2 {
     margin-left: 5rem;
@@ -45,6 +47,7 @@
 
 .header .nav-menu .btn {
     padding: 10px 24px;
+    margin-left: 12px;
 }
 
 .header .hamburger {
@@ -52,7 +55,7 @@
     cursor: pointer;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1250px) {
     .header .container {
         padding-left: 1rem;
     }
@@ -104,5 +107,6 @@
     .header .nav-menu.active .btn {
         width: 100%;
         margin: 0;
+        margin-bottom: 20px;
     }
 }

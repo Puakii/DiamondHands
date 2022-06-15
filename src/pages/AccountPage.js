@@ -1,10 +1,14 @@
 import React from "react";
 import Account from "../components/Account";
-import { CryptoState } from "./CryptoContext";
+import Navbar from "../components/Navbar";
 
 const AccountPage = () => {
-    const { loading } = CryptoState();
-    return <>{!loading && <Account />}</>;
+    return (
+        <>
+            <Navbar />
+            <Account />
+        </>
+    );
 };
 
 export default AccountPage;
