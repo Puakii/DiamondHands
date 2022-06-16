@@ -23,8 +23,7 @@ const SignIn = () => {
                 },
                 {
                     redirectTo:
-                        "https://diamond-hands-forked.vercel.app/account",
-                    // https://diamond-hands-forked.vercel.app/signin,
+                        "https://crypto-universe-orbital.vercel.app/watchlist",
                 }
             );
 
@@ -49,7 +48,7 @@ const SignIn = () => {
                 password: password,
             });
             if (error) throw error;
-            navigate("/account");
+            navigate("/watchlist");
         } catch (error) {
             gotError = true;
             alert(error.error_description || error.message);
@@ -63,7 +62,7 @@ const SignIn = () => {
     const navigate = useNavigate();
 
     if (session) {
-        return <Navigate to="/account" />;
+        return <Navigate to="/watchlist" />;
     }
 
     return (
@@ -122,6 +121,15 @@ const SignIn = () => {
                             onClick={() => navigate("/signup")}
                         >
                             Join now
+                        </button>
+                    </div>
+                    <div className="backToHome">
+                        <button
+                            className="btn-3"
+                            type="button"
+                            onClick={() => navigate("/")}
+                        >
+                            Back To Home
                         </button>
                     </div>
                 </div>

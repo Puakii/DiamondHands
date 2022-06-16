@@ -14,7 +14,7 @@
 
 .form-signup .container {
     width: 400px;
-    height: 450px;
+    height: 500px;
     margin: 100px auto;
     background-color: rgb(217, 234, 236);
     border-radius: 10px;
@@ -95,8 +95,24 @@
     width: 20%;
 }
 
-.form-signup .btn-2:hover {
-    border-color: rgba(0, 0, 255, 0.452);
-    background-color: var(--primary);
-    border-radius: 100px 100px;
+.form-signup .backToHome {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4%;
+    margin-top: 10px;
+}
+
+.form-signup .btn-3 {
+    font-family: "Open Sans", sans-serif;
+
+    border-color: transparent;
+    background-color: transparent;
+
+    color: blue;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 13px;
+    width: 30%;
 }

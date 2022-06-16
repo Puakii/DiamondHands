@@ -28,7 +28,7 @@ const SignUp = () => {
                 },
             ]);
             if (error2) throw error2;
-            navigate("/account");
+            navigate("/watchlist");
         } catch (error) {
             alert(error.error_description || error.message);
         }
@@ -80,6 +80,15 @@ const SignUp = () => {
                         onClick={() => navigate("/signin")}
                     >
                         Sign in
+                    </button>
+                </div>
+                <div className="backToHome">
+                    <button
+                        className="btn-3"
+                        type="button"
+                        onClick={() => navigate("/")}
+                    >
+                        Back To Home
                     </button>
                 </div>
             </div>

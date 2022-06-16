@@ -5,7 +5,6 @@ import { CryptoState } from "../pages/CryptoContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import {
-    createTheme,
     IconButton,
     LinearProgress,
     Table,
@@ -16,19 +15,8 @@ import {
     TablePagination,
     TableRow,
     TextField,
-    ThemeProvider,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-const darkTheme = createTheme({
-    palette: {
-        primary: {
-            main: "#fff",
-        },
-
-        mode: "dark",
-    },
-});
 
 const Watchlist = () => {
     const [coins, setCoins] = useState(null);
@@ -41,6 +29,8 @@ const Watchlist = () => {
     // for pagination
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    //To keep track of number of results after filter to be used for pagination
+    const [numOfResult, setNumberOfResult] = useState(0);
 
     const { currency, symbol, session } = CryptoState();
 
@@ -64,12 +54,7 @@ const Watchlist = () => {
             try {
                 setLoading(true);
                 const user = supabase.auth.user();
-                // const { error2 } = await supabase.from("profiles").upsert([
-                //     {
-                //         id: user.id,
-                //     },
-                // ]);
-                // if (error2) throw error2;
+
                 let { data, error, status } = await supabase
                     .from("profiles")
                     .select("watchlist")
@@ -93,7 +78,8 @@ const Watchlist = () => {
         }
     }, [session, coins]);
 
-    useEffect(() => {}, [watchlist]);
+    //no need this anymore
+    // useEffect(() => {}, [watchlist]);
 
     if (!coins) return null;
 
@@ -108,30 +94,31 @@ const Watchlist = () => {
                 })
                 .match({ id: user.id });
             if (error) throw error;
-
-            //   setAlert({
-            //     open: true,
-            //     message: `${coin.name} Added to the Watchlist !`,
-            //     type: "success",
-            //   });
         } catch (error) {
-            //   setAlert({
-            //     open: true,
-            //     message: error.message,
-            //     type: "error",
-            //   });
             alert(error.error_description || error.message);
         } finally {
-            // getWatchlist();
             setWatchlist(newWatchlist);
         }
     };
+
     const handleSearch = (inputData) => {
-        return inputData.filter(
+        const filteredData = inputData.filter(
             (coin) =>
                 coin.name.toLowerCase().includes(search.toLowerCase()) ||
                 coin.symbol.toLowerCase().includes(search.toLowerCase())
         );
+
+        //if condition is required if not will result in continous rendering because it will keep setting number of result, we only want to setNumberOfResult when there is something being filtered, and after filtered we want it to stop
+        if (numOfResult !== filteredData.length) {
+            setNumberOfResult(filteredData.length);
+        }
+
+        return filteredData;
+    };
+
+    const handleChangeSearch = (event) => {
+        setSearch(event.target.value);
+        setPage(0);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -148,70 +135,66 @@ const Watchlist = () => {
     }
 
     return (
-        <ThemeProvider theme={darkTheme}>
-            <div className="crypto-prices-all">
-                <div className="pricesContainer">
-                    <h3>Your Watchlist</h3>
+        <div className="crypto-prices-all">
+            <div className="pricesContainer">
+                <h3>Your Watchlist</h3>
 
-                    <TextField
-                        label="Search For a Crypto Currency.."
-                        variant="outlined"
-                        style={{
-                            //margin on 4 sides is 30
-                            margin: 30,
-                            width: "100%",
-                            //override left and right margin with "auto" to centralise
-                            marginLeft: "auto",
-                            marginRight: "auto",
-                        }}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
+                <TextField
+                    label="Search For a Crypto Currency.."
+                    variant="outlined"
+                    style={{
+                        //margin on 4 sides is 30
+                        margin: 30,
+                        width: "100%",
+                        //override left and right margin with "auto" to centralise
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                    }}
+                    onChange={handleChangeSearch}
+                />
 
-                    <TableContainer
-                        // className="tableContainer"
-                        style={{
-                            width: "100%",
-                        }}
-                    >
-                        {loading ? (
-                            <LinearProgress
-                                style={{ backgroundColor: "var(--primary)" }}
-                            />
-                        ) : (
-                            <Table>
-                                <TableHead
-                                    style={{
-                                        backgroundColor: "var(--primary)",
-                                    }}
-                                >
-                                    <TableRow>
-                                        <TableCell
-                                            sx={{
-                                                color: "black",
-                                                fontWeight: "700",
-                                                fontFamily: "Montserrat",
-                                            }}
-                                            align={"right"}
-                                        ></TableCell>
-                                        <TableCell
-                                            sx={{
-                                                color: "black",
-                                                fontWeight: "700",
-                                                fontFamily: "Montserrat",
-                                                position: "sticky",
-                                                left: 0,
-                                                backgroundColor:
-                                                    "rgba(0, 255, 242)",
-                                            }}
-                                            align={"left"}
-                                        >
-                                            Coin
-                                        </TableCell>
-                                        {[
-                                            "Price",
-                                            "24h Change",
-                                            "Market Cap",
-                                        ].map((head) => (
+                <TableContainer
+                    // className="tableContainer"
+                    style={{
+                        width: "100%",
+                    }}
+                >
+                    {loading ? (
+                        <LinearProgress
+                            style={{ backgroundColor: "var(--primary)" }}
+                        />
+                    ) : (
+                        <Table>
+                            <TableHead
+                                style={{
+                                    backgroundColor: "var(--primary)",
+                                }}
+                            >
+                                <TableRow>
+                                    <TableCell
+                                        sx={{
+                                            color: "black",
+                                            fontWeight: "700",
+                                            fontFamily: "Montserrat",
+                                        }}
+                                        align={"right"}
+                                    ></TableCell>
+                                    <TableCell
+                                        sx={{
+                                            color: "black",
+                                            fontWeight: "700",
+                                            fontFamily: "Montserrat",
+                                            position: "sticky",
+                                            left: 0,
+                                            backgroundColor:
+                                                "rgba(0, 255, 242)",
+                                        }}
+                                        align={"left"}
+                                    >
+                                        Coin
+                                    </TableCell>
+                                    {["Price", "24h Change", "Market Cap"].map(
+                                        (head) => (
                                             <TableCell
                                                 sx={{
                                                     color: "black",
@@ -223,24 +206,24 @@ const Watchlist = () => {
                                             >
                                                 {head}
                                             </TableCell>
-                                        ))}
-                                    </TableRow>
-                                </TableHead>
+                                        )
+                                    )}
+                                </TableRow>
+                            </TableHead>
 
-                                <TableBody>
-                                    {
-                                        //return us an array of the coins that match the search
-                                        handleSearch(
-                                            coins
-                                                .filter((wish) =>
-                                                    watchlist.includes(wish.id)
-                                                )
-                                                .slice(
-                                                    page * rowsPerPage,
-                                                    page * rowsPerPage +
-                                                        rowsPerPage
-                                                )
-                                        ).map((coin) => {
+                            <TableBody>
+                                {
+                                    //return us an array of the coins that match the search
+                                    handleSearch(
+                                        coins.filter((wish) =>
+                                            watchlist.includes(wish.id)
+                                        )
+                                    )
+                                        .slice(
+                                            page * rowsPerPage,
+                                            page * rowsPerPage + rowsPerPage
+                                        )
+                                        .map((coin) => {
                                             return (
                                                 <TableRow
                                                     sx={{
@@ -380,23 +363,22 @@ const Watchlist = () => {
                                                 </TableRow>
                                             );
                                         })
-                                    }
-                                </TableBody>
-                            </Table>
-                        )}
-                    </TableContainer>
+                                }
+                            </TableBody>
+                        </Table>
+                    )}
+                </TableContainer>
 
-                    <TablePagination
-                        component="div"
-                        count={100}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        rowsPerPage={rowsPerPage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </div>
+                <TablePagination
+                    component="div"
+                    count={numOfResult}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
             </div>
-        </ThemeProvider>
+        </div>
     );
 };
 

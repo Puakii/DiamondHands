@@ -6,7 +6,6 @@ import { CryptoState } from "../../pages/CryptoContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import {
-    createTheme,
     LinearProgress,
     MenuItem,
     Select,
@@ -18,22 +17,11 @@ import {
     TablePagination,
     TableRow,
     TextField,
-    ThemeProvider,
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 import "./CoinsTable.css";
-
-const darkTheme = createTheme({
-    palette: {
-        primary: {
-            main: "#fff",
-        },
-
-        mode: "dark",
-    },
-});
 
 const CoinsTable = () => {
     const [data, setData] = useState(null);
@@ -44,11 +32,12 @@ const CoinsTable = () => {
 
     // for pagination
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    //To keep track of number of results after filter to be used for pagination
+    const [numOfResult, setNumberOfResult] = useState(0);
 
     //get from contextAPI
     const { currency, symbol, setCurrency, session } = CryptoState();
-
 
     const navigate = useNavigate();
 
@@ -65,45 +54,72 @@ const CoinsTable = () => {
         setLoading(false);
     }, [currency]);
 
-    useEffect(() => {
-        const getWatchlist = async () => {
-            try {
-                setLoading(true);
-                const user = supabase.auth.user();
-                // const { error2 } = await supabase.from("profiles").upsert([
-                //     {
-                //         id: user.id,
-                //     },
-                // ]);
-                // if (error2) throw error2;
-                let { data, error, status } = await supabase
-                    .from("profiles")
-                    .select("watchlist")
-                    .eq("id", user.id)
-                    .single();
-                if (error && status !== 406) {
-                    throw error;
-                }
+    const getWatchlist = async () => {
+        try {
+            setLoading(true);
+            const user = supabase.auth.user();
 
-                if (data) {
-                    setWatchlist(data.watchlist);
-                }
-            } catch (error) {
-                alert(error.message);
-            } finally {
-                setLoading(false);
+            let { data, error, status } = await supabase
+                .from("profiles")
+                .select("watchlist")
+                .eq("id", user.id)
+                .single();
+            if (error && status !== 406) {
+                throw error;
             }
-        };
+
+            if (data) {
+                setWatchlist(data.watchlist);
+            }
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         if (session && data) {
             getWatchlist();
         }
     }, [session, data]);
 
-    useEffect(() => {}, [watchlist]);
+    // useEffect(() => {
+    //     const getWatchlist = async () => {
+    //         try {
+    //             setLoading(true);
+    //             const user = supabase.auth.user();
+
+    //             let { data, error, status } = await supabase
+    //                 .from("profiles")
+    //                 .select("watchlist")
+    //                 .eq("id", user.id)
+    //                 .single();
+    //             if (error && status !== 406) {
+    //                 throw error;
+    //             }
+
+    //             if (data) {
+    //                 setWatchlist(data.watchlist);
+    //             }
+    //         } catch (error) {
+    //             alert(error.message);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+    //     if (session && data) {
+    //         getWatchlist();
+    //     }
+    // }, [session, data]);
+
+    //this is to refresh the page after the last item is added to the watchlist
+    // useEffect(() => {}, [watchlist]);
 
     // use if statement to hide error
     if (!data) return null;
 
+    //value refer to whether it is checked
     const handleChangeBox = (val, coin) => {
         if (session) {
             if (val) {
@@ -126,23 +142,11 @@ const CoinsTable = () => {
                     watchlist: newWatchlist,
                 })
                 .match({ id: user.id });
-            // console.log(user.id);
-            if (error) throw error;
 
-            //   setAlert({
-            //     open: true,
-            //     message: `${coin.name} Added to the Watchlist !`,
-            //     type: "success",
-            //   });
+            if (error) throw error;
         } catch (error) {
-            //   setAlert({
-            //     open: true,
-            //     message: error.message,
-            //     type: "error",
-            //   });
             alert(error.error_description || error.message);
         } finally {
-            // getWatchlist();
             setWatchlist(newWatchlist);
         }
     };
@@ -158,31 +162,31 @@ const CoinsTable = () => {
                 })
                 .match({ id: user.id });
             if (error) throw error;
-
-            //   setAlert({
-            //     open: true,
-            //     message: `${coin.name} Added to the Watchlist !`,
-            //     type: "success",
-            //   });
         } catch (error) {
-            //   setAlert({
-            //     open: true,
-            //     message: error.message,
-            //     type: "error",
-            //   });
             alert(error.error_description || error.message);
         } finally {
-            // getWatchlist();
             setWatchlist(newWatchlist);
         }
     };
 
     const handleSearch = (inputData) => {
-        return inputData.filter(
+        const filteredData = inputData.filter(
             (coin) =>
                 coin.name.toLowerCase().includes(search.toLowerCase()) ||
                 coin.symbol.toLowerCase().includes(search.toLowerCase())
         );
+
+        //if condition is required if not will result in continous rendering because it will keep setting number of result, we only want to setNumberOfResult when there is something being filtered, and after filtered we want it to stop
+        if (numOfResult !== filteredData.length) {
+            setNumberOfResult(filteredData.length);
+        }
+
+        return filteredData;
+    };
+
+    const handleChangeSearch = (event) => {
+        setSearch(event.target.value);
+        setPage(0);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -197,95 +201,90 @@ const CoinsTable = () => {
     const inWatchlist = (coin) => watchlist.includes(coin.id);
 
     return (
-        <ThemeProvider theme={darkTheme}>
-            <div className="crypto-prices-all">
-                <div className="pricesContainer">
-                    <div className="with-currency">
-                        <h3>CryptoCurrencies Prices By Market Cap</h3>
+        <div className="crypto-prices-all">
+            <div className="pricesContainer">
+                <div className="with-currency">
+                    <h3>CryptoCurrencies Prices By Market Cap</h3>
 
-                        <Select
-                            variant="outlined"
-                            style={{
-                                width: 120,
-                                height: 45,
-                            }}
-                            sx={{
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: "rgb(0, 255, 242)",
-                                },
-                                "& .MuiSvgIcon-root": {
-                                    color: "rgb(0, 255, 242)",
-                                },
-                                marginLeft: { xs: "0px", md: "20px" },
-                                marginTop: { xs: "20px", md: "0px" },
-                            }}
-                            value={currency}
-                            onChange={(e) => setCurrency(e.target.value)}
-                        >
-                            <MenuItem value={"USD"}>USD</MenuItem>
-                            <MenuItem value={"SGD"}>SGD</MenuItem>
-                        </Select>
-                    </div>
-
-                    <TextField
-                        label="Search For a Crypto Currency.."
+                    <Select
                         variant="outlined"
                         style={{
-                            //margin on 4 sides is 30
-                            margin: 30,
-                            width: "100%",
-                            //override left and right margin with "auto" to centralise
-                            marginLeft: "auto",
-                            marginRight: "auto",
+                            width: 120,
+                            height: 45,
                         }}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-
-                    <TableContainer
-                        // className="tableContainer"
-                        style={{
-                            width: "100%",
+                        sx={{
+                            "& .MuiOutlinedInput-notchedOutline": {
+                                borderColor: "rgb(0, 255, 242)",
+                            },
+                            "& .MuiSvgIcon-root": {
+                                color: "rgb(0, 255, 242)",
+                            },
+                            marginLeft: { xs: "0px", md: "20px" },
+                            marginTop: { xs: "20px", md: "0px" },
                         }}
+                        value={currency}
+                        onChange={(e) => setCurrency(e.target.value)}
                     >
-                        {loading ? (
-                            <LinearProgress
-                                style={{ backgroundColor: "var(--primary)" }}
-                            />
-                        ) : (
-                            <Table>
-                                <TableHead
-                                    style={{
-                                        backgroundColor: "var(--primary)",
-                                    }}
-                                >
-                                    <TableRow>
-                                        <TableCell
-                                            sx={{
-                                                color: "black",
-                                                fontWeight: "700",
-                                                fontFamily: "Montserrat",
-                                            }}
-                                            align={"right"}
-                                        ></TableCell>
-                                        <TableCell
-                                            sx={{
-                                                color: "black",
-                                                fontWeight: "700",
-                                                fontFamily: "Montserrat",
-                                                position: "sticky",
-                                                left: 0,
-                                                backgroundColor:
-                                                    "rgba(0, 255, 242)",
-                                            }}
-                                            align={"left"}
-                                        >
-                                            Coin
-                                        </TableCell>
-                                        {[
-                                            "Price",
-                                            "24h Change",
-                                            "Market Cap",
-                                        ].map((head) => (
+                        <MenuItem value={"USD"}>USD</MenuItem>
+                        <MenuItem value={"SGD"}>SGD</MenuItem>
+                    </Select>
+                </div>
+
+                <TextField
+                    label="Search For a Crypto Currency.."
+                    variant="outlined"
+                    style={{
+                        //margin on 4 sides is 30
+                        margin: 30,
+                        width: "100%",
+                        //override left and right margin with "auto" to centralise
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                    }}
+                    onChange={handleChangeSearch}
+                />
+
+                <TableContainer
+                    style={{
+                        width: "100%",
+                    }}
+                >
+                    {loading ? (
+                        <LinearProgress
+                            style={{ backgroundColor: "var(--primary)" }}
+                        />
+                    ) : (
+                        <Table>
+                            <TableHead
+                                style={{
+                                    backgroundColor: "var(--primary)",
+                                }}
+                            >
+                                <TableRow>
+                                    <TableCell
+                                        sx={{
+                                            color: "black",
+                                            fontWeight: "700",
+                                            fontFamily: "Montserrat",
+                                        }}
+                                        align={"right"}
+                                    ></TableCell>
+                                    <TableCell
+                                        sx={{
+                                            color: "black",
+                                            fontWeight: "700",
+                                            fontFamily: "Montserrat",
+                                            position: "sticky",
+                                            left: 0,
+                                            backgroundColor:
+                                                "rgba(0, 255, 242)",
+                                        }}
+                                        align={"left"}
+                                    >
+                                        Coin
+                                    </TableCell>
+                                    {["Price", "24h Change", "Market Cap"].map(
+                                        (head) => (
                                             <TableCell
                                                 sx={{
                                                     color: "black",
@@ -297,19 +296,20 @@ const CoinsTable = () => {
                                             >
                                                 {head}
                                             </TableCell>
-                                        ))}
-                                    </TableRow>
-                                </TableHead>
+                                        )
+                                    )}
+                                </TableRow>
+                            </TableHead>
 
-                                <TableBody>
-                                    {
-                                        //return us an array of the coins that match the search
-                                        handleSearch(
-                                            data.slice(
-                                                page * rowsPerPage,
-                                                page * rowsPerPage + rowsPerPage
-                                            )
-                                        ).map((coin) => {
+                            <TableBody>
+                                {
+                                    //return us an array of the coins that match the search
+                                    handleSearch(data)
+                                        .slice(
+                                            page * rowsPerPage,
+                                            page * rowsPerPage + rowsPerPage
+                                        )
+                                        .map((coin) => {
                                             return (
                                                 <TableRow
                                                     sx={{
@@ -351,8 +351,10 @@ const CoinsTable = () => {
                                                             columnGap: "15px",
                                                             position: "sticky",
                                                             left: 0,
-                                                            backgroundColor:
-                                                                "#121212",
+                                                            backgroundColor: {
+                                                                xs: "#121212",
+                                                                lg: "transparent",
+                                                            },
                                                         }}
                                                         onClick={() =>
                                                             navigate(
@@ -459,23 +461,23 @@ const CoinsTable = () => {
                                                 </TableRow>
                                             );
                                         })
-                                    }
-                                </TableBody>
-                            </Table>
-                        )}
-                    </TableContainer>
+                                }
+                            </TableBody>
+                        </Table>
+                    )}
+                </TableContainer>
 
-                    <TablePagination
-                        component="div"
-                        count={100}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        rowsPerPage={rowsPerPage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </div>
+                <TablePagination
+                    component="div"
+                    //we want to set the count to numOfResult after we filtered using search
+                    count={numOfResult}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
             </div>
-        </ThemeProvider>
+        </div>
     );
 };
 
