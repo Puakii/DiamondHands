@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { MultiMarketCoins } from "../config/api";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const MultiMarket = () => {
     const exchangesName = [
         "binance",
-        "ftx",
+        "ftx_us",
         "gdax",
-        "kraven",
+        "kraken",
         "kucoin",
         "gate",
         "gemini",
@@ -16,11 +17,11 @@ const MultiMarket = () => {
         "binance_us",
     ];
 
-    const exchangesName2 = new Map([
+    const exchangesMap = new Map([
         ["binance", ""],
-        ["ftx", ""],
+        ["ftx_us", ""],
         ["gdax", ""],
-        ["kraven", ""],
+        ["kraken", ""],
         ["kucoin", ""],
         ["gate", ""],
         ["gemini", ""],
@@ -29,38 +30,38 @@ const MultiMarket = () => {
         ["binance_us", ""],
     ]);
 
-    const [data, setData] = useState(null);
+    const [object, setObject] = useState(exchangesMap);
+
+    const [loadingData, setLoading] = useState(false);
 
     useEffect(() => {
-        //forloop inside
+        setLoading(true);
         for (let i = 0; i < exchangesName.length; i++) {
             let exchangeName = exchangesName[i];
-
             axios
-                .get(MultiMarketCoins("bitcoin", "binance"))
+                .get(MultiMarketCoins("bitcoin", exchangeName))
                 .then((response) => {
-                    exchangesName2.set(exchangeName, response.data.tickers[0]);
-                    console.log(exchangesName2);
+                    if (response.data) {
+                        setObject(
+                            exchangesMap.set(
+                                exchangeName,
+                                response.data.tickers[0]
+                            )
+                        );
+                    }
                 })
                 .catch((error) => {
                     console.log(error);
                 });
-
-            // if (data) {
-            //     // exchangesName2.set("binance", data.tickers[0]);
-            //     console.log(exchangesName2);
-            // }
         }
-    });
+        setLoading(false);
+    }, [exchangesName, exchangesMap]);
 
-    if (!data) {
+    if (loadingData) {
         return <></>;
     }
 
-    // console.log(data);
-    // console.log(exchangesName2);
-
-    return <div>{data.tickers[0].last}</div>;
+    return <div>hello</div>;
 };
 
 export default MultiMarket;
