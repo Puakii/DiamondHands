@@ -54,8 +54,6 @@ const CoinsTable = () => {
         setLoading(false);
     }, [currency]);
 
-    console.log(data);
-
     const getWatchlist = async () => {
         try {
             setLoading(true);

@@ -11,7 +11,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import { CryptoState } from "./pages/CryptoContext";
 
 import WatchlistPage from "./pages/WatchlistPage";
-import MultiMarket from "./components/MultiMarket";
+import MultiMarket from "./components/Markets/MultiMarket";
 
 const darkTheme = createTheme({
     palette: {
@@ -26,6 +26,7 @@ const darkTheme = createTheme({
         values: {
             xs: 0,
             sm: 600,
+            tablet: 768,
             md: 900,
             lg: 1250,
             xl: 1536,
