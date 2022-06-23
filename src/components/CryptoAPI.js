@@ -81,7 +81,10 @@ const CryptoAPI = () => {
 
                     {/* right */}
                     <div className="right">
-                        <div className="card">
+                        <div
+                            className="card"
+                            onClick={() => navigate(`/coins/${data[0].id}`)}
+                        >
                             <div className="top">
                                 <img src={data[0].image} alt="" />
                             </div>
@@ -110,7 +113,10 @@ const CryptoAPI = () => {
                             )}
                         </div>
 
-                        <div className="card">
+                        <div
+                            className="card"
+                            onClick={() => navigate(`/coins/${data[1].id}`)}
+                        >
                             <div className="top">
                                 <img src={data[1].image} alt="" />
                             </div>
@@ -139,7 +145,10 @@ const CryptoAPI = () => {
                             )}
                         </div>
 
-                        <div className="card">
+                        <div
+                            className="card"
+                            onClick={() => navigate(`/coins/${data[2].id}`)}
+                        >
                             <div className="top">
                                 <img src={data[2].image} alt="" />
                             </div>
@@ -168,7 +177,10 @@ const CryptoAPI = () => {
                             )}
                         </div>
 
-                        <div className="card">
+                        <div
+                            className="card"
+                            onClick={() => navigate(`/coins/${data[3].id}`)}
+                        >
                             <div className="top">
                                 <img src={data[3].image} alt="" />
                             </div>
@@ -197,7 +209,10 @@ const CryptoAPI = () => {
                             )}
                         </div>
 
-                        <div className="card">
+                        <div
+                            className="card"
+                            onClick={() => navigate(`/coins/${data[4].id}`)}
+                        >
                             <div className="top">
                                 <img src={data[4].image} alt="" />
                             </div>
@@ -226,7 +241,10 @@ const CryptoAPI = () => {
                             )}
                         </div>
 
-                        <div className="card">
+                        <div
+                            className="card"
+                            onClick={() => navigate(`/coins/${data[5].id}`)}
+                        >
                             <div className="top">
                                 <img src={data[5].image} alt="" />
                             </div>

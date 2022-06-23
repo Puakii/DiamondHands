@@ -1,3 +1,4 @@
+//version 2 og version
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { CryptoState } from "../../pages/CryptoContext";
@@ -9,10 +10,11 @@ import {
     Divider,
     Grid,
     LinearProgress,
+    MenuItem,
+    Select,
     Typography,
 } from "@mui/material";
 import { FiArrowDown, FiArrowUp } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
 
 const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
     const [data, setData] = useState(null);
@@ -20,10 +22,9 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
 
     //for button clicked
     const [clicked, setClick] = useState(false);
-    const navigate = useNavigate();
 
     //get from contextAPI
-    const { currency, symbol, setCurrency, session } = CryptoState();
+    const { currency, symbol, setCurrency } = CryptoState();
 
     useEffect(() => {
         setLoading(true);
@@ -37,9 +38,6 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
             });
         setLoading(false);
     }, [coinId, currency]);
-
-    // console.log(data);
-    console.log(bestToSell);
 
     return (
         <Box
@@ -148,17 +146,45 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                         </Grid>
                         <Grid item xs={12} md={4}>
                             <Box display="flex" flexDirection="column">
-                                <Typography
-                                    fontSize="1rem"
-                                    color="whitesmoke"
-                                    fontWeight="700"
-                                >
-                                    {data[0].name +
-                                        " Price" +
-                                        " (" +
-                                        data[0].symbol.toUpperCase() +
-                                        ")"}
-                                </Typography>
+                                <Box display="flex" alignItems="center">
+                                    <Typography
+                                        fontSize="1rem"
+                                        color="whitesmoke"
+                                        fontWeight="700"
+                                    >
+                                        {data[0].name +
+                                            " Price" +
+                                            " (" +
+                                            data[0].symbol.toUpperCase() +
+                                            ")"}
+                                    </Typography>
+                                    <Select
+                                        variant="outlined"
+                                        sx={{
+                                            width: 80,
+                                            height: 30,
+                                            "& .MuiOutlinedInput-notchedOutline":
+                                                {
+                                                    borderColor:
+                                                        "rgb(0, 255, 242)",
+                                                },
+                                            "& .MuiSvgIcon-root": {
+                                                color: "rgb(0, 255, 242)",
+                                            },
+                                            marginLeft: {
+                                                xs: "9%",
+                                                md: "7%",
+                                            },
+                                        }}
+                                        value={currency}
+                                        onChange={(e) =>
+                                            setCurrency(e.target.value)
+                                        }
+                                    >
+                                        <MenuItem value={"USD"}>USD</MenuItem>
+                                        <MenuItem value={"SGD"}>SGD</MenuItem>
+                                    </Select>
+                                </Box>
                                 <Box
                                     className="price-and-change"
                                     display="flex"
@@ -181,7 +207,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                     </Typography>
                                     <Box
                                         className="price-change"
-                                        marginLeft="2%"
+                                        marginLeft="4%"
                                         border="1px solid"
                                         borderRadius="10%"
                                         padding="2px"
@@ -263,6 +289,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                     fontSize="1rem"
                                     color="whitesmoke"
                                     fontWeight="700"
+                                    // sx={{paddingRight}}
                                 >
                                     Market Cap
                                 </Typography>
@@ -515,7 +542,9 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                             variant="contained"
                             sx={{
                                 display: { md: "none" },
-                                // backgroundColor: "var(--primary)",
+                                "&.MuiButton-root": {
+                                    backgroundColor: "var(--primary)",
+                                },
                                 borderRadius: "10px",
                                 width: "80%",
                                 marginLeft: "auto",
@@ -532,7 +561,9 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                             variant="contained"
                             sx={{
                                 display: { md: "none" },
-                                // backgroundColor: "var(--primary)",
+                                "&.MuiButton-root": {
+                                    backgroundColor: "var(--primary)",
+                                },
                                 borderRadius: "10px",
                                 width: "95%",
                                 marginLeft: "auto",

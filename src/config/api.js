@@ -6,8 +6,8 @@ export const CoinList = (currency) =>
 export const SingleCoin = (coinId, currency) =>
     `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&ids=${coinId}&order=market_cap_desc&per_page=100&page=1&sparkline=false`;
 
-// export const HistoricalChart = (id, days = 365, currency) =>
-//     `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=${currency}&days=${days}`;
+export const HistoricalChart = (coinId, days = 365, currency) =>
+    `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`;
 
 export const HighLightCoins = (currency) =>
     currency === "USD"

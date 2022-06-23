@@ -11,7 +11,8 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import { CryptoState } from "./pages/CryptoContext";
 
 import WatchlistPage from "./pages/WatchlistPage";
-import MultiMarket from "./components/Markets/MultiMarket";
+
+import MultiMarketPage from "./pages/MultiMarketPage";
 
 const darkTheme = createTheme({
     palette: {
@@ -50,7 +51,11 @@ function App() {
                     />
                     <Route path="/cryptocurrencies" element={<CryptoPage />} />
                     <Route path="/watchlist" element={<WatchlistPage />} />
-                    <Route path="/multimarket" element={<MultiMarket />} />
+
+                    <Route
+                        path="/coins/:coinId"
+                        element={<MultiMarketPage />}
+                    />
                     <Route path="*" element={<ErrorPage />} />
                 </Routes>
             </Router>
