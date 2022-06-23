@@ -22,7 +22,6 @@ const CryptoContext = ({ children }) => {
     const [website, setWebsite] = useState(null);
     const [avatar_url, setAvatarUrl] = useState(null);
 
-    //getProfile function declaration
     const getProfile = async () => {
         try {
             setProfileLoading(true);
