@@ -22,11 +22,14 @@ const CryptoContext = ({ children }) => {
     const [website, setWebsite] = useState(null);
     const [avatar_url, setAvatarUrl] = useState(null);
 
+
+
     //for tracking if the multicurrency page should display graph or market info
     //true for graph false for market
     const [graphOrMarket, setGraphOrMarket] = useState(true);
 
     //getProfile function declaration
+
     const getProfile = async () => {
         try {
             setProfileLoading(true);
