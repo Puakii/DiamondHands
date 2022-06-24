@@ -21,7 +21,7 @@ const Navbar = () => {
     const handleClick = () => setClick(!click);
 
     const [navBarAvatar, setNavBarAvatar] = useState(null);
-    const { session, username, avatar_url } = CryptoState();
+    const { session, avatar_url } = CryptoState();
     let navigate = useNavigate();
 
     //for profile
@@ -77,7 +77,7 @@ const Navbar = () => {
                         <a href="/news">News</a>
                     </li>
                     <li>
-                        <a href="/">Forum</a>
+                        <a href="/forum">Forum</a>
                     </li>
                     {session ? (
                         <div className="btn-group2">
@@ -103,9 +103,7 @@ const Navbar = () => {
                                             sx={{ width: 40, height: 40 }}
                                             alt={"avatar"}
                                             src={navBarAvatar}
-                                        >
-                                            {username.toUpperCase().charAt(0)}
-                                        </Avatar>
+                                        />
                                     </IconButton>
                                 </Tooltip>
                                 <Menu
@@ -171,7 +169,7 @@ const Navbar = () => {
                                         <Avatar
                                             alt={"avatar"}
                                             src={navBarAvatar}
-                                        />{" "}
+                                        />
                                         Profile
                                     </MenuItem>
                                     <Divider />

@@ -15,6 +15,7 @@ import {
     TablePagination,
     TableRow,
     TextField,
+    Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -36,6 +37,30 @@ const Watchlist = () => {
 
     const navigate = useNavigate();
 
+    const getWatchlist = async () => {
+        try {
+            setLoading(true);
+            const user = supabase.auth.user();
+
+            let { data, error, status } = await supabase
+                .from("profiles")
+                .select("watchlist")
+                .eq("id", user.id)
+                .single();
+            if (error && status !== 406) {
+                throw error;
+            }
+
+            if (data) {
+                setWatchlist(data.watchlist);
+            }
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     function refreshPrices(currency) {
         setLoading(true);
         axios
@@ -50,40 +75,15 @@ const Watchlist = () => {
     }
     useEffect(() => {
         refreshPrices(currency);
+        if (session) {
+            getWatchlist();
+        }
+
         const timerId = setInterval(() => refreshPrices(currency), 5000);
         return function cleanup() {
             clearInterval(timerId);
         };
-    }, [currency]);
-
-    useEffect(() => {
-        const getWatchlist = async () => {
-            try {
-                setLoading(true);
-                const user = supabase.auth.user();
-
-                let { data, error, status } = await supabase
-                    .from("profiles")
-                    .select("watchlist")
-                    .eq("id", user.id)
-                    .single();
-                if (error && status !== 406) {
-                    throw error;
-                }
-
-                if (data) {
-                    setWatchlist(data.watchlist);
-                }
-            } catch (error) {
-                alert(error.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-        if (session && coins) {
-            getWatchlist();
-        }
-    }, [session, coins]);
+    }, [currency, session]);
 
     //no need this anymore
     // useEffect(() => {}, [watchlist]);
@@ -141,7 +141,7 @@ const Watchlist = () => {
         navigate("/signin");
     }
 
-    return (
+    return session ? (
         <div className="crypto-prices-all">
             <div className="pricesContainer">
                 <h3>Your Watchlist</h3>
@@ -243,15 +243,17 @@ const Watchlist = () => {
                                                     key={coin.name}
                                                 >
                                                     <TableCell align="center">
-                                                        <IconButton
-                                                            onClick={() =>
-                                                                removeFromWatchlist(
-                                                                    coin
-                                                                )
-                                                            }
-                                                        >
-                                                            <DeleteIcon />
-                                                        </IconButton>
+                                                        <Tooltip title="Remove From Watchlist">
+                                                            <IconButton
+                                                                onClick={() =>
+                                                                    removeFromWatchlist(
+                                                                        coin
+                                                                    )
+                                                                }
+                                                            >
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
                                                     </TableCell>
                                                     <TableCell
                                                         // specify component and scope for semantics
@@ -262,8 +264,10 @@ const Watchlist = () => {
                                                             columnGap: "15px",
                                                             position: "sticky",
                                                             left: 0,
-                                                            backgroundColor:
-                                                                "#121212",
+                                                            backgroundColor: {
+                                                                xs: "#121212",
+                                                                lg: "transparent",
+                                                            },
                                                         }}
                                                         onClick={() =>
                                                             navigate(
@@ -386,6 +390,8 @@ const Watchlist = () => {
                 />
             </div>
         </div>
+    ) : (
+        <></>
     );
 };
 

@@ -6,6 +6,7 @@ import AccountPage from "./pages/AccountPage";
 import ErrorPage from "./pages/ErrorPage";
 import SignInPage from "./pages/SignInPage";
 import CryptoPage from "./pages/CryptoPage";
+import ForumPage from "./pages/ForumPage";
 
 import { createTheme, ThemeProvider } from "@mui/material";
 import { CryptoState } from "./pages/CryptoContext";
@@ -13,7 +14,6 @@ import { CryptoState } from "./pages/CryptoContext";
 import WatchlistPage from "./pages/WatchlistPage";
 import NewsPage from "./pages/NewsPage";
 import MultiMarketPage from "./pages/MultiMarketPage";
-
 
 const darkTheme = createTheme({
     palette: {
@@ -53,6 +53,7 @@ function App() {
                     <Route path="/cryptocurrencies" element={<CryptoPage />} />
                     <Route path="/watchlist" element={<WatchlistPage />} />
                     <Route path="/news" element={<NewsPage />} />
+                    <Route path="/forum" element={<ForumPage />} />
                     <Route
                         path="/coins/:coinId"
                         element={<MultiMarketPage />}
@@ -65,5 +66,3 @@ function App() {
 }
 
 export default App;
-
-
