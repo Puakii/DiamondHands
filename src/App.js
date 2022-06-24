@@ -12,6 +12,7 @@ import { CryptoState } from "./pages/CryptoContext";
 
 import WatchlistPage from "./pages/WatchlistPage";
 
+import MultiMarketPage from "./pages/MultiMarketPage";
 
 const darkTheme = createTheme({
     palette: {
@@ -26,6 +27,7 @@ const darkTheme = createTheme({
         values: {
             xs: 0,
             sm: 600,
+            tablet: 768,
             md: 900,
             lg: 1250,
             xl: 1536,
@@ -34,7 +36,6 @@ const darkTheme = createTheme({
 });
 
 function App() {
-
     const { loading } = CryptoState();
     return (
         <ThemeProvider theme={darkTheme}>
@@ -49,12 +50,16 @@ function App() {
                         element={!loading && <AccountPage />}
                     />
                     <Route path="/cryptocurrencies" element={<CryptoPage />} />
-                     <Route path="/watchlist" element={<WatchlistPage />} />
+                    <Route path="/watchlist" element={<WatchlistPage />} />
+
+                    <Route
+                        path="/coins/:coinId"
+                        element={<MultiMarketPage />}
+                    />
                     <Route path="*" element={<ErrorPage />} />
                 </Routes>
             </Router>
         </ThemeProvider>
-
     );
 }
 
