@@ -13,7 +13,7 @@ import {
     MenuItem,
     Tooltip,
 } from "@mui/material";
-import { Settings, Logout } from "@mui/icons-material";
+import { Logout } from "@mui/icons-material";
 import { supabase } from "../supabaseClient";
 
 const Navbar = () => {
@@ -74,7 +74,7 @@ const Navbar = () => {
                         <a href="/watchlist">Watchlist</a>
                     </li>
                     <li>
-                        <a href="/">News</a>
+                        <a href="/news">News</a>
                     </li>
                     <li>
                         <a href="/">Forum</a>
@@ -160,24 +160,28 @@ const Navbar = () => {
                                         vertical: "bottom",
                                     }}
                                 >
-                                    <MenuItem>
+                                    {/* <MenuItem>
                                         <Avatar /> Profile
-                                    </MenuItem>
+                                    </MenuItem> */}
                                     <MenuItem
                                         onClick={() => {
                                             navigate("/account");
                                         }}
                                     >
-                                        <Avatar /> My account
+                                        <Avatar
+                                            alt={"avatar"}
+                                            src={navBarAvatar}
+                                        />{" "}
+                                        Profile
                                     </MenuItem>
                                     <Divider />
 
-                                    <MenuItem>
+                                    {/* <MenuItem>
                                         <ListItemIcon>
                                             <Settings fontSize="small" />
                                         </ListItemIcon>
                                         Settings
-                                    </MenuItem>
+                                    </MenuItem> */}
 
                                     <MenuItem
                                         onClick={() => {

@@ -36,7 +36,7 @@ const Graph = ({ coinId }) => {
         },
     ];
 
-    useEffect(() => {
+    function refreshPrices(coinId, days, currency) {
         setLoading(true);
         axios
             .get(HistoricalChart(coinId, days, currency))
@@ -47,13 +47,24 @@ const Graph = ({ coinId }) => {
                 console.log(error);
             });
         setLoading(false);
+    }
+
+    useEffect(() => {
+        refreshPrices(coinId, days, currency);
+        const timerId = setInterval(
+            () => refreshPrices(coinId, days, currency),
+            5000
+        );
+        return function cleanup() {
+            clearInterval(timerId);
+        };
         //disable dependency warning as there is no way in this page where we can change coin, so coinId is not a required dependencies
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [days, currency]);
 
-    if (historicData !== null) {
-        console.log(historicData);
-    }
+    // if (historicData !== null) {
+    //     console.log(historicData);
+    // }
 
     return (
         <Box>
@@ -137,8 +148,8 @@ const Graph = ({ coinId }) => {
                                     },
                                 ],
                             }}
-                            width="85%"
-                            height="330"
+                            width={300}
+                            height={330}
                             options={{
                                 maintainAspectRatio: false,
                                 elements: { point: { radius: 1 } },
@@ -151,6 +162,7 @@ const Graph = ({ coinId }) => {
                         >
                             {toggleDays.map((selection) => (
                                 <Button
+                                    key={selection.value}
                                     sx={{
                                         "&.MuiButton-root": {
                                             backgroundColor:

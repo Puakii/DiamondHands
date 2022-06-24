@@ -23,8 +23,7 @@ const CryptoAPI = () => {
     const { currency, setCurrency } = CryptoState();
     const navigate = useNavigate();
 
-    //i think here with currency change need edit the dependecies in use effect
-    useEffect(() => {
+    function refreshPrices(currency) {
         axios
             .get(HighLightCoins(currency))
             .then((response) => {
@@ -33,6 +32,13 @@ const CryptoAPI = () => {
             .catch((error) => {
                 console.log(error);
             });
+    }
+    useEffect(() => {
+        refreshPrices(currency);
+        const timerId = setInterval(() => refreshPrices(currency), 5000);
+        return function cleanup() {
+            clearInterval(timerId);
+        };
     }, [currency]);
 
     // use if statement to hide error
