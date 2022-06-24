@@ -17,6 +17,7 @@ import {
     TablePagination,
     TableRow,
     TextField,
+    Tooltip,
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
@@ -56,14 +57,17 @@ const CoinsTable = () => {
     useEffect(() => {
         setLoading(true);
         //first time u get watchlist from supabase
-        getWatchlist();
+        if (session) {
+            getWatchlist();
+        }
+
         refreshPrices(currency);
         setLoading(false);
         const timerId = setInterval(() => refreshPrices(currency), 5000);
         return function cleanup() {
             clearInterval(timerId);
         };
-    }, [currency]);
+    }, [currency, session]);
 
     const getWatchlist = async () => {
         try {
@@ -295,25 +299,27 @@ const CoinsTable = () => {
                                                     key={coin.name}
                                                 >
                                                     <TableCell align="center">
-                                                        <Checkbox
-                                                            checked={inWatchlist(
-                                                                coin
-                                                            )}
-                                                            onChange={() =>
-                                                                handleChangeBox(
-                                                                    inWatchlist(
-                                                                        coin
-                                                                    ),
+                                                        <Tooltip title="Add To Watchlist">
+                                                            <Checkbox
+                                                                checked={inWatchlist(
                                                                     coin
-                                                                )
-                                                            }
-                                                            icon={
-                                                                <StarBorderIcon />
-                                                            }
-                                                            checkedIcon={
-                                                                <StarIcon />
-                                                            }
-                                                        ></Checkbox>
+                                                                )}
+                                                                onChange={() =>
+                                                                    handleChangeBox(
+                                                                        inWatchlist(
+                                                                            coin
+                                                                        ),
+                                                                        coin
+                                                                    )
+                                                                }
+                                                                icon={
+                                                                    <StarBorderIcon />
+                                                                }
+                                                                checkedIcon={
+                                                                    <StarIcon />
+                                                                }
+                                                            ></Checkbox>
+                                                        </Tooltip>
                                                     </TableCell>
                                                     <TableCell
                                                         // specify component and scope for semantics
