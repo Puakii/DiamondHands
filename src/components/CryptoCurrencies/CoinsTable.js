@@ -25,7 +25,7 @@ import "./CoinsTable.css";
 
 const CoinsTable = () => {
     const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     //default state for search should be "" instead of null .includes will return true for "" but false for null
     const [search, setSearch] = useState("");
     const [watchlist, setWatchlist] = useState([]);
@@ -41,7 +41,7 @@ const CoinsTable = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
+    function refreshPrices(currency) {
         setLoading(true);
         axios
             .get(CoinList(currency))
@@ -52,6 +52,17 @@ const CoinsTable = () => {
                 console.log(error);
             });
         setLoading(false);
+    }
+    useEffect(() => {
+        setLoading(true);
+        //first time u get watchlist from supabase
+        getWatchlist();
+        refreshPrices(currency);
+        setLoading(false);
+        const timerId = setInterval(() => refreshPrices(currency), 5000);
+        return function cleanup() {
+            clearInterval(timerId);
+        };
     }, [currency]);
 
     const getWatchlist = async () => {
@@ -77,44 +88,6 @@ const CoinsTable = () => {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        if (session && data) {
-            getWatchlist();
-        }
-    }, [session, data]);
-
-    // useEffect(() => {
-    //     const getWatchlist = async () => {
-    //         try {
-    //             setLoading(true);
-    //             const user = supabase.auth.user();
-
-    //             let { data, error, status } = await supabase
-    //                 .from("profiles")
-    //                 .select("watchlist")
-    //                 .eq("id", user.id)
-    //                 .single();
-    //             if (error && status !== 406) {
-    //                 throw error;
-    //             }
-
-    //             if (data) {
-    //                 setWatchlist(data.watchlist);
-    //             }
-    //         } catch (error) {
-    //             alert(error.message);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-    //     if (session && data) {
-    //         getWatchlist();
-    //     }
-    // }, [session, data]);
-
-    //this is to refresh the page after the last item is added to the watchlist
-    // useEffect(() => {}, [watchlist]);
 
     // use if statement to hide error
     if (!data) return null;

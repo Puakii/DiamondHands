@@ -26,6 +26,19 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
     //get from contextAPI
     const { currency, symbol, setCurrency } = CryptoState();
 
+    function refreshPrices(coinId, currency) {
+        setLoading(true);
+        axios
+            .get(SingleCoin(coinId, currency))
+            .then((response) => {
+                setData(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        setLoading(false);
+    }
+
     useEffect(() => {
         setLoading(true);
         axios
@@ -37,6 +50,13 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                 console.log(error);
             });
         setLoading(false);
+        const timerId = setInterval(
+            () => refreshPrices(coinId, currency),
+            5000
+        );
+        return function cleanup() {
+            clearInterval(timerId);
+        };
     }, [coinId, currency]);
 
     return (

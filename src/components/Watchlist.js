@@ -36,7 +36,7 @@ const Watchlist = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
+    function refreshPrices(currency) {
         setLoading(true);
         axios
             .get(CoinList(currency))
@@ -47,6 +47,13 @@ const Watchlist = () => {
                 console.log(error);
             });
         setLoading(false);
+    }
+    useEffect(() => {
+        refreshPrices(currency);
+        const timerId = setInterval(() => refreshPrices(currency), 5000);
+        return function cleanup() {
+            clearInterval(timerId);
+        };
     }, [currency]);
 
     useEffect(() => {

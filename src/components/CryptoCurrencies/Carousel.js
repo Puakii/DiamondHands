@@ -14,7 +14,7 @@ const Carousel = () => {
     //get currency from contextAPI
     const { currency, symbol } = CryptoState();
 
-    useEffect(() => {
+    function refreshPrices(currency) {
         axios
             .get(TrendingCoins(currency))
             .then((response) => {
@@ -23,6 +23,13 @@ const Carousel = () => {
             .catch((error) => {
                 console.log(error);
             });
+    }
+    useEffect(() => {
+        refreshPrices(currency);
+        const timerId = setInterval(() => refreshPrices(currency), 20000);
+        return function cleanup() {
+            clearInterval(timerId);
+        };
     }, [currency]);
 
     // use if statement to hide error
@@ -71,7 +78,9 @@ const Carousel = () => {
     return (
         <div className="carousel">
             <AliceCarousel
-                mouseTracking
+                mouseTracking={false}
+                touchTracking={false}
+                autoPlayStrategy={"none"}
                 infinite
                 autoPlayInterval={1000}
                 animationDuration={1500}

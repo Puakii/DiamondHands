@@ -26,8 +26,8 @@ const MultiMarketPage = () => {
     //use context api to keep track of what to display
     const { graphOrMarket } = CryptoState();
 
-    useEffect(() => {
-        setLoading(true);
+    function refreshPrices(coinId) {
+        console.log("hello");
         axios
             .get(MultiMarketCoins(coinId))
             .then((response) => {
@@ -66,6 +66,16 @@ const MultiMarketPage = () => {
                 console.log(error);
             });
         setLoading(false);
+    }
+
+    useEffect(() => {
+        setLoading(true);
+        refreshPrices(coinId);
+        setLoading(false);
+        const timerId = setInterval(() => refreshPrices(coinId), 5000);
+        return function cleanup() {
+            clearInterval(timerId);
+        };
     }, [coinId]);
 
     if (!loadingData && data !== null) {
@@ -76,6 +86,9 @@ const MultiMarketPage = () => {
 
     return (
         <Box>
+            {/* <Alert severity="error">
+                This is an error alert — check it out!
+            </Alert> */}
             <Navbar />
             <CoinSummary
                 coinId={coinId}
