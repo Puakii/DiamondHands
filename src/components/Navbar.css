@@ -11,9 +11,10 @@
 
 .header .container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     height: 100%;
+    width: 100%;
     padding: 1rem, 1.2rem;
 }
 
@@ -27,7 +28,8 @@
 }
 
 .header .nav-menu li {
-    padding: 0.8rem 1rem 0;
+    /* padding: 0.8rem 1rem; */
+    padding: 0.8rem 1.5rem;
 }
 
 .header .nav-menu a {
@@ -35,11 +37,6 @@
     font-weight: 600;
     color: white;
 }
-
-/* removed this
-.header .nav-menu .btn-group {
-    margin-left: 1rem;
-} */
 
 .header .nav-menu .btn-group2 {
     margin-left: 5rem;
@@ -58,6 +55,7 @@
 @media screen and (max-width: 1250px) {
     .header .container {
         padding-left: 1rem;
+        justify-content: space-between;
     }
 
     .header .hamburger {

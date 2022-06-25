@@ -67,7 +67,12 @@ const News = () => {
                     marginBottom="2%"
                     marginTop="2%"
                 >
-                    <Typography variant="h2" color="black" fontWeight={800}>
+                    <Typography
+                        variant="h2"
+                        color="black"
+                        fontWeight={800}
+                        fontFamily="Montserrat"
+                    >
                         Latest News
                     </Typography>
                 </Box>
