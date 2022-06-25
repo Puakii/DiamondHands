@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { CoinList } from "../config/api";
-import { CryptoState } from "../pages/CryptoContext";
+import { CoinList } from "../../config/api";
+import { CryptoState } from "../../pages/CryptoContext";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../supabaseClient";
 import {
     IconButton,
     LinearProgress,

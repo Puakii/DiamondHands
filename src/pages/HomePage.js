@@ -1,8 +1,8 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import CryptoAPI from "../components/CryptoAPI";
-import Highlight from "../components/Highlight";
+import Navbar from "../components/EntireWebsite/Navbar";
+import Footer from "../components/EntireWebsite/Footer";
+import CryptoAPI from "../components/HomePage/CryptoAPI";
+import Highlight from "../components/HomePage/Highlight";
 
 const HomePage = () => {
     return (
