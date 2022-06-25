@@ -43,6 +43,7 @@
     border: 1px solid #d3d3d3;
     box-shadow: 1px 1px 2px 1px var(--primary);
     text-align: center;
+    cursor: pointer;
 }
 
 .cryptoAPI .right .card:hover {

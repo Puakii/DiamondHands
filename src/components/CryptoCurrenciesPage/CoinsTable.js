@@ -321,6 +321,7 @@ const CoinsTable = () => {
                                                             ></Checkbox>
                                                         </Tooltip>
                                                     </TableCell>
+
                                                     <TableCell
                                                         // specify component and scope for semantics
                                                         component="th"
@@ -341,41 +342,55 @@ const CoinsTable = () => {
                                                             )
                                                         }
                                                     >
-                                                        <img
-                                                            src={coin?.image}
-                                                            alt={coin.name}
-                                                            height="50"
-                                                            style={{
-                                                                marginBottom: 10,
-                                                            }}
-                                                        />
-
-                                                        <div
-                                                            style={{
-                                                                display: "flex",
-                                                                flexDirection:
-                                                                    "column",
-                                                            }}
+                                                        <Tooltip
+                                                            title="View coin"
+                                                            placement="bottom"
                                                         >
-                                                            <span
+                                                            <img
+                                                                src={
+                                                                    coin?.image
+                                                                }
+                                                                alt={coin.name}
+                                                                height="50"
                                                                 style={{
-                                                                    textTransform:
-                                                                        "uppercase",
-                                                                    fontSize: 22,
+                                                                    marginBottom: 10,
+                                                                }}
+                                                            />
+                                                        </Tooltip>
+                                                        <Tooltip
+                                                            title="View coin"
+                                                            placement="bottom"
+                                                        >
+                                                            <div
+                                                                style={{
+                                                                    display:
+                                                                        "flex",
+                                                                    flexDirection:
+                                                                        "column",
                                                                 }}
                                                             >
-                                                                {coin.symbol}
-                                                            </span>
+                                                                <span
+                                                                    style={{
+                                                                        textTransform:
+                                                                            "uppercase",
+                                                                        fontSize: 22,
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        coin.symbol
+                                                                    }
+                                                                </span>
 
-                                                            <span
-                                                                style={{
-                                                                    color: "darkgrey",
-                                                                    fontSize: 13,
-                                                                }}
-                                                            >
-                                                                {coin.name}
-                                                            </span>
-                                                        </div>
+                                                                <span
+                                                                    style={{
+                                                                        color: "darkgrey",
+                                                                        fontSize: 13,
+                                                                    }}
+                                                                >
+                                                                    {coin.name}
+                                                                </span>
+                                                            </div>
+                                                        </Tooltip>
                                                     </TableCell>
 
                                                     <TableCell
