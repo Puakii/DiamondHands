@@ -193,7 +193,7 @@ const Navbar = () => {
                                         <ListItemIcon>
                                             <Logout fontSize="small" />
                                         </ListItemIcon>
-                                        Logout
+                                        Sign Out
                                     </MenuItem>
                                 </Menu>
                             </Box>
