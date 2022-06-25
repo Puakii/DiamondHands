@@ -1,14 +1,16 @@
 import React from "react";
 import "./SignUp.css";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { supabase } from "../../supabaseClient";
+import { CryptoState } from "../../pages/CryptoContext";
 
 const SignUp = () => {
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const { session } = CryptoState();
 
     const handleSignUp = async (e) => {
         e.preventDefault();
@@ -33,6 +35,10 @@ const SignUp = () => {
             alert(error.error_description || error.message);
         }
     };
+
+    if (session) {
+        return <Navigate to="/watchlist" />;
+    }
 
     return (
         <div className="form-signup">
