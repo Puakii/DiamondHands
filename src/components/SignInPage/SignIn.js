@@ -2,8 +2,8 @@ import React from "react";
 import "./SignIn.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { supabase } from "../supabaseClient";
-import { CryptoState } from "../pages/CryptoContext";
+import { supabase } from "../../supabaseClient";
+import { CryptoState } from "../../pages/CryptoContext";
 
 const SignIn = () => {
     const [loading, setLoading] = useState(false);

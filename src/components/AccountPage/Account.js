@@ -1,6 +1,6 @@
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../supabaseClient";
 import { Navigate } from "react-router-dom";
-import { CryptoState } from "../pages/CryptoContext";
+import { CryptoState } from "../../pages/CryptoContext";
 import { Box, Typography, TextField } from "@mui/material";
 import AccountAvatar from "./AccountAvatar";
 import { useState } from "react";

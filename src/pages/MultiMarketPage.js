@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { MultiMarketCoins } from "../config/api";
-import Navbar from "../components/Navbar";
-import MultiMarketTable from "../components/Markets/MultiMarketTable";
+import Navbar from "../components/EntireWebsite/Navbar";
+import MultiMarketTable from "../components/MultiMarketPage/MultiMarketTable";
 import { Box } from "@mui/system";
-import CoinSummary from "../components/Markets/CoinSummary";
+import CoinSummary from "../components/MultiMarketPage/CoinSummary";
 import { useParams } from "react-router-dom";
-import Graph from "../components/Markets/Graph";
+import Graph from "../components/MultiMarketPage/Graph";
 import { CryptoState } from "./CryptoContext";
 
 const MultiMarketPage = () => {

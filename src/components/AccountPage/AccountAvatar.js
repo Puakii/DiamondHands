@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../supabaseClient";
 import VisuallyHidden from "@reach/visually-hidden";
 import { Avatar, Box } from "@mui/material";
 

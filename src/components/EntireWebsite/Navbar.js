@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { CryptoState } from "../pages/CryptoContext";
+import { CryptoState } from "../../pages/CryptoContext";
 import "./Navbar.css";
 import {
     Avatar,
@@ -14,7 +14,7 @@ import {
     Tooltip,
 } from "@mui/material";
 import { Logout } from "@mui/icons-material";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../supabaseClient";
 
 const Navbar = () => {
     const [click, setClick] = useState(false);

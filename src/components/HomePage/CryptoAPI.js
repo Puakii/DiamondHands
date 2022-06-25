@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./CryptoAPI.css";
 import { FiArrowUp, FiArrowDown } from "react-icons/fi";
-import { CryptoState } from "../pages/CryptoContext";
+import { CryptoState } from "../../pages/CryptoContext";
 import { createTheme, MenuItem, Select, ThemeProvider } from "@mui/material";
-import { HighLightCoins } from "../config/api";
+import { HighLightCoins } from "../../config/api";
 import { useNavigate } from "react-router-dom";
 
 const darkTheme = createTheme({
