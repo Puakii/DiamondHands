@@ -2,8 +2,8 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     margin: 4rem auto;
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center; */
+    /* align-items: center; */
     padding: 1rem;
 }
 
