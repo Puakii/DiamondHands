@@ -64,6 +64,7 @@ const Navbar = () => {
                     Crypto<span className="primary">Universe</span>
                 </h1>
                 <ul className={click ? "nav-menu active" : "nav-menu"}>
+                    {/* Note: anchortag will not maintain the contextAPI - our currency state will reset if we use anchortag */}
                     <li
                         onClick={() => navigate("/home")}
                         style={{ cursor: "pointer" }}
