@@ -22,7 +22,7 @@ const CryptoContext = ({ children }) => {
     const [website, setWebsite] = useState(null);
     const [avatar_url, setAvatarUrl] = useState(null);
 
-
+    console.log("context currency" + currency);
 
     //for tracking if the multicurrency page should display graph or market info
     //true for graph false for market

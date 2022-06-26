@@ -5,8 +5,11 @@ import { CryptoState } from "../../pages/CryptoContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import {
+    Box,
     IconButton,
     LinearProgress,
+    MenuItem,
+    Select,
     Table,
     TableBody,
     TableCell,
@@ -33,7 +36,7 @@ const Watchlist = () => {
     //To keep track of number of results after filter to be used for pagination
     const [numOfResult, setNumberOfResult] = useState(0);
 
-    const { currency, symbol, session } = CryptoState();
+    const { currency, symbol, session, setCurrency } = CryptoState();
 
     const navigate = useNavigate();
 
@@ -144,8 +147,47 @@ const Watchlist = () => {
     return session ? (
         <div className="crypto-prices-all">
             <div className="pricesContainer">
-                <h3>Your Watchlist</h3>
-
+                <Box
+                    className="with-currency-change"
+                    justifyContent="center"
+                    sx={{
+                        display: "flex",
+                        flexDirection: { xs: "column", tablet: "row" },
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <h3>Your Watchlist</h3>
+                    <Select
+                        variant="outlined"
+                        style={{
+                            width: 110,
+                            height: 40,
+                        }}
+                        sx={{
+                            "& .MuiOutlinedInput-notchedOutline": {
+                                borderColor: "rgb(0, 255, 242)",
+                            },
+                            "& .MuiSvgIcon-root": {
+                                color: "rgb(0, 255, 242)",
+                            },
+                            marginLeft: {
+                                xs: "12px",
+                                tablet: "20px",
+                                md: "20px",
+                            },
+                            marginTop: {
+                                xs: "12px",
+                                tablet: "0px",
+                            },
+                        }}
+                        value={currency}
+                        onChange={(e) => setCurrency(e.target.value)}
+                    >
+                        <MenuItem value={"USD"}>USD</MenuItem>
+                        <MenuItem value={"SGD"}>SGD</MenuItem>
+                    </Select>
+                </Box>
                 <TextField
                     label="Search For a Crypto Currency.."
                     variant="outlined"
