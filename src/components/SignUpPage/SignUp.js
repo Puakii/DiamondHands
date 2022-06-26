@@ -15,24 +15,38 @@ const SignUp = () => {
     const handleSignUp = async (e) => {
         e.preventDefault();
 
+        let gotError = false;
         try {
-            const { user, error } = await supabase.auth.signUp({
-                email: email,
-                password: password,
-            });
-            if (error) throw error;
-            const { error2 } = await supabase.from("profiles").insert([
-                {
-                    id: user.id,
-                    username: name,
-                    website: "",
-                    avatar_url: "",
-                },
-            ]);
-            if (error2) throw error2;
-            navigate("/watchlist");
+            if (name) {
+                const { user, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                });
+                if (error) throw error;
+                const { error2 } = await supabase.from("profiles").insert([
+                    {
+                        id: user.id,
+                        username: name,
+                        website: "",
+                        avatar_url: "",
+                    },
+                ]);
+                if (error2) throw error2;
+                navigate("/watchlist");
+            }
         } catch (error) {
-            alert(error.error_description || error.message);
+            gotError = true;
+            if (email === "" && password === "") {
+                alert("Please emter your email and password");
+            } else {
+                alert(error.error_description || error.message);
+            }
+        } finally {
+            if (name === "" && email === "" && password === "") {
+                alert("Please enter your name, email and password");
+            } else if (!gotError && name === "") {
+                alert("Please enter your name");
+            }
         }
     };
 

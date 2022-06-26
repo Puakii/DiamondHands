@@ -26,6 +26,8 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
     //get from contextAPI
     const { currency, symbol, setCurrency } = CryptoState();
 
+    console.log("multimarket" + currency);
+
     function refreshPrices(coinId, currency) {
         setLoading(true);
         axios

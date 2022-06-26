@@ -43,12 +43,14 @@ const SignIn = () => {
         let gotError = false;
 
         try {
-            const { error } = await supabase.auth.signIn({
-                email: email,
-                password: password,
-            });
-            if (error) throw error;
-            navigate("/watchlist");
+            if (password) {
+                const { error } = await supabase.auth.signIn({
+                    email: email,
+                    password: password,
+                });
+                if (error) throw error;
+                navigate("/watchlist");
+            }
         } catch (error) {
             gotError = true;
             alert(error.error_description || error.message);

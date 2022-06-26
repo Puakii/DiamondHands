@@ -299,27 +299,51 @@ const CoinsTable = () => {
                                                     key={coin.name}
                                                 >
                                                     <TableCell align="center">
-                                                        <Tooltip title="Add To Watchlist">
-                                                            <Checkbox
-                                                                checked={inWatchlist(
-                                                                    coin
-                                                                )}
-                                                                onChange={() =>
-                                                                    handleChangeBox(
-                                                                        inWatchlist(
-                                                                            coin
-                                                                        ),
+                                                        {!inWatchlist(coin) ? (
+                                                            <Tooltip title="Add To Watchlist">
+                                                                <Checkbox
+                                                                    checked={inWatchlist(
                                                                         coin
-                                                                    )
-                                                                }
-                                                                icon={
-                                                                    <StarBorderIcon />
-                                                                }
-                                                                checkedIcon={
-                                                                    <StarIcon />
-                                                                }
-                                                            ></Checkbox>
-                                                        </Tooltip>
+                                                                    )}
+                                                                    onChange={() =>
+                                                                        handleChangeBox(
+                                                                            inWatchlist(
+                                                                                coin
+                                                                            ),
+                                                                            coin
+                                                                        )
+                                                                    }
+                                                                    icon={
+                                                                        <StarBorderIcon />
+                                                                    }
+                                                                    checkedIcon={
+                                                                        <StarIcon />
+                                                                    }
+                                                                ></Checkbox>
+                                                            </Tooltip>
+                                                        ) : (
+                                                            <Tooltip title="Remove From Watchlist">
+                                                                <Checkbox
+                                                                    checked={inWatchlist(
+                                                                        coin
+                                                                    )}
+                                                                    onChange={() =>
+                                                                        handleChangeBox(
+                                                                            inWatchlist(
+                                                                                coin
+                                                                            ),
+                                                                            coin
+                                                                        )
+                                                                    }
+                                                                    icon={
+                                                                        <StarBorderIcon />
+                                                                    }
+                                                                    checkedIcon={
+                                                                        <StarIcon />
+                                                                    }
+                                                                ></Checkbox>
+                                                            </Tooltip>
+                                                        )}
                                                     </TableCell>
 
                                                     <TableCell

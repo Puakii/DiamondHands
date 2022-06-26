@@ -64,20 +64,36 @@ const Navbar = () => {
                     Crypto<span className="primary">Universe</span>
                 </h1>
                 <ul className={click ? "nav-menu active" : "nav-menu"}>
-                    <li>
-                        <a href="/">Home</a>
+                    {/* Note: anchortag will not maintain the contextAPI - our currency state will reset if we use anchortag */}
+                    <li
+                        onClick={() => navigate("/home")}
+                        style={{ cursor: "pointer" }}
+                    >
+                        Home
                     </li>
-                    <li>
-                        <a href="/cryptocurrencies">Cryptocurrencies</a>
+                    <li
+                        onClick={() => navigate("/cryptocurrencies")}
+                        style={{ cursor: "pointer" }}
+                    >
+                        Cryptocurrencies
                     </li>
-                    <li>
-                        <a href="/watchlist">Watchlist</a>
+                    <li
+                        onClick={() => navigate("/watchlist")}
+                        style={{ cursor: "pointer" }}
+                    >
+                        Watchlist
                     </li>
-                    <li>
-                        <a href="/news">News</a>
+                    <li
+                        onClick={() => navigate("/news")}
+                        style={{ cursor: "pointer" }}
+                    >
+                        News
                     </li>
-                    <li>
-                        <a href="/forum">Forum</a>
+                    <li
+                        onClick={() => navigate("/forum")}
+                        style={{ cursor: "pointer" }}
+                    >
+                        Forum
                     </li>
                     {session ? (
                         <div className="btn-group2">
@@ -193,7 +209,7 @@ const Navbar = () => {
                                         <ListItemIcon>
                                             <Logout fontSize="small" />
                                         </ListItemIcon>
-                                        Logout
+                                        Sign Out
                                     </MenuItem>
                                 </Menu>
                             </Box>

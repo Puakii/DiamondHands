@@ -27,7 +27,6 @@ const MultiMarketPage = () => {
     const { graphOrMarket } = CryptoState();
 
     function refreshPrices(coinId) {
-        console.log("hello");
         axios
             .get(MultiMarketCoins(coinId))
             .then((response) => {
