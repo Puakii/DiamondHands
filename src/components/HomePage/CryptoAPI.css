@@ -113,3 +113,9 @@
         width: 100%;
     }
 }
+
+@media screen and (min-width: 1250px) and (max-width: 1310px) {
+    .cryptoAPI .container {
+        max-width: 1200px;
+    }
+}

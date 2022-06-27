@@ -21,9 +21,8 @@ export const TrendingCoins = (currency) =>
 
 export const FetchNews = (time) =>
     time === ""
-        ? "https://min-api.cryptocompare.com/data/v2/news/?13b7c441cb76aec3a29ee3c43ac633bc15eee7cf3177f757cf0a5d07af5b7f3alang=EN&excludeCategories=Sponsored"
-        : `https://min-api.cryptocompare.com/data/v2/news/?13b7c441cb76aec3a29ee3c43ac633bc15eee7cf3177f757cf0a5d07af5b7f3alang=EN&lTs=${time}&excludeCategories=Sponsored`;
+        ? `https://min-api.cryptocompare.com/data/v2/news/?${process.env.NEWS_API_KEY}lang=EN&excludeCategories=Sponsored`
+        : `https://min-api.cryptocompare.com/data/v2/news/?${process.env.NEWS_API_KEY}lang=EN&lTs=${time}&excludeCategories=Sponsored`;
 
 export const MultiMarketCoins = (coinId) =>
     `https://api.coingecko.com/api/v3/coins/${coinId}/tickers?include_exchange_logo=true&order=volume_desc&depth=true`;
-

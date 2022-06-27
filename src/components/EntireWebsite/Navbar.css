@@ -108,3 +108,9 @@
         margin-bottom: 20px;
     }
 }
+
+@media screen and (min-width: 1250px) and (max-width: 1310px) {
+    .header .container h1 {
+        font-size: 3rem;
+    }
+}
