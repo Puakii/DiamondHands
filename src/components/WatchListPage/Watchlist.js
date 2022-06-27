@@ -56,14 +56,6 @@ const Watchlist = () => {
 
             if (data) {
                 setWatchlist(data.watchlist);
-            } else {
-                const { error2 } = await supabase.from("profiles").upsert([
-                    {
-                        id: user.id,
-                        website: user.email,
-                    },
-                ]);
-                if (error2) throw error2;
             }
         } catch (error) {
             alert(error.message);

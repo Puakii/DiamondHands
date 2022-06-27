@@ -20,7 +20,7 @@ const CryptoContext = ({ children }) => {
     //for tracking of the information of the account being signed in
     const [username, setUsername] = useState("");
     const [website, setWebsite] = useState(null);
-    const [avatar_url, setAvatarUrl] = useState("");
+    const [avatar_url, setAvatarUrl] = useState(null);
 
     //for tracking if the multicurrency page should display graph or market info
     //true for graph false for market
@@ -32,11 +32,15 @@ const CryptoContext = ({ children }) => {
         try {
             setProfileLoading(true);
             const user = supabase.auth.user();
-            const { error2 } = await supabase.from("profiles").upsert([
-                {
-                    id: user.id,
-                },
-            ]);
+            const { error2 } = await supabase.from("profiles").upsert(
+                [
+                    {
+                        id: user.id,
+                        username: user.email,
+                    },
+                ],
+                { ignoreDuplicates: true }
+            );
             if (error2) throw error2;
             let { data, error, status } = await supabase
                 .from("profiles")
@@ -84,7 +88,7 @@ const CryptoContext = ({ children }) => {
         } else {
             setUsername("");
             setWebsite(null);
-            setAvatarUrl("");
+            setAvatarUrl(null);
         }
     }, [session]);
 
