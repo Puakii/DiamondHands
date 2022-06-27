@@ -17,7 +17,7 @@ const SignUp = () => {
 
         let gotError = false;
         try {
-            if (name) {
+            if (name.length >= 3) {
                 const { user, error } = await supabase.auth.signUp({
                     email: email,
                     password: password,
@@ -46,6 +46,8 @@ const SignUp = () => {
                 alert("Please enter your name, email and password");
             } else if (!gotError && name === "") {
                 alert("Please enter your name");
+            } else if (!gotError && name.length < 3) {
+                alert("Please enter a name with more than 3 characters");
             }
         }
     };

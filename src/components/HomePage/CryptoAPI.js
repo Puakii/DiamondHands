@@ -28,8 +28,6 @@ const CryptoAPI = () => {
     //use the setCurrency from contextAPI to change
     const { currency, setCurrency } = CryptoState();
 
-    console.log("crypto api currency" + currency);
-
     const navigate = useNavigate();
 
     function refreshPrices(currency) {
