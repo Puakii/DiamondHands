@@ -19,7 +19,7 @@ const CryptoContext = ({ children }) => {
 
     //for tracking of the information of the account being signed in
     const [username, setUsername] = useState("");
-    const [website, setWebsite] = useState("");
+    const [website, setWebsite] = useState(null);
     const [avatar_url, setAvatarUrl] = useState("");
 
     //for tracking if the multicurrency page should display graph or market info
@@ -83,7 +83,7 @@ const CryptoContext = ({ children }) => {
             getProfile();
         } else {
             setUsername("");
-            setWebsite("");
+            setWebsite(null);
             setAvatarUrl("");
         }
     }, [session]);

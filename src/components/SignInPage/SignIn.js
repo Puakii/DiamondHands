@@ -30,7 +30,6 @@ const SignIn = () => {
             if (error) throw error;
             alert("Check your email for the login link!");
         } catch (error) {
-            // alert(error.message !== "" ? error.message : errorForEmptyPassword);
             alert(error.error_description || error.message);
         } finally {
             setLoading(false);
