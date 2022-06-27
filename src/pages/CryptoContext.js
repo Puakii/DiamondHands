@@ -19,10 +19,8 @@ const CryptoContext = ({ children }) => {
 
     //for tracking of the information of the account being signed in
     const [username, setUsername] = useState("");
-    const [website, setWebsite] = useState(null);
-    const [avatar_url, setAvatarUrl] = useState(null);
-
-    console.log("context currency" + currency);
+    const [website, setWebsite] = useState("");
+    const [avatar_url, setAvatarUrl] = useState("");
 
     //for tracking if the multicurrency page should display graph or market info
     //true for graph false for market
@@ -83,6 +81,10 @@ const CryptoContext = ({ children }) => {
     useEffect(() => {
         if (session) {
             getProfile();
+        } else {
+            setUsername("");
+            setWebsite("");
+            setAvatarUrl("");
         }
     }, [session]);
 

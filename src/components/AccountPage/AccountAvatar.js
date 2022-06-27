@@ -65,7 +65,7 @@ export default function AccountAvatar({ url, username, onUpload }) {
             alignItems="center"
         >
             <Avatar
-                alt={"avatar"}
+                alt={username}
                 //change here
                 src={avatarUrl}
                 sx={{
@@ -73,9 +73,7 @@ export default function AccountAvatar({ url, username, onUpload }) {
                     height: "50px",
                     width: "50px",
                 }}
-            >
-                {username.toUpperCase().charAt(0)}
-            </Avatar>
+            ></Avatar>
 
             {uploading ? (
                 "Uploading..."
