@@ -54,8 +54,20 @@ const Watchlist = () => {
                 throw error;
             }
 
+            console.log(data);
+
             if (data) {
                 setWatchlist(data.watchlist);
+            } else {
+                const { error2 } = await supabase.from("profiles").upsert([
+                    {
+                        id: user.id,
+                        username: user.email,
+                        website: "",
+                        avatar_url: "",
+                    },
+                ]);
+                if (error2) throw error2;
             }
         } catch (error) {
             alert(error.message);
@@ -103,7 +115,9 @@ const Watchlist = () => {
                     watchlist: newWatchlist,
                 })
                 .match({ id: user.id });
-            if (error) throw error;
+            if (error) {
+                throw error;
+            }
         } catch (error) {
             alert(error.error_description || error.message);
         } finally {
