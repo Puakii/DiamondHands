@@ -1,6 +1,8 @@
 <h1>CryptoUniverse</h1>
 
 
+<h2>Milestone 1 README</h2>
+
 | Item | Link |
 | --- | ----------- |
 | Poster | [Poster Link](https://drive.google.com/file/d/1FD3GrL6DdfVXVAtxMRNbnQe3FcEPNiot/view) |
@@ -40,6 +42,15 @@ The aim of this integrated cryptocurrency platform is to enable users to gain in
 - [ ] Crypto Trading Algorithm To Provide User With Trading Advice
 
 <hr>
+
+
+<h2>Milestone 2 README</h2>
+
+https://docs.google.com/document/d/1wZSZs_-qGBtm3N-g8jZ37vdHq75RnxiSpPKkIwAPAH0/edit?usp=sharing
+
+
+
+
 
 Developed by Tee Yi Teng & Desmond Yong Shao Tian
 
