@@ -29,7 +29,6 @@ const Navbar = () => {
     const open = Boolean(anchorEl);
     const handleProfileClick = (event) => {
         //currentTarget refer to the element to which the event handler triggered the event
-        console.log(event.currentTarget);
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
