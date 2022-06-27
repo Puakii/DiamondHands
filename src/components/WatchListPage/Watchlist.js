@@ -54,8 +54,6 @@ const Watchlist = () => {
                 throw error;
             }
 
-            console.log(data);
-
             if (data) {
                 setWatchlist(data.watchlist);
             } else {
