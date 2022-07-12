@@ -14,6 +14,7 @@ import { CryptoState } from "./pages/CryptoContext";
 import WatchlistPage from "./pages/WatchlistPage";
 import NewsPage from "./pages/NewsPage";
 import MultiMarketPage from "./pages/MultiMarketPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 const darkTheme = createTheme({
     palette: {
@@ -57,6 +58,10 @@ function App() {
                     <Route
                         path="/coins/:coinId"
                         element={<MultiMarketPage />}
+                    />
+                    <Route
+                        path="/resetpassword"
+                        element={<ResetPasswordPage />}
                     />
                     <Route path="*" element={<ErrorPage />} />
                 </Routes>
