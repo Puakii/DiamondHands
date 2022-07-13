@@ -1,7 +1,7 @@
 //version 2 og version
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { CryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../pages/CryptoContext";
 import { SingleCoin } from "../../config/api";
 import {
     Avatar,
@@ -24,7 +24,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
     const [clicked, setClick] = useState(false);
 
     //get from contextAPI
-    const { currency, symbol, setCurrency } = CryptoState();
+    const { currency, symbol, setCurrency } = useCryptoState();
 
     console.log("multimarket" + currency);
 

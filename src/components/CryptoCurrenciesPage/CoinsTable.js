@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Checkbox from "@mui/material/Checkbox";
 import { CoinList } from "../../config/api";
-import { CryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../pages/CryptoContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import {
@@ -38,7 +38,7 @@ const CoinsTable = () => {
     const [numOfResult, setNumberOfResult] = useState(0);
 
     //get from contextAPI
-    const { currency, symbol, setCurrency, session } = CryptoState();
+    const { currency, symbol, setCurrency, session } = useCryptoState();
 
     const navigate = useNavigate();
 

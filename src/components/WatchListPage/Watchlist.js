@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { CoinList } from "../../config/api";
-import { CryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../pages/CryptoContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import {
@@ -36,7 +36,7 @@ const Watchlist = () => {
     //To keep track of number of results after filter to be used for pagination
     const [numOfResult, setNumberOfResult] = useState(0);
 
-    const { currency, symbol, session, setCurrency } = CryptoState();
+    const { currency, symbol, session, setCurrency } = useCryptoState();
 
     const navigate = useNavigate();
 
@@ -143,7 +143,8 @@ const Watchlist = () => {
     };
 
     if (!session) {
-        navigate("/signin");
+        //taking out watchlist in stack replace with sign in
+        navigate("/signin", { replace: true });
     }
 
     return session ? (

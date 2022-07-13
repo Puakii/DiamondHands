@@ -57,10 +57,11 @@
     border: 1px solid var(--primary);
     background-color: rgba(0, 255, 242, 0.596);
     color: #121212;
+
+    cursor: pointer;
     border-radius: 100px 100px;
     font-size: 1rem;
     font-weight: 600;
-    cursor: pointer;
     margin-top: 20px;
     width: 70%;
     margin-left: 60px;
@@ -113,9 +114,18 @@
     color: blue;
     font-size: 0.9rem;
     font-weight: 600;
-    cursor: pointer;
+
     margin-top: 13px;
     width: 20%;
+}
+
+.form-login .forgetPasswordBtn {
+    font-family: "Open Sans", sans-serif;
+    font-size: 1rem;
+    border-color: transparent;
+    background-color: transparent;
+    color: rgba(17, 17, 17, 0.432);
+    cursor: pointer;
 }
 
 .form-login .sending-magic {

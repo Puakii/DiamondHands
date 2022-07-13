@@ -7,7 +7,7 @@ import { Box } from "@mui/system";
 import CoinSummary from "../components/MultiMarketPage/CoinSummary";
 import { useParams } from "react-router-dom";
 import Graph from "../components/MultiMarketPage/Graph";
-import { CryptoState } from "./CryptoContext";
+import { useCryptoState } from "./CryptoContext";
 
 const MultiMarketPage = () => {
     //get the userIf param from the URL
@@ -24,7 +24,7 @@ const MultiMarketPage = () => {
     const [numOfResult, setNumberOfResult] = useState(0);
 
     //use context api to keep track of what to display
-    const { graphOrMarket } = CryptoState();
+    const { graphOrMarket } = useCryptoState();
 
     function refreshPrices(coinId) {
         axios

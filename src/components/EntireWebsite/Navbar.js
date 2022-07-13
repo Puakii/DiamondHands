@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { CryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../pages/CryptoContext";
 import "./Navbar.css";
 import {
     Avatar,
@@ -15,13 +15,14 @@ import {
 } from "@mui/material";
 import { Logout } from "@mui/icons-material";
 import { supabase } from "../../supabaseClient";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
     const [click, setClick] = useState(false);
     const handleClick = () => setClick(!click);
 
     const [navBarAvatar, setNavBarAvatar] = useState(null);
-    const { session, avatar_url } = CryptoState();
+    const { session, avatar_url } = useCryptoState();
     let navigate = useNavigate();
 
     //for profile
@@ -199,7 +200,7 @@ const Navbar = () => {
                                     <MenuItem
                                         onClick={() => {
                                             supabase.auth.signOut();
-                                            alert(
+                                            toast.success(
                                                 "You have successfully signed out!"
                                             );
                                             navigate("/home");

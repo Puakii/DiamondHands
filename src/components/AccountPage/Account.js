@@ -1,6 +1,6 @@
 import { supabase } from "../../supabaseClient";
-import { Navigate } from "react-router-dom";
-import { CryptoState } from "../../pages/CryptoContext";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useCryptoState } from "../../pages/CryptoContext";
 import { Box, Typography, TextField } from "@mui/material";
 import AccountAvatar from "./AccountAvatar";
 import { useState } from "react";
@@ -8,6 +8,8 @@ import { useState } from "react";
 const Account = () => {
     //for keeping track if a profile is done being retrieved
     const [profileRetrieving, setProfileRetrieving] = useState(false);
+
+    const navigate = useNavigate();
 
     const {
         session,
@@ -19,7 +21,7 @@ const Account = () => {
         avatar_url,
 
         setAvatarUrl,
-    } = CryptoState();
+    } = useCryptoState();
 
     const updateProfile = async (e) => {
         e.preventDefault();
@@ -175,6 +177,55 @@ const Account = () => {
                             Save
                         </button>
                     </form>
+                    <Box
+                        display="flex"
+                        borderTop="1px solid"
+                        borderColor="gray"
+                        height="6rem"
+                        justifyContent="space-between"
+                        alignItems="center"
+                    >
+                        <Box
+                            className="passwordContainer"
+                            display="flex"
+                            flexDirection="column"
+                        >
+                            <Typography
+                                variant="body1"
+                                component="body1"
+                                fontWeight="700"
+                                paddingLeft="1.3rem"
+                                fontSize="1rem"
+                            >
+                                Password
+                            </Typography>
+
+                            <Typography
+                                variant="body2"
+                                fontWeight="regular"
+                                paddingLeft="1.3rem"
+                                fontSize="0.8rem"
+                            >
+                                Set a unique password to protect your personal
+                                account.
+                            </Typography>
+                        </Box>
+                        <button
+                            className="btn"
+                            type="button"
+                            onClick={() => navigate("/updatepassword")}
+                            style={{
+                                marginRight: "1rem",
+                                height: "40px",
+                                width: "170px",
+                                borderRadius: "10px",
+                                padding: "0",
+                                fontSize: "1rem",
+                            }}
+                        >
+                            Change password
+                        </button>
+                    </Box>
                 </Box>
             )}
         </div>
