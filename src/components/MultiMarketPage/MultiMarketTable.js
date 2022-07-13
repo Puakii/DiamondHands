@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 
-import { CryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../pages/CryptoContext";
 
 const MultiMarketTable = ({ tableData, numOfResult, loadingData }) => {
     // for pagination
@@ -21,7 +21,7 @@ const MultiMarketTable = ({ tableData, numOfResult, loadingData }) => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
     //use context api to keep track of what to display
-    const { setGraphOrMarket } = CryptoState();
+    const { setGraphOrMarket } = useCryptoState();
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);

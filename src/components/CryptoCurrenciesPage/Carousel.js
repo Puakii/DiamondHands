@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { CryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../pages/CryptoContext";
 import "./Carousel.css";
 import "../../config/api";
 import { TrendingCoins } from "../../config/api";
@@ -12,7 +12,7 @@ const Carousel = () => {
     const [trendingData, setTrendingData] = useState(null);
 
     //get currency from contextAPI
-    const { currency, symbol } = CryptoState();
+    const { currency, symbol } = useCryptoState();
 
     function refreshPrices(currency) {
         axios

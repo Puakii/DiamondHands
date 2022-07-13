@@ -1,11 +1,11 @@
-import { CircularProgress, TextField, Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import "./ResetPassword.css";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { Navigate, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { CryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../pages/CryptoContext";
 import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
 import { supabase } from "../../supabaseClient";
 
@@ -13,7 +13,7 @@ const ResetPassword = () => {
     const [email, setEmail] = useState("");
     const [checkEmail, setCheckEmail] = useState(false);
     const [loading, setLoading] = useState(false);
-    const { session } = CryptoState();
+    const { session } = useCryptoState();
 
     const handlePasswordReset = async (e) => {
         e.preventDefault();
@@ -21,13 +21,17 @@ const ResetPassword = () => {
         try {
             setLoading(true);
             const { error } = await supabase.auth.api.resetPasswordForEmail(
-                email
+                email,
+                {
+                    redirectTo: "http://localhost:3000/updatepassword",
+                }
             );
             if (error) throw error;
             setLoading(false);
             setCheckEmail(true);
         } catch (error) {
-            alert(error.error_description || error.message);
+            toast.error(error.error_description || error.message);
+            setLoading(false);
         }
     };
 
@@ -39,7 +43,6 @@ const ResetPassword = () => {
 
     return (
         <>
-            <Toaster />
             <div className="pageContainer">
                 {loading ? (
                     <CircularProgress color="success" />

@@ -9,12 +9,13 @@ import CryptoPage from "./pages/CryptoPage";
 import ForumPage from "./pages/ForumPage";
 
 import { createTheme, ThemeProvider } from "@mui/material";
-import { CryptoState } from "./pages/CryptoContext";
+import { useCryptoState } from "./pages/CryptoContext";
 
 import WatchlistPage from "./pages/WatchlistPage";
 import NewsPage from "./pages/NewsPage";
 import MultiMarketPage from "./pages/MultiMarketPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import UpdatePasswordPage from "./pages/UpdatePasswordPage";
 
 const darkTheme = createTheme({
     palette: {
@@ -38,7 +39,7 @@ const darkTheme = createTheme({
 });
 
 function App() {
-    const { loading } = CryptoState();
+    const { loading } = useCryptoState();
     return (
         <ThemeProvider theme={darkTheme}>
             <Router>
@@ -62,6 +63,10 @@ function App() {
                     <Route
                         path="/resetpassword"
                         element={<ResetPasswordPage />}
+                    />
+                    <Route
+                        path="/updatepassword"
+                        element={<UpdatePasswordPage />}
                     />
                     <Route path="*" element={<ErrorPage />} />
                 </Routes>

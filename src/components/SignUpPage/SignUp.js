@@ -3,14 +3,15 @@ import "./SignUp.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { supabase } from "../../supabaseClient";
-import { CryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../pages/CryptoContext";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-    const { session } = CryptoState();
+    const { session } = useCryptoState();
 
     const handleSignUp = async (e) => {
         e.preventDefault();
@@ -37,17 +38,17 @@ const SignUp = () => {
         } catch (error) {
             gotError = true;
             if (email === "" && password === "") {
-                alert("Please emter your email and password");
+                toast.error("Please emter your email and password");
             } else {
-                alert(error.error_description || error.message);
+                toast.error(error.error_description || error.message);
             }
         } finally {
             if (name === "" && email === "" && password === "") {
-                alert("Please enter your name, email and password");
+                toast.error("Please enter your name, email and password");
             } else if (!gotError && name === "") {
-                alert("Please enter your name");
+                toast.error("Please enter your name");
             } else if (!gotError && name.length < 3) {
-                alert("Please enter a name with more than 3 characters");
+                toast.error("Please enter a name with more than 3 characters");
             }
         }
     };

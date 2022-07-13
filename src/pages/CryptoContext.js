@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
+import toast from "react-hot-toast";
 
 const Crypto = createContext();
 
@@ -56,7 +57,7 @@ const CryptoContext = ({ children }) => {
                 setAvatarUrl(data.avatar_url);
             }
         } catch (error) {
-            alert(error.message);
+            toast.error(error.message);
         } finally {
             setProfileLoading(false);
         }
@@ -71,14 +72,17 @@ const CryptoContext = ({ children }) => {
         }
     }, [currency]);
 
-    //use effect for user authentication
+    // use effect for user authentication
+
     useEffect(() => {
         setSession(supabase.auth.session());
 
+        setTimeout(() => setLoading(false), 500);
+
         supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session);
+            setLoading(false);
         });
-        setLoading(false);
     }, []);
 
     // use effect for getting profile
@@ -119,6 +123,6 @@ const CryptoContext = ({ children }) => {
 
 export default CryptoContext;
 
-export const CryptoState = () => {
+export const useCryptoState = () => {
     return useContext(Crypto);
 };

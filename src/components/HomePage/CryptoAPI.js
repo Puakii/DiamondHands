@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./CryptoAPI.css";
 import { FiArrowUp, FiArrowDown } from "react-icons/fi";
-import { CryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../pages/CryptoContext";
 import {
     createTheme,
     MenuItem,
@@ -26,7 +26,7 @@ const darkTheme = createTheme({
 const CryptoAPI = () => {
     const [data, setData] = useState(null);
     //use the setCurrency from contextAPI to change
-    const { currency, setCurrency } = CryptoState();
+    const { currency, setCurrency } = useCryptoState();
 
     const navigate = useNavigate();
 

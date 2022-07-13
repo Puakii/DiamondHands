@@ -3,15 +3,16 @@ import "./SignIn.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { supabase } from "../../supabaseClient";
-import { CryptoState } from "../../pages/CryptoContext";
-import toast, { Toaster } from "react-hot-toast";
+import { useCryptoState } from "../../pages/CryptoContext";
+import toast from "react-hot-toast";
+
 import { Box } from "@mui/system";
 
 const SignIn = () => {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { session } = CryptoState();
+    const { session } = useCryptoState();
 
     const handleMagicLogin = async (e) => {
         e.preventDefault();
@@ -30,9 +31,9 @@ const SignIn = () => {
             );
 
             if (error) throw error;
-            alert("Check your email for the login link!");
+            toast.success("Check your email for the login link!");
         } catch (error) {
-            alert(error.error_description || error.message);
+            toast.error(error.error_description || error.message);
         } finally {
             setLoading(false);
         }
@@ -50,17 +51,17 @@ const SignIn = () => {
                     password: password,
                 });
                 if (error) throw error;
-                // toast.success("hi");
+                toast.success("Login successfully");
 
                 navigate("/watchlist");
             }
         } catch (error) {
             gotError = true;
 
-            alert(error.error_description || error.message);
+            toast.error(error.error_description || error.message);
         } finally {
             if (!gotError && password === "") {
-                alert("Please key in your password");
+                toast.error("Please key in your password");
             }
         }
     };
@@ -73,7 +74,6 @@ const SignIn = () => {
 
     return (
         <>
-            <Toaster />
             <div className="form-login">
                 {loading ? (
                     <div className="sending-magic">Sending magic link...</div>
@@ -98,6 +98,7 @@ const SignIn = () => {
                                 >
                                     <label>Password</label>
                                     <button
+                                        type="button"
                                         className="forgetPasswordBtn"
                                         onClick={() =>
                                             navigate("/resetpassword")
