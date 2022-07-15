@@ -7,7 +7,7 @@ import { Box } from "@mui/system";
 import CoinSummary from "../components/MultiMarketPage/CoinSummary";
 import { useParams } from "react-router-dom";
 import Graph from "../components/MultiMarketPage/Graph";
-import { useCryptoState } from "./CryptoContext";
+import { useCryptoState } from "../context/CryptoContext";
 
 const MultiMarketPage = () => {
     //get the userIf param from the URL

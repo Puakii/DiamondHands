@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Navigate, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useCryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../context/CryptoContext";
 import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
 import { supabase } from "../../supabaseClient";
 

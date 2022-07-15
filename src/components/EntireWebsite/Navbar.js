@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { useCryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../context/CryptoContext";
 import "./Navbar.css";
 import {
     Avatar,
@@ -60,7 +60,7 @@ const Navbar = () => {
     return (
         <div className="header">
             <div className="container">
-                <h1>
+                <h1 onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
                     Crypto<span className="primary">Universe</span>
                 </h1>
                 <ul className={click ? "nav-menu active" : "nav-menu"}>

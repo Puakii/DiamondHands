@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 
-import { useCryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../context/CryptoContext";
 
 const MultiMarketTable = ({ tableData, numOfResult, loadingData }) => {
     // for pagination

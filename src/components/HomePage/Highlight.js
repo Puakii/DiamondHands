@@ -2,7 +2,7 @@ import React from "react";
 import "./Highlight.css";
 import Crypto from "../../assets/crypto.png";
 import { useNavigate } from "react-router-dom";
-import { useCryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../context/CryptoContext";
 
 const Highlight = () => {
     const { session } = useCryptoState();

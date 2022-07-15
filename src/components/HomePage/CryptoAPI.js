@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./CryptoAPI.css";
 import { FiArrowUp, FiArrowDown } from "react-icons/fi";
-import { useCryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../context/CryptoContext";
 import {
     createTheme,
     MenuItem,
