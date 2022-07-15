@@ -36,6 +36,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
             .get(SingleCoin(coinId, currency))
             .then((response) => {
                 setData(response.data);
+                setPrice(response.data[0].current_price);
             })
             .catch((error) => {
                 console.log(error);
@@ -44,16 +45,8 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
     }
 
     useEffect(() => {
-        setLoading(true);
-        axios
-            .get(SingleCoin(coinId, currency))
-            .then((response) => {
-                setData(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        setLoading(false);
+        refreshPrices(coinId, currency);
+
         const timerId = setInterval(
             () => refreshPrices(coinId, currency),
             5000
@@ -68,9 +61,25 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
             toast.error("Please sign in to access this feature!");
             return;
         }
+
+        if (price == "") {
+            toast.error("Please key in a price target");
+            return;
+        }
+
+        //parse the string into a float
         const alertPrice = parseFloat(price).toFixed(5);
+
+        if (alertPrice < 0) {
+            toast.error("Please key in a valid price target");
+            return;
+        }
+
         try {
             const user = supabase.auth.user();
+
+            //no single() as ideally we want them to be able to add multiple alerts => return us a []
+            //from the id column, select the data that meet the user_id and coin_id filter
 
             const { data, error, status } = await supabase
                 .from("price_alert")
@@ -109,6 +118,8 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
             alert(error.error_description || error.message);
         }
     };
+
+    console.log(data);
 
     return (
         <Box
