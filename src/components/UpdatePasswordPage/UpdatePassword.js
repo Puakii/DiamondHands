@@ -1,7 +1,7 @@
 import { CircularProgress, LinearProgress, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
-import { useCryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../context/CryptoContext";
 import { Navigate, useNavigate } from "react-router-dom";
 import "./UpdatePassword.css";
 import { supabase } from "../../supabaseClient";

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Button, CircularProgress } from "@mui/material";
 
-import { useCryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../context/CryptoContext";
 import { HistoricalChart } from "../../config/api";
 import { Line } from "react-chartjs-2";
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Checkbox from "@mui/material/Checkbox";
 import { CoinList } from "../../config/api";
-import { useCryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../context/CryptoContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import {

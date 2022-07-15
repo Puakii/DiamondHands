@@ -3,7 +3,7 @@ import "./SignUp.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { supabase } from "../../supabaseClient";
-import { useCryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../context/CryptoContext";
 import toast from "react-hot-toast";
 
 const SignUp = () => {

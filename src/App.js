@@ -9,7 +9,7 @@ import CryptoPage from "./pages/CryptoPage";
 import ForumPage from "./pages/ForumPage";
 
 import { createTheme, ThemeProvider } from "@mui/material";
-import { useCryptoState } from "./pages/CryptoContext";
+import { useCryptoState } from "./context/CryptoContext";
 
 import WatchlistPage from "./pages/WatchlistPage";
 import NewsPage from "./pages/NewsPage";

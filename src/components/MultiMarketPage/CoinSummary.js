@@ -1,8 +1,9 @@
 //version 2 og version
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useCryptoState } from "../../pages/CryptoContext";
+import { useCryptoState } from "../../context/CryptoContext";
 import { SingleCoin } from "../../config/api";
+import toast from "react-hot-toast";
 import {
     Avatar,
     Box,
@@ -12,21 +13,22 @@ import {
     LinearProgress,
     MenuItem,
     Select,
+    TextField,
     Typography,
 } from "@mui/material";
 import { FiArrowDown, FiArrowUp } from "react-icons/fi";
+import { supabase } from "../../supabaseClient";
 
 const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [price, setPrice] = useState(0);
 
     //for button clicked
     const [clicked, setClick] = useState(false);
 
     //get from contextAPI
-    const { currency, symbol, setCurrency } = useCryptoState();
-
-    console.log("multimarket" + currency);
+    const { currency, symbol, setCurrency, session } = useCryptoState();
 
     function refreshPrices(coinId, currency) {
         setLoading(true);
@@ -61,6 +63,54 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
         };
     }, [coinId, currency]);
 
+    const handlePriceAlert = async () => {
+        if (!session) {
+            toast.error("Please sign in to access this feature!");
+            return;
+        }
+        const alertPrice = parseInt(price).toFixed(0);
+        try {
+            const user = supabase.auth.user();
+
+            let { data, error, status } = await supabase
+                .from("price_alert")
+                .select("id")
+                .eq("user_id", user.id)
+                .eq("coin", coinId)
+                .single();
+            if (error && status !== 406) {
+                throw error;
+            }
+
+            if (data) {
+                console.log(data.id);
+                const { error2 } = await supabase
+                    .from("price_alert")
+                    .update({
+                        currency: currency,
+                        price: alertPrice,
+                    })
+                    .match({ id: data.id });
+                if (error2) throw error;
+                toast.success("Successfully updated your price alert!");
+            } else {
+                const { error2 } = await supabase.from("price_alert").insert([
+                    {
+                        user_id: user.id,
+                        coin: coinId,
+                        currency: currency,
+                        price: alertPrice,
+                    },
+                ]);
+
+                if (error2) throw error;
+                toast.success("Successfully added to your price alert!");
+            }
+        } catch (error) {
+            alert(error.error_description || error.message);
+        }
+    };
+
     return (
         <Box
             className="coinSummaryContainer"
@@ -92,7 +142,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                             item
                             xs={12}
                             md={4}
-                            sx={{ marginLeft: { xs: "0%", lg: "5%" } }}
+                            // sx={{ marginLeft: { xs: "0%" lg: "5%" } }}
                         >
                             <Box display="flex" alignItems="center">
                                 <Avatar
@@ -269,6 +319,68 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                             </span>
                                         )}
                                     </Box>
+                                </Box>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <Box display="flex" flexDirection="column">
+                                <Box display="flex" alignItems="center">
+                                    <Typography
+                                        className="price"
+                                        fontSize="1rem"
+                                        color="whitesmoke"
+                                        fontWeight="700"
+                                    >
+                                        {"Alert me when the price is: "}
+                                    </Typography>
+                                    <Select
+                                        variant="outlined"
+                                        sx={{
+                                            width: 80,
+                                            height: 30,
+                                            "& .MuiOutlinedInput-notchedOutline":
+                                                {
+                                                    borderColor:
+                                                        "rgb(0, 255, 242)",
+                                                },
+                                            "& .MuiSvgIcon-root": {
+                                                color: "rgb(0, 255, 242)",
+                                            },
+                                            marginLeft: {
+                                                xs: "9%",
+                                                md: "7%",
+                                            },
+                                        }}
+                                        value={currency}
+                                        onChange={(e) =>
+                                            setCurrency(e.target.value)
+                                        }
+                                    >
+                                        <MenuItem value={"USD"}>USD</MenuItem>
+                                        <MenuItem value={"SGD"}>SGD</MenuItem>
+                                    </Select>
+                                </Box>
+                                <Box>
+                                    <TextField
+                                        type="number"
+                                        name="alertPrice"
+                                        // label="Price"
+                                        // variant="filled"
+                                        sx={{ marginTop: "10px" }}
+                                        value={price}
+                                        onChange={(event) =>
+                                            setPrice(event.target.value)
+                                        }
+                                    />
+                                    <Button
+                                        sx={{
+                                            margin: "20px",
+                                        }}
+                                        variant="outlined"
+                                        onClick={() => handlePriceAlert()}
+                                    >
+                                        Send
+                                    </Button>
                                 </Box>
                             </Box>
                         </Grid>

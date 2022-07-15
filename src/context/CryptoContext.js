@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 const Crypto = createContext();
 
 const getCurrency = () => {
-    const items = JSON.parse(localStorage.getItem("currency"));
+    const items = localStorage.getItem("currency");
     if (items) {
         return items;
     } else {
@@ -74,7 +74,7 @@ const CryptoContext = ({ children }) => {
 
     //use effect for currency selection button, will be triggered when currency changes
     useEffect(() => {
-        localStorage.setItem("currency", JSON.stringify(currency));
+        localStorage.setItem("currency", currency);
         if (currency === "USD") {
             setSymbol("$");
         } else {

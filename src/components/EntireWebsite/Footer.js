@@ -40,7 +40,7 @@ const Footer = () => {
                         <FaLinkedin className="icon" />
                         LinkedIn
                     </a>
-                    <a href="/">
+                    <a href="https://github.com/Puakii/DiamondHands">
                         <FaGithub className="icon" />
                         Github
                     </a>
