@@ -68,30 +68,29 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
             toast.error("Please sign in to access this feature!");
             return;
         }
-        const alertPrice = parseInt(price).toFixed(0);
+        const alertPrice = parseFloat(price).toFixed(5);
         try {
             const user = supabase.auth.user();
 
-            let { data, error, status } = await supabase
+            const { data, error, status } = await supabase
                 .from("price_alert")
                 .select("id")
                 .eq("user_id", user.id)
-                .eq("coin", coinId)
-                .single();
+                .eq("coin", coinId);
+
             if (error && status !== 406) {
                 throw error;
             }
 
-            if (data) {
-                console.log(data.id);
+            if (data.length !== 0) {
                 const { error2 } = await supabase
                     .from("price_alert")
                     .update({
                         currency: currency,
                         price: alertPrice,
                     })
-                    .match({ id: data.id });
-                if (error2) throw error;
+                    .match({ id: data[0].id });
+                if (error2) throw error2;
                 toast.success("Successfully updated your price alert!");
             } else {
                 const { error2 } = await supabase.from("price_alert").insert([
@@ -103,7 +102,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                     },
                 ]);
 
-                if (error2) throw error;
+                if (error2) throw error2;
                 toast.success("Successfully added to your price alert!");
             }
         } catch (error) {
