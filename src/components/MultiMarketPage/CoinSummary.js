@@ -156,6 +156,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                 >
                                     Coin
                                 </Box>
+                                <Alert coinId={coinId} data={data} />
                             </Box>
                         </Grid>
                         <Grid item xs={12} md={4}>
@@ -264,9 +265,9 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                 </Box>
                             </Box>
                         </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Alert coinId={coinId} />
-                        </Grid>
+                        {/* <Grid item xs={12} md={4}>
+                            <Alert coinId={coinId} data={data} />
+                        </Grid> */}
                     </Grid>
 
                     <Divider sx={{ display: { xs: "none", lg: "block" } }} />
