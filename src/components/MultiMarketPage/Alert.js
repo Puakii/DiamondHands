@@ -31,7 +31,7 @@ const StyledModal = styled(Modal)({
     alignItems: "center",
 });
 
-const Alert = ({ coinId, data }) => {
+const Alert = ({ coinId, apiData }) => {
     const [price, setPrice] = useState("");
 
     //for pop up
@@ -43,7 +43,7 @@ const Alert = ({ coinId, data }) => {
     const [addAlert, setAddAlert] = useState(true);
 
     //to retrieve the alerts from backend
-    const [alerts, setAlerts] = useState(null);
+    const [alerts, setAlerts] = useState([]);
 
     //get from contextAPI
     const { currency, setCurrency, session } = useCryptoState();
@@ -77,7 +77,7 @@ const Alert = ({ coinId, data }) => {
                 .from("price_alert")
                 .select("id")
                 .eq("user_id", user.id)
-                .eq("coin", coinId)
+                .eq("coin_id", coinId)
                 .eq("currency", currency);
 
             if (error && status !== 406) {
@@ -90,7 +90,8 @@ const Alert = ({ coinId, data }) => {
                 const { error2 } = await supabase.from("price_alert").insert([
                     {
                         user_id: user.id,
-                        coin: coinId,
+                        coin_name: apiData[0].name,
+                        coin_id: coinId,
                         currency: currency,
                         price: alertPrice,
                     },
@@ -141,9 +142,9 @@ const Alert = ({ coinId, data }) => {
 
             const { data, error, status } = await supabase
                 .from("price_alert")
-                .select("id, coin, price, currency")
+                .select("id, coin_id, price, currency")
                 .eq("user_id", user.id)
-                .eq("coin", coinId)
+                .eq("coin_id", coinId)
                 .eq("currency", currency);
 
             if (error && status !== 406) {
@@ -215,7 +216,7 @@ const Alert = ({ coinId, data }) => {
                             component="h1"
                             fontWeight="bold"
                         >
-                            {data[0].symbol.toUpperCase()} / {currency}
+                            {apiData[0].symbol.toUpperCase()} / {currency}
                         </Typography>
 
                         <Select
@@ -267,12 +268,15 @@ const Alert = ({ coinId, data }) => {
                             fontWeight="400"
                             marginRight="1rem"
                         >
-                            {data[0].current_price.toLocaleString(undefined, {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                            })}
+                            {apiData[0].current_price.toLocaleString(
+                                undefined,
+                                {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                }
+                            )}
                         </Typography>
-                        {data[0].price_change_percentage_24h < 0 ? (
+                        {apiData[0].price_change_percentage_24h < 0 ? (
                             <span
                                 style={{
                                     color: "red",
@@ -281,7 +285,9 @@ const Alert = ({ coinId, data }) => {
                                 }}
                             >
                                 <FiArrowDown />
-                                {data[0].price_change_percentage_24h.toFixed(2)}
+                                {apiData[0].price_change_percentage_24h.toFixed(
+                                    2
+                                )}
                                 %
                             </span>
                         ) : (
@@ -293,7 +299,9 @@ const Alert = ({ coinId, data }) => {
                                 }}
                             >
                                 <FiArrowUp />
-                                {data[0].price_change_percentage_24h.toFixed(2)}
+                                {apiData[0].price_change_percentage_24h.toFixed(
+                                    2
+                                )}
                                 %
                             </span>
                         )}
@@ -439,7 +447,7 @@ const Alert = ({ coinId, data }) => {
                                                         marginRight: "0.6rem",
                                                     }}
                                                 >
-                                                    {data[0].symbol.toUpperCase()}{" "}
+                                                    {apiData[0].symbol.toUpperCase()}{" "}
                                                     / {alert.currency}
                                                 </Typography>
                                                 <Typography color="black">
