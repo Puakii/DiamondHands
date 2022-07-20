@@ -19,7 +19,7 @@ import {
 import { FiArrowDown, FiArrowUp } from "react-icons/fi";
 
 const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
-    const [data, setData] = useState(null);
+    const [coinData, setCoinData] = useState(null);
     const [loading, setLoading] = useState(true);
 
     //for button clicked
@@ -33,7 +33,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
         axios
             .get(SingleCoin(coinId, currency))
             .then((response) => {
-                setData(response.data);
+                setCoinData(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -64,7 +64,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
             }}
         >
             {loading ||
-            data === null ||
+            coinData === null ||
             bestToBuy.length === 0 ||
             bestToSell.length === 0 ? (
                 <LinearProgress style={{ backgroundColor: "var(--primary)" }} />
@@ -93,8 +93,8 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                         height: { xs: "12%", lg: "10%" },
                                         paddingRight: "1.5%",
                                     }}
-                                    alt={data[0].id}
-                                    src={data[0].image}
+                                    alt={coinData[0].id}
+                                    src={coinData[0].image}
                                 />
                                 <Typography
                                     sx={{
@@ -110,7 +110,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                     fontSize="2.5rem"
                                     fontWeight="700"
                                 >
-                                    {data[0].name}
+                                    {coinData[0].name}
                                 </Typography>
                                 <Box
                                     marginLeft="3%"
@@ -125,7 +125,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                         borderColor: "gray",
                                     }}
                                 >
-                                    {data[0].symbol.toUpperCase()}
+                                    {coinData[0].symbol.toUpperCase()}
                                 </Box>
                             </Box>
                             <Box display="flex" alignItems="center">
@@ -140,7 +140,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                         borderColor: "gray",
                                     }}
                                 >
-                                    {"Rank #" + data[0].market_cap_rank}
+                                    {"Rank #" + coinData[0].market_cap_rank}
                                 </Box>
                                 <Box
                                     sx={{
@@ -167,10 +167,10 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                         color="whitesmoke"
                                         fontWeight="700"
                                     >
-                                        {data[0].name +
+                                        {coinData[0].name +
                                             " Price" +
                                             " (" +
-                                            data[0].symbol.toUpperCase() +
+                                            coinData[0].symbol.toUpperCase() +
                                             ")"}
                                     </Typography>
                                     <Select
@@ -212,7 +212,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                         fontWeight="700"
                                     >
                                         {symbol}
-                                        {data[0].current_price.toLocaleString(
+                                        {coinData[0].current_price.toLocaleString(
                                             undefined,
                                             {
                                                 minimumFractionDigits: 2,
@@ -227,14 +227,14 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                         borderRadius="10%"
                                         padding="2px"
                                         borderColor={
-                                            data[0]
+                                            coinData[0]
                                                 .price_change_percentage_24h < 0
                                                 ? "red"
                                                 : "green"
                                         }
                                     >
-                                        {data[0].price_change_percentage_24h <
-                                        0 ? (
+                                        {coinData[0]
+                                            .price_change_percentage_24h < 0 ? (
                                             <span
                                                 style={{
                                                     color: "red",
@@ -242,7 +242,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                                 }}
                                             >
                                                 <FiArrowDown />
-                                                {data[0].price_change_percentage_24h.toFixed(
+                                                {coinData[0].price_change_percentage_24h.toFixed(
                                                     2
                                                 )}
                                                 %
@@ -255,7 +255,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                                 }}
                                             >
                                                 <FiArrowUp />
-                                                {data[0].price_change_percentage_24h.toFixed(
+                                                {coinData[0].price_change_percentage_24h.toFixed(
                                                     2
                                                 )}
                                                 %
@@ -317,7 +317,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                     fontWeight="700"
                                 >
                                     {symbol}
-                                    {data[0].market_cap.toLocaleString(
+                                    {coinData[0].market_cap.toLocaleString(
                                         undefined,
                                         {
                                             minimumFractionDigits: 2,
@@ -326,7 +326,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                     )}
                                 </Typography>
 
-                                {data[0].price_change_percentage_24h < 0 ? (
+                                {coinData[0].price_change_percentage_24h < 0 ? (
                                     <span
                                         style={{
                                             color: "red",
@@ -334,7 +334,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                         }}
                                     >
                                         <FiArrowDown />
-                                        {data[0].market_cap_change_percentage_24h.toFixed(
+                                        {coinData[0].market_cap_change_percentage_24h.toFixed(
                                             2
                                         )}
                                         %
@@ -347,7 +347,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                         }}
                                     >
                                         <FiArrowUp />
-                                        {data[0].market_cap_change_percentage_24h.toFixed(
+                                        {coinData[0].market_cap_change_percentage_24h.toFixed(
                                             2
                                         )}
                                         %
@@ -387,14 +387,14 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                 >
                                     Circulating Supply
                                 </Typography>
-                                {data[0].circulating_supply.toLocaleString(
+                                {coinData[0].circulating_supply.toLocaleString(
                                     undefined,
                                     {
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2,
                                     }
                                 )}{" "}
-                                {data[0].symbol.toUpperCase()}
+                                {coinData[0].symbol.toUpperCase()}
                             </Box>
                         </Grid>
                         <Divider flexItem={true} orientation="vertical" />
@@ -428,7 +428,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                 </Typography>
                                 <span style={{ color: "green" }}>
                                     High: {symbol}
-                                    {data[0].high_24h.toLocaleString(
+                                    {coinData[0].high_24h.toLocaleString(
                                         undefined,
                                         {
                                             minimumFractionDigits: 2,
@@ -438,10 +438,13 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                 </span>
                                 <span style={{ color: "red" }}>
                                     Low: {symbol}
-                                    {data[0].low_24h.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2,
-                                    })}
+                                    {coinData[0].low_24h.toLocaleString(
+                                        undefined,
+                                        {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2,
+                                        }
+                                    )}
                                 </span>
                             </Box>
                         </Grid>
