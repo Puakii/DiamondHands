@@ -198,7 +198,11 @@ const AddPost = () => {
                                       toast.error(
                                           "Please ensure that title and content is not empty"
                                       )
-                                : () => handleAddPost()
+                                : () => {
+                                      handleAddPost();
+                                      toast.success("Post added successfully");
+                                      handleClose();
+                                  }
                         }
                     >
                         Add Post
