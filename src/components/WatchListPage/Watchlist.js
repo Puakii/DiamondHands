@@ -54,7 +54,7 @@ const Watchlist = () => {
                 throw error;
             }
 
-            if (data) {
+            if (data.length !== 0) {
                 setWatchlist(data.watchlist);
             }
         } catch (error) {
@@ -76,6 +76,7 @@ const Watchlist = () => {
             });
         setLoading(false);
     }
+
     useEffect(() => {
         refreshPrices(currency);
         if (session) {
@@ -86,6 +87,7 @@ const Watchlist = () => {
         return function cleanup() {
             clearInterval(timerId);
         };
+        //session is null at first, when session come in will update watchlist, causing it to rerender
     }, [currency, session]);
 
     //no need this anymore
