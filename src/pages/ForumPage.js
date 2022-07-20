@@ -1,7 +1,14 @@
 import React from "react";
+import Navbar from "../components/EntireWebsite/Navbar";
+import Posts from "../components/ForumPage/Posts";
 
-const ForumPage = () => {
-    return <div>Forum (IN PROGRESS HEHEHEHE XD :)</div>;
+const Forum = () => {
+    return (
+        <>
+            <Navbar />
+            <Posts />
+        </>
+    );
 };
 
-export default ForumPage;
+export default Forum;

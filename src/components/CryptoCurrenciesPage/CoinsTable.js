@@ -23,6 +23,7 @@ import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 import "./CoinsTable.css";
+import toast from "react-hot-toast";
 
 const CoinsTable = () => {
     const [data, setData] = useState(null);
@@ -105,7 +106,7 @@ const CoinsTable = () => {
                 addToWatchlist(coin);
             }
         } else {
-            navigate("/signin");
+            toast.error("Please sign in to add to watchlist");
         }
     };
 

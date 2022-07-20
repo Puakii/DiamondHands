@@ -8,12 +8,12 @@ import PriceAlertContext from "./context/PriceAlertContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    <React.StrictMode>
-        <CryptoContext>
-            <PriceAlertContext>
-                <Toaster toastOptions={{ duration: 3000 }} />
-                <App />
-            </PriceAlertContext>
-        </CryptoContext>
-    </React.StrictMode>
+    // <React.StrictMode>
+    <CryptoContext>
+        <PriceAlertContext>
+            <Toaster toastOptions={{ duration: 3000 }} />
+            <App />
+        </PriceAlertContext>
+    </CryptoContext>
+    // </React.StrictMode>
 );

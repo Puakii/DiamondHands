@@ -68,6 +68,7 @@ function App() {
                         path="/updatepassword"
                         element={<UpdatePasswordPage />}
                     />
+                    <Route path="/forum/posts" element={<ForumPage />} />
                     <Route path="*" element={<ErrorPage />} />
                 </Routes>
             </Router>
