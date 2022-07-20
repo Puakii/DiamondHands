@@ -5,6 +5,7 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabaseClient";
 import { ThumbUp } from "@mui/icons-material";
+import AddPost from "./AddPost";
 
 const Posts = () => {
     const [posts, setPosts] = useState([]);
@@ -214,6 +215,7 @@ const Posts = () => {
                     </Box>
                 ))}
             </Box>
+            <AddPost />
         </Container>
     );
 };
