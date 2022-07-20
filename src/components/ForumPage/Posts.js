@@ -85,7 +85,6 @@ const Posts = () => {
                     <Typography variant="h1" fontSize="3rem">
                         All Posts
                     </Typography>
-                    <Button>Add Post</Button>
                 </Box>
                 <Typography>{posts.length} questions</Typography>
             </Box>
@@ -205,9 +204,20 @@ const Posts = () => {
                                     </Box>
                                 </Grid>
                             </Grid>
-                            <Typography color="black" marginTop="1rem">
-                                {post.content.toString().substring(0, 220)} ...
-                            </Typography>
+                            <Box>
+                                {post.content.toString().length <= 200 ? (
+                                    <Typography color="black" marginTop="1rem">
+                                        {post.content.toString()}
+                                    </Typography>
+                                ) : (
+                                    <Typography color="black" marginTop="1rem">
+                                        {post.content
+                                            .toString()
+                                            .substring(0, 220)}{" "}
+                                        ...
+                                    </Typography>
+                                )}
+                            </Box>
                             {/* <Box className="interaction" marginTop="1rem">
                                 <ThumbUp sx={{ color: "black" }} />
                             </Box> */}
