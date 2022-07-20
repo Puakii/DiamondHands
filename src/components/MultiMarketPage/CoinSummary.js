@@ -156,7 +156,7 @@ const CoinSummary = ({ coinId, bestToBuy, bestToSell }) => {
                                 >
                                     Coin
                                 </Box>
-                                <Alert coinId={coinId} apiData={data} />
+                                <Alert coinId={coinId} apiData={coinData} />
                             </Box>
                         </Grid>
                         <Grid item xs={12} md={4}>
