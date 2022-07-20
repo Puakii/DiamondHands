@@ -22,6 +22,7 @@ const StyledModal = styled(Modal)({
 });
 
 const AddPost = () => {
+    //for modal
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -31,6 +32,11 @@ const AddPost = () => {
 
     //get from contextAPI
     const { session, avatar_url, username } = useCryptoState();
+
+    //for post
+    const [postTitle, setPostTitle] = useState("");
+    const [postContent, setPostContent] = useState("");
+    const [tags, setTags] = useState(["Btc", "Eth"]);
 
     //for downloading avatar image
     const downloadImage = async (path) => {
@@ -52,6 +58,27 @@ const AddPost = () => {
     useEffect(() => {
         if (avatar_url) downloadImage(avatar_url);
     }, [avatar_url]);
+
+    const handleAddPost = async () => {
+        try {
+            const user = supabase.auth.user();
+            const { error, status } = await supabase.from("posts").insert([
+                {
+                    title: postTitle,
+                    content: postContent,
+                    created_by: user.id,
+                    username: "username",
+                    tags: tags,
+                },
+            ]);
+
+            if (error && status !== 406) {
+                throw error;
+            }
+        } catch (error) {
+            alert(error.error_description || error.message);
+        }
+    };
 
     return (
         <>
@@ -75,7 +102,7 @@ const AddPost = () => {
             >
                 <Box
                     width={400}
-                    height={280}
+                    height={350}
                     bgcolor={"white"}
                     p={3}
                     borderRadius={5}
@@ -103,8 +130,8 @@ const AddPost = () => {
                             {username}
                         </Typography>
                     </Box>
-
                     <TextField
+                        inputProps={{ maxLength: 20 }}
                         sx={{
                             width: "100%",
 
@@ -114,7 +141,32 @@ const AddPost = () => {
                             },
 
                             "& .MuiInput-underline: before": {
-                                borderColor: "black",
+                                borderColor: "gray",
+                            },
+                            "&:hover .MuiInput-underline: before": {
+                                borderColor: "rgb(0, 255, 242)",
+                            },
+                            "& .MuiInput-underline: after": {
+                                borderColor: "rgb(0, 255, 242)",
+                            },
+                        }}
+                        id="standard"
+                        placeholder="Title"
+                        variant="standard"
+                        onChange={(e) => setPostTitle(e.target.value)}
+                    />
+                    <TextField
+                        sx={{
+                            marginTop: "1rem",
+                            width: "100%",
+
+                            "& .MuiInput-input": {
+                                color: "gray",
+                                fontWeight: "bold",
+                            },
+
+                            "& .MuiInput-underline: before": {
+                                borderColor: "gray",
                             },
                             "&:hover .MuiInput-underline: before": {
                                 borderColor: "rgb(0, 255, 242)",
@@ -128,6 +180,7 @@ const AddPost = () => {
                         rows={3}
                         placeholder="What's on your mind?"
                         variant="standard"
+                        onChange={(e) => setPostContent(e.target.value)}
                     />
 
                     <Button
@@ -139,6 +192,14 @@ const AddPost = () => {
                                 backgroundColor: "var(--primary)",
                             },
                         }}
+                        onClick={
+                            postContent.length === 0 || postTitle.length === 0
+                                ? () =>
+                                      toast.error(
+                                          "Please ensure that title and content is not empty"
+                                      )
+                                : () => handleAddPost()
+                        }
                     >
                         Add Post
                     </Button>
