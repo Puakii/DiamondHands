@@ -1,8 +1,15 @@
 import {
     Avatar,
     Button,
+    Checkbox,
     Fab,
+    FormControl,
+    InputLabel,
+    ListItemText,
+    MenuItem,
     Modal,
+    OutlinedInput,
+    Select,
     TextField,
     Tooltip,
     Typography,
@@ -21,7 +28,19 @@ const StyledModal = styled(Modal)({
     alignItems: "center",
 });
 
-const AddPost = () => {
+//Styling for selecting tags(menu)
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
+
+const AddPost = ({ data }) => {
     //for modal
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -36,7 +55,9 @@ const AddPost = () => {
     //for post
     const [postTitle, setPostTitle] = useState("");
     const [postContent, setPostContent] = useState("");
-    const [tags, setTags] = useState(["Btc", "Eth"]);
+    const [tags, setTags] = useState([]);
+
+    // console.log(data);
 
     //for downloading avatar image
     const downloadImage = async (path) => {
@@ -59,6 +80,7 @@ const AddPost = () => {
         if (avatar_url) downloadImage(avatar_url);
     }, [avatar_url]);
 
+    //updating backend when inserting post
     const handleAddPost = async () => {
         try {
             const user = supabase.auth.user();
@@ -67,7 +89,7 @@ const AddPost = () => {
                     title: postTitle,
                     content: postContent,
                     created_by: user.id,
-                    username: "username",
+                    username: username,
                     tags: tags,
                 },
             ]);
@@ -78,6 +100,17 @@ const AddPost = () => {
         } catch (error) {
             alert(error.error_description || error.message);
         }
+    };
+
+    //To handle tag change
+    const handleTagChange = (event) => {
+        const {
+            target: { value },
+        } = event;
+        setTags(
+            // On autofill we get a stringified value.
+            typeof value === "string" ? value.split(",") : value
+        );
     };
 
     return (
@@ -103,18 +136,95 @@ const AddPost = () => {
                 <Box
                     width={400}
                     height={350}
-                    bgcolor={"white"}
+                    bgcolor={"whiteSmoke"}
                     p={3}
                     borderRadius={5}
                 >
-                    <Typography
-                        variant="h6"
-                        color="gray"
-                        fontWeight="bold"
-                        textAlign={"center"}
+                    <Box
+                        className="title-and-select-tags"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
                     >
-                        Create post
-                    </Typography>
+                        <Typography
+                            variant="h6"
+                            color="gray"
+                            fontWeight="bold"
+                            textAlign={"center"}
+                        >
+                            Create post
+                        </Typography>
+                        <FormControl
+                            //styling for label
+                            sx={{
+                                m: 1,
+                                width: 150,
+                                marginLeft: "3rem",
+                                "& .MuiFormLabel-root": {
+                                    color: "black",
+                                },
+                                "&.Mui-focused .MuiFormLabel-root": {
+                                    color: "black",
+                                },
+                            }}
+                        >
+                            <InputLabel id="input-label">Tags</InputLabel>
+                            <Select
+                                variant="filled"
+                                id="select-button-for-tags"
+                                multiple
+                                value={tags}
+                                onChange={handleTagChange}
+                                //i think without default is filled input
+                                input={<OutlinedInput label="Tags" />}
+                                renderValue={(selected) => selected.join(", ")}
+                                MenuProps={MenuProps}
+                                sx={{
+                                    "& .MuiOutlinedInput-input": {
+                                        color: "black",
+                                    },
+
+                                    "& .MuiOutlinedInput-notchedOutline": {
+                                        borderColor: "rgb(0, 255, 242)",
+                                    },
+
+                                    "&:hover .MuiOutlinedInput-notchedOutline":
+                                        {
+                                            borderColor: "rgb(0, 255, 242)",
+                                        },
+
+                                    "&.Mui-focused .MuiOutlinedInput-notchedOutline":
+                                        { borderColor: "rgb(0, 255, 242)" },
+
+                                    "& .MuiSvgIcon-root": {
+                                        color: "rgb(0, 255, 242)",
+                                    },
+                                }}
+                            >
+                                {data ? (
+                                    data.map((coin) => (
+                                        <MenuItem
+                                            key={coin.symbol}
+                                            value={coin.symbol.toUpperCase()}
+                                        >
+                                            <Checkbox
+                                                checked={
+                                                    tags.indexOf(
+                                                        coin.symbol.toUpperCase()
+                                                    ) > -1
+                                                }
+                                            />
+                                            <ListItemText
+                                                primary={coin.symbol.toUpperCase()}
+                                            />
+                                        </MenuItem>
+                                    ))
+                                ) : (
+                                    <></>
+                                )}
+                            </Select>
+                        </FormControl>
+                    </Box>
                     <Box
                         display="flex"
                         gap="10px"

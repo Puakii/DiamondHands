@@ -4,11 +4,19 @@ import { Button, Container, Grid, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabaseClient";
+import axios from "axios";
 import { ThumbUp } from "@mui/icons-material";
 import AddPost from "./AddPost";
+import { CoinList } from "../../config/api";
 
 const Posts = () => {
+    //for posts
     const [posts, setPosts] = useState([]);
+
+    //for cryptodata from api
+    const [data, setData] = useState(null);
+
+    //For timing of post
     const [date, setDate] = useState(new Date());
 
     function refreshClock() {
@@ -72,6 +80,26 @@ const Posts = () => {
     // use effect for getting posts
     useEffect(() => {
         getPostsAndSubscribe();
+    }, []);
+
+    function refreshPrices(currency) {
+        axios
+            .get(CoinList(currency))
+            .then((response) => {
+                setData(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+    useEffect(() => {
+        //currency doesnt matter, we just want the data for the select tagging button
+        refreshPrices("USD");
+
+        const timerId = setInterval(() => refreshPrices("USD"), 5000);
+        return function cleanup() {
+            clearInterval(timerId);
+        };
     }, []);
 
     return (
@@ -166,7 +194,7 @@ const Posts = () => {
                                         </Box>
                                     </Box>
                                 </Grid>
-                                <Grid item tablet={6} lg={5}>
+                                <Grid item tablet={6} lg={6}>
                                     <Box
                                         className="tags"
                                         sx={{
@@ -181,25 +209,55 @@ const Posts = () => {
                                             className="tags"
                                             justifyContent="flex-end"
                                         >
-                                            {post.tags.map((tag) => (
-                                                <Grid item xs={4} key={uuid()}>
-                                                    <Paper
-                                                        sx={{
-                                                            textAlign: "center",
-                                                            "&.MuiPaper-root": {
-                                                                backgroundColor:
-                                                                    "rgb(0, 255, 242)",
-                                                                width: "4rem",
-                                                                borderRadius:
-                                                                    "0.5rem",
-                                                                margin: "0.2rem",
-                                                            },
-                                                        }}
+                                            {post.tags
+                                                .slice(0, 3)
+                                                .map((tag) => (
+                                                    <Grid
+                                                        item
+                                                        xs={3}
+                                                        key={uuid()}
                                                     >
-                                                        {tag}
-                                                    </Paper>
-                                                </Grid>
-                                            ))}
+                                                        <Paper
+                                                            sx={{
+                                                                textAlign:
+                                                                    "center",
+                                                                "&.MuiPaper-root":
+                                                                    {
+                                                                        backgroundColor:
+                                                                            "rgb(0, 255, 242)",
+                                                                        width: "4rem",
+                                                                        borderRadius:
+                                                                            "0.5rem",
+                                                                        margin: "0.2rem",
+                                                                        color: "black",
+                                                                    },
+                                                            }}
+                                                        >
+                                                            {tag}
+                                                        </Paper>
+                                                    </Grid>
+                                                ))}
+
+                                            {post.tags.length > 3 ? (
+                                                <Paper
+                                                    sx={{
+                                                        textAlign: "center",
+                                                        "&.MuiPaper-root": {
+                                                            backgroundColor:
+                                                                "rgb(0, 255, 242)",
+                                                            width: "4rem",
+                                                            borderRadius:
+                                                                "0.5rem",
+                                                            margin: "0.2rem",
+                                                            color: "black",
+                                                        },
+                                                    }}
+                                                >
+                                                    +{post.tags.length - 3}
+                                                </Paper>
+                                            ) : (
+                                                <></>
+                                            )}
                                         </Grid>
                                     </Box>
                                 </Grid>
@@ -225,7 +283,7 @@ const Posts = () => {
                     </Box>
                 ))}
             </Box>
-            <AddPost />
+            <AddPost data={data} />
         </Container>
     );
 };
