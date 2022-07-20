@@ -163,9 +163,6 @@ const AddPost = ({ data }) => {
                                 "& .MuiFormLabel-root": {
                                     color: "black",
                                 },
-                                "&.Mui-focused .MuiFormLabel-root": {
-                                    color: "black",
-                                },
                             }}
                         >
                             <InputLabel id="input-label">Tags</InputLabel>
