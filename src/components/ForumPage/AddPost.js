@@ -14,7 +14,7 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
-import { Add } from "@mui/icons-material";
+import { Add, SystemSecurityUpdateWarningOutlined } from "@mui/icons-material";
 import toast from "react-hot-toast";
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
@@ -108,7 +108,7 @@ const AddPost = ({ data }) => {
             target: { value },
         } = event;
         setTags(
-            // On autofill we get a stringified value.
+            // On autofill we get a stringified value. hmm maybe in this case no need?idk
             typeof value === "string" ? value.split(",") : value
         );
     };
@@ -122,6 +122,11 @@ const AddPost = ({ data }) => {
                         : () => toast.error("Please sign in to post")
                 }
                 title="Add Post"
+                sx={{
+                    position: "fixed",
+                    bottom: 20,
+                    left: { xs: "calc(50% - 25px)", md: "20%" },
+                }}
             >
                 <Fab size="medium" color="white" aria-label="add">
                     <Add />
@@ -177,6 +182,7 @@ const AddPost = ({ data }) => {
                                 onChange={handleTagChange}
                                 //i think without default is filled input
                                 input={<OutlinedInput label="Tags" />}
+                                //rendered in the box
                                 renderValue={(selected) => selected.join(", ")}
                                 MenuProps={MenuProps}
                                 sx={{

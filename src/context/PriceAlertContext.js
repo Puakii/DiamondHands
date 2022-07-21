@@ -51,7 +51,7 @@ const PriceAlertContext = ({ children }) => {
                 throw error;
             }
 
-            console.log(data);
+            // console.log(data);
 
             if (data.length !== 0) {
                 if (currency === "USD") {
