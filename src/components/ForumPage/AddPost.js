@@ -167,9 +167,11 @@ const AddPost = ({ data }) => {
                                 marginLeft: "3rem",
                                 "& .MuiFormLabel-root": {
                                     color: "black",
+                                    fontWeight: "bold",
                                 },
                                 "&.Mui-focused .MuiFormLabel-root": {
                                     color: "black",
+                                    fontWeight: "bold",
                                 },
                             }}
                         >
@@ -188,6 +190,7 @@ const AddPost = ({ data }) => {
                                 sx={{
                                     "& .MuiOutlinedInput-input": {
                                         color: "black",
+                                        fontWeight: "bold",
                                     },
 
                                     "& .MuiOutlinedInput-notchedOutline": {

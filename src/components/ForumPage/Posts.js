@@ -47,6 +47,15 @@ const Posts = () => {
         };
     }, []);
 
+    //custom sort post by time, earliest first
+    function customPostSorter(inputArray) {
+        return inputArray.sort(
+            (a, b) =>
+                new Date(b.created_at).getTime() -
+                new Date(a.created_at).getTime()
+        );
+    }
+
     //Design decision to put listener inside getPostsAndSubscribe as want to make use of data(posts) that we get from backend, as setPosts is async and has delay
     const getPostsAndSubscribe = async () => {
         try {
@@ -62,8 +71,8 @@ const Posts = () => {
                 throw error;
             }
 
-            //to display the posts originally without any events e.g. inserts
-            setPosts(data);
+            //sort the data, then display the posts originally without any events e.g. inserts
+            setPosts(customPostSorter(data));
 
             //listener
             const mySubscription = supabase
@@ -72,7 +81,7 @@ const Posts = () => {
                     console.log("Change received!", payload);
 
                     data.push(payload.new);
-                    setPosts(data);
+                    setPosts(customPostSorter(data));
                 })
                 .on("DELETE", (payload) => {
                     console.log("Change received!", payload);
@@ -82,7 +91,7 @@ const Posts = () => {
                         return post.id !== payload.old.id;
                     });
 
-                    setPosts(removedData);
+                    setPosts(customPostSorter(data));
                 })
                 .subscribe((status) => console.log(status));
 
@@ -244,7 +253,7 @@ const Posts = () => {
                                                     (date.getTime() -
                                                         new Date(
                                                             post.created_at
-                                                        )) /
+                                                        ).getTime()) /
                                                         60000
                                                 ) < 60 ? (
                                                     <>
@@ -265,7 +274,7 @@ const Posts = () => {
                                                                 (date.getTime() -
                                                                     new Date(
                                                                         post.created_at
-                                                                    )) /
+                                                                    ).getTime()) /
                                                                     60000
                                                             )}{" "}
                                                             min ago
@@ -296,7 +305,7 @@ const Posts = () => {
                                                                 (date.getTime() -
                                                                     new Date(
                                                                         post.created_at
-                                                                    )) /
+                                                                    ).getTime()) /
                                                                     3600000
                                                             )}{" "}
                                                             hours ago
