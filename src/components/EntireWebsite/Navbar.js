@@ -35,6 +35,7 @@ const Navbar = () => {
         sgdPriceReached,
         setUsdPriceReached,
         setSgdPriceReached,
+        isAlert,
     } = useAlertState();
     let navigate = useNavigate();
 
@@ -51,26 +52,15 @@ const Navbar = () => {
     };
 
     // for alert
-    const [isAlert, setIsAlert] = useState(false);
-    useEffect(() => {
-        if (usdPriceReached.length !== 0 || sgdPriceReached.length !== 0) {
-            setIsAlert(true);
-        } else {
-            setIsAlert(false);
-        }
-    }, [usdPriceReached, sgdPriceReached]);
 
-    useEffect(() => {
-        if (isAlert) {
-            toast("You have new price target reached!", { duration: 3000 });
-        }
-    }, [isAlert]);
     const [alertAnchorEl, setAlertAnchorEl] = React.useState(null);
     const openAlert = Boolean(alertAnchorEl);
 
     const handleAlertClick = (event) => {
         //currentTarget refer to the element to which the event handler triggered the event
-        setAlertAnchorEl(event.currentTarget);
+        if (isAlert) {
+            setAlertAnchorEl(event.currentTarget);
+        }
     };
     const handleAlertClose = () => {
         setAlertAnchorEl(null);
@@ -135,6 +125,12 @@ const Navbar = () => {
     useEffect(() => {
         if (avatar_url) downloadImage(avatar_url);
     }, [avatar_url]);
+
+    useEffect(() => {
+        if (!isAlert) {
+            setAlertAnchorEl(null);
+        }
+    }, [isAlert]);
 
     return (
         <div className="header">
@@ -208,79 +204,83 @@ const Navbar = () => {
                                         )}
                                     </IconButton>
                                 </Tooltip>
-                                <Menu
-                                    anchorEl={alertAnchorEl}
-                                    id="alert-menu"
-                                    //if open is true, the component is shown
-                                    open={openAlert}
-                                    //i think when u close the menu when calling outside
-                                    onClose={handleAlertClose}
-                                    //close the menu when u click the menu
-                                    // onClick={handleAlertClose}
-                                    PaperProps={{
-                                        //specify the amount of elevation
-                                        elevation: 0,
-                                        sx: {
-                                            overflow: "visible",
-                                            //filter for the paper background
-                                            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                                            //space between the menu and the iconButton
-                                            mt: 1.5,
-                                            "& .MuiAvatar-root": {
-                                                width: 32,
-                                                height: 32,
-                                                ml: -0.5,
-                                                mr: 1,
-                                            },
+                                {isAlert ? (
+                                    <Menu
+                                        anchorEl={alertAnchorEl}
+                                        id="alert-menu"
+                                        //if open is true, the component is shown
+                                        open={openAlert}
+                                        //i think when u close the menu when calling outside
+                                        onClose={handleAlertClose}
+                                        //close the menu when u click the menu
+                                        // onClick={handleAlertClose}
+                                        PaperProps={{
+                                            //specify the amount of elevation
+                                            elevation: 0,
+                                            sx: {
+                                                overflow: "visible",
+                                                //filter for the paper background
+                                                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                                                //space between the menu and the iconButton
+                                                mt: 1.5,
+                                                "& .MuiAvatar-root": {
+                                                    width: 32,
+                                                    height: 32,
+                                                    ml: -0.5,
+                                                    mr: 1,
+                                                },
 
-                                            //add before PaperProps
-                                            "&:before": {
-                                                content: '""',
-                                                display: "block",
-                                                position: "absolute",
-                                                top: 0,
-                                                right: 14,
-                                                width: 10,
-                                                height: 10,
+                                                //add before PaperProps
+                                                "&:before": {
+                                                    content: '""',
+                                                    display: "block",
+                                                    position: "absolute",
+                                                    top: 0,
+                                                    right: 14,
+                                                    width: 10,
+                                                    height: 10,
 
-                                                bgcolor: "background.paper",
-                                                //transform the before thing
-                                                transform:
-                                                    "translateY(-50%) rotate(45deg)",
-                                                zIndex: 0,
+                                                    bgcolor: "background.paper",
+                                                    //transform the before thing
+                                                    transform:
+                                                        "translateY(-50%) rotate(45deg)",
+                                                    zIndex: 0,
+                                                },
                                             },
-                                        },
-                                    }}
-                                    transformOrigin={{
-                                        horizontal: "right",
-                                        vertical: "top",
-                                    }}
-                                    anchorOrigin={{
-                                        horizontal: "right",
-                                        vertical: "bottom",
-                                    }}
-                                >
-                                    <Stack
-                                        direction="row"
-                                        spacing={1}
-                                        alignItems="center"
-                                        justifyContent="right"
-                                        marginRight="20px"
+                                        }}
+                                        transformOrigin={{
+                                            horizontal: "right",
+                                            vertical: "top",
+                                        }}
+                                        anchorOrigin={{
+                                            horizontal: "right",
+                                            vertical: "bottom",
+                                        }}
                                     >
-                                        USD
-                                        <Switch
-                                            checked={checked}
-                                            onChange={handleChange}
-                                            inputProps={{
-                                                "aria-label": "controlled",
-                                            }}
-                                        />
-                                        SGD
-                                    </Stack>
-                                    {checked
-                                        ? renderAlertMenu(sgdPriceReached)
-                                        : renderAlertMenu(usdPriceReached)}
-                                </Menu>
+                                        <Stack
+                                            direction="row"
+                                            spacing={1}
+                                            alignItems="center"
+                                            justifyContent="right"
+                                            marginRight="20px"
+                                        >
+                                            USD
+                                            <Switch
+                                                checked={checked}
+                                                onChange={handleChange}
+                                                inputProps={{
+                                                    "aria-label": "controlled",
+                                                }}
+                                            />
+                                            SGD
+                                        </Stack>
+                                        {checked
+                                            ? renderAlertMenu(sgdPriceReached)
+                                            : renderAlertMenu(usdPriceReached)}
+                                    </Menu>
+                                ) : (
+                                    <></>
+                                )}
 
                                 <Tooltip title="Account settings">
                                     <IconButton

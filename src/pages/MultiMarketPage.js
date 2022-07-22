@@ -22,6 +22,7 @@ const MultiMarketPage = () => {
 
     // //keep track of number of results returned by API call
     const [numOfResult, setNumberOfResult] = useState(0);
+    const [error, setError] = useState(false);
 
     //use context api to keep track of what to display
     const { graphOrMarket } = useCryptoState();
@@ -63,6 +64,7 @@ const MultiMarketPage = () => {
             })
             .catch((error) => {
                 console.log(error);
+                setError(true);
             });
         setLoading(false);
     }
@@ -83,7 +85,7 @@ const MultiMarketPage = () => {
         // console.log(bestToSell);
     }
 
-    return (
+    return !error ? (
         <Box>
             {/* <Alert severity="error">
                 This is an error alert — check it out!
@@ -104,6 +106,8 @@ const MultiMarketPage = () => {
                 />
             )}
         </Box>
+    ) : (
+        <div>Error: Page Not Found!</div>
     );
 };
 
