@@ -1,15 +1,17 @@
 import { AccessTime } from "@mui/icons-material";
 import { v4 as uuid } from "uuid";
-import { Button, Container, Grid, Paper, Typography } from "@mui/material";
+import { Container, Grid, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabaseClient";
-import { ThumbUp } from "@mui/icons-material";
 import AddPost from "./AddPost";
+import { useNavigate } from "react-router-dom";
 
 const Posts = () => {
     const [posts, setPosts] = useState([]);
     const [date, setDate] = useState(new Date());
+
+    const navigate = useNavigate();
 
     function refreshClock() {
         setDate(new Date());
@@ -100,6 +102,7 @@ const Posts = () => {
                         key={post.id}
                         sx={{ width: { xs: "90%", tablet: "70%", lg: "50%" } }}
                         margin="0.5rem"
+                        onClick={() => navigate(`/forum/posts/${post.id}`)}
                     >
                         <Paper
                             sx={{
@@ -142,27 +145,99 @@ const Posts = () => {
                                             display="flex"
                                             alignItems="center"
                                         >
-                                            <AccessTime
-                                                sx={{
-                                                    color: "black",
-                                                    width: 12.5,
-                                                }}
-                                            />
+                                            {Math.ceil(
+                                                //because in milliseconds
+                                                (date.getTime() -
+                                                    new Date(
+                                                        post.created_at
+                                                    ).getTime()) /
+                                                    60000
+                                            ) < 60 ? (
+                                                <>
+                                                    <AccessTime
+                                                        sx={{
+                                                            color: "black",
+                                                            width: 12.5,
+                                                        }}
+                                                    />
 
-                                            <Typography
-                                                color="black"
-                                                variant="body2"
-                                                component="p"
-                                                marginLeft={0.5}
-                                            >
-                                                {Math.ceil(
-                                                    //because in milliseconds
-                                                    (date.getTime() / 1000 -
-                                                        post.created_at) /
-                                                        60
-                                                )}{" "}
-                                                min ago
-                                            </Typography>
+                                                    <Typography
+                                                        color="black"
+                                                        variant="body2"
+                                                        component="p"
+                                                        marginLeft={0.5}
+                                                    >
+                                                        {Math.ceil(
+                                                            //because in milliseconds
+                                                            (date.getTime() -
+                                                                new Date(
+                                                                    post.created_at
+                                                                ).getTime()) /
+                                                                60000
+                                                        )}{" "}
+                                                        min ago
+                                                    </Typography>
+                                                </>
+                                            ) : Math.ceil(
+                                                  //because in milliseconds
+                                                  (date.getTime() -
+                                                      new Date(
+                                                          post.created_at
+                                                      ).getTime()) /
+                                                      3600000
+                                              ) < 24 ? (
+                                                <>
+                                                    <AccessTime
+                                                        sx={{
+                                                            color: "black",
+                                                            width: 12.5,
+                                                        }}
+                                                    />
+
+                                                    <Typography
+                                                        color="black"
+                                                        variant="body2"
+                                                        component="p"
+                                                        marginLeft={0.5}
+                                                    >
+                                                        {Math.ceil(
+                                                            //because in milliseconds
+                                                            (date.getTime() -
+                                                                new Date(
+                                                                    post.created_at
+                                                                ).getTime()) /
+                                                                3600000
+                                                        )}{" "}
+                                                        hours ago
+                                                    </Typography>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <AccessTime
+                                                        sx={{
+                                                            color: "black",
+                                                            width: 12.5,
+                                                        }}
+                                                    />
+
+                                                    <Typography
+                                                        color="black"
+                                                        variant="body2"
+                                                        component="p"
+                                                        marginLeft={0.5}
+                                                    >
+                                                        {Math.ceil(
+                                                            //because in milliseconds
+                                                            (date.getTime() -
+                                                                new Date(
+                                                                    post.created_at
+                                                                ).getTime()) /
+                                                                86400000
+                                                        )}{" "}
+                                                        days ago
+                                                    </Typography>
+                                                </>
+                                            )}
                                         </Box>
                                     </Box>
                                 </Grid>

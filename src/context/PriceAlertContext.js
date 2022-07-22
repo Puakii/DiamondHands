@@ -3,7 +3,7 @@ import { useCryptoState } from "./CryptoContext";
 import axios from "axios";
 import { CoinList } from "../config/api";
 import { supabase } from "../supabaseClient";
-// import toast from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const Alert = createContext();
 
@@ -14,7 +14,7 @@ const PriceAlertContext = ({ children }) => {
     const [sgdCoins, setSgdCoins] = useState(null);
     const [usdAlert, setUsdAlert] = useState([]);
     const [sgdAlert, setSgdAlert] = useState([]);
-    const [stopper, setStopper] = useState(false);
+    // const [stopper, setStopper] = useState(false);
 
     const { session } = useCryptoState();
 
@@ -51,7 +51,7 @@ const PriceAlertContext = ({ children }) => {
                 throw error;
             }
 
-            console.log(data);
+            // console.log(data);
 
             if (data.length !== 0) {
                 if (currency === "USD") {
@@ -75,7 +75,7 @@ const PriceAlertContext = ({ children }) => {
                 refreshPrices();
                 getAlert("USD");
                 getAlert("SGD");
-            }, 300000);
+            }, 20000);
             return function cleanup() {
                 clearInterval(timerId);
             };
@@ -90,7 +90,6 @@ const PriceAlertContext = ({ children }) => {
         usdData.map((coin) => usdMapper.set(coin.id, coin.current_price));
         sgdData.map((coin) => sgdMapper.set(coin.id, coin.current_price));
 
-        // console.log(sgdPrice);
         for (let i = 0; i < usdPrice.length; i++) {
             const currPrice = usdMapper.get(usdPrice[i].coin_id);
             if (currPrice < usdPrice[i].price) {
@@ -122,20 +121,32 @@ const PriceAlertContext = ({ children }) => {
             sgdCoins &&
             (sgdAlert.length !== 0 || usdAlert.length !== 0)
         ) {
-            if (!stopper) {
-                compare(usdCoins, sgdCoins, usdAlert, sgdAlert);
-                setStopper(true);
-            }
+            compare(usdCoins, sgdCoins, usdAlert, sgdAlert);
 
             const timerId = setInterval(() => {
-                setStopper(false);
                 compare(usdCoins, sgdCoins, usdAlert, sgdAlert);
-            }, 30000);
+            }, 20000);
             return function cleanup() {
                 clearInterval(timerId);
             };
         }
-    }, [usdCoins, sgdCoins, sgdAlert, usdAlert, stopper]);
+    }, [usdCoins, sgdCoins, sgdAlert, usdAlert]);
+
+    const [isAlert, setIsAlert] = useState(false);
+
+    useEffect(() => {
+        if (usdPriceReached.length !== 0 || sgdPriceReached.length !== 0) {
+            setIsAlert(true);
+        } else {
+            setIsAlert(false);
+        }
+    }, [usdPriceReached, sgdPriceReached]);
+
+    useEffect(() => {
+        if (isAlert) {
+            toast("You have new price target reached!", { duration: 3000 });
+        }
+    }, [isAlert]);
 
     return (
         <Alert.Provider
@@ -144,6 +155,7 @@ const PriceAlertContext = ({ children }) => {
                 sgdPriceReached,
                 setUsdPriceReached,
                 setSgdPriceReached,
+                isAlert,
             }}
         >
             {children}
