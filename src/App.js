@@ -16,6 +16,7 @@ import NewsPage from "./pages/NewsPage";
 import MultiMarketPage from "./pages/MultiMarketPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import UpdatePasswordPage from "./pages/UpdatePasswordPage";
+import IndivForumPage from "./pages/IndivForumPage";
 
 const darkTheme = createTheme({
     palette: {
@@ -69,6 +70,10 @@ function App() {
                         element={<UpdatePasswordPage />}
                     />
                     <Route path="/forum/posts" element={<ForumPage />} />
+                    <Route
+                        path="/forum/posts/:postId"
+                        element={<IndivForumPage />}
+                    />
                     <Route path="*" element={<ErrorPage />} />
                 </Routes>
             </Router>
