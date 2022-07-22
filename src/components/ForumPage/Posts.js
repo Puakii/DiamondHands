@@ -16,6 +16,7 @@ import axios from "axios";
 import { ThumbUp } from "@mui/icons-material";
 import AddPost from "./AddPost";
 import { CoinList } from "../../config/api";
+import { post } from "@supabase/gotrue-js/dist/module/lib/fetch";
 
 const Posts = () => {
     //for posts
@@ -87,11 +88,10 @@ const Posts = () => {
                     console.log("Change received!", payload);
 
                     const removedData = data.filter((post) => {
-                        console.log(post.id !== payload.old.id);
                         return post.id !== payload.old.id;
                     });
 
-                    setPosts(customPostSorter(data));
+                    setPosts(customPostSorter(removedData));
                 })
                 .subscribe((status) => console.log(status));
 
@@ -169,13 +169,27 @@ const Posts = () => {
                 <Box
                     className="first-row"
                     display="flex"
-                    justifyContent="space-between"
+                    flexDirection="column"
+                    alignItems="center"
                 >
-                    <Typography variant="h1" fontSize="3rem">
+                    <Typography
+                        variant="h1"
+                        fontSize="3rem"
+                        fontFamily="Poppins"
+                    >
                         All Posts
                     </Typography>
+
+                    {posts.length > 0 ? (
+                        <Typography fontFamily="Poppins">
+                            {posts.length} posts
+                        </Typography>
+                    ) : (
+                        <Typography fontFamily="Poppins">
+                            {posts.length} post
+                        </Typography>
+                    )}
                 </Box>
-                <Typography>{posts.length} questions</Typography>
             </Box>
             <Box
                 className="body"
@@ -429,8 +443,8 @@ const Posts = () => {
                                     )}
                                 </Box>
                                 {/* <Box className="interaction" marginTop="1rem">
-                                <ThumbUp sx={{ color: "black" }} />
-                            </Box> */}
+                                    <ThumbUp sx={{ color: "black" }} />
+                                </Box> */}
                             </Paper>
                         </Box>
                     ))}
