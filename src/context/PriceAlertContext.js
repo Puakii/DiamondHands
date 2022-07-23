@@ -14,6 +14,7 @@ const PriceAlertContext = ({ children }) => {
     const [sgdCoins, setSgdCoins] = useState(null);
     const [usdAlert, setUsdAlert] = useState([]);
     const [sgdAlert, setSgdAlert] = useState([]);
+    const [isAlert, setIsAlert] = useState(false);
     // const [stopper, setStopper] = useState(false);
 
     const { session } = useCryptoState();
@@ -132,8 +133,6 @@ const PriceAlertContext = ({ children }) => {
         }
     }, [usdCoins, sgdCoins, sgdAlert, usdAlert]);
 
-    const [isAlert, setIsAlert] = useState(false);
-
     useEffect(() => {
         if (usdPriceReached.length !== 0 || sgdPriceReached.length !== 0) {
             setIsAlert(true);
@@ -144,7 +143,7 @@ const PriceAlertContext = ({ children }) => {
 
     useEffect(() => {
         if (isAlert) {
-            toast("You have new price target reached!", { duration: 3000 });
+            toast("You have new price target reached!");
         }
     }, [isAlert]);
 
