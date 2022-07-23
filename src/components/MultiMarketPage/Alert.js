@@ -18,6 +18,7 @@ import { supabase } from "../../supabaseClient";
 import { useCryptoState } from "../../context/CryptoContext";
 import styled from "@emotion/styled";
 import { FiArrowDown, FiArrowUp } from "react-icons/fi";
+import { useAlertState } from "../../context/PriceAlertContext";
 
 const lightTheme = createTheme({
     palette: {
@@ -47,6 +48,9 @@ const Alert = ({ coinId, apiData }) => {
 
     //get from contextAPI
     const { currency, setCurrency, session } = useCryptoState();
+
+    //get from priceAlertContext
+    const { setIsAlert } = useAlertState();
 
     const handlePriceAlert = async () => {
         if (!session) {
@@ -98,6 +102,7 @@ const Alert = ({ coinId, apiData }) => {
                 ]);
 
                 if (error2) throw error2;
+
                 toast.success("Successfully added to your price alert!");
             }
         } catch (error) {
