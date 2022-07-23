@@ -121,13 +121,6 @@ const PriceAlertContext = ({ children }) => {
             const currPrice = usdMapper.get(usdPrice[i].coin_id);
             if (currPrice < usdPrice[i].price) {
                 newUsdArray = [...newUsdArray, usdPrice[i]];
-                // toast(
-                //     usdPrice[i].coin +
-                //         " is trading below " +
-                //         usdPrice[i].price +
-                //         " now!",
-                //     { duration: 5000 }
-                // );
             }
         }
         for (let i = 0; i < sgdPrice.length; i++) {
