@@ -17,10 +17,11 @@ import axios from "axios";
 import { ThumbUp } from "@mui/icons-material";
 import AddPost from "./AddPost";
 import { CoinList } from "../../config/api";
-import { post } from "@supabase/gotrue-js/dist/module/lib/fetch";
-
+import { useNavigate } from "react-router-dom";
 
 const Posts = () => {
+    const navigate = useNavigate();
+
     //for posts
     const [posts, setPosts] = useState([]);
 
@@ -39,7 +40,6 @@ const Posts = () => {
     const [postsPerPage, setPostsPerPage] = useState(10);
     //To keep track of number of results after filter to be used for pagination
     const [numOfResult, setNumberOfResult] = useState(0);
-
 
     function refreshClock() {
         setDate(new Date());
@@ -200,7 +200,6 @@ const Posts = () => {
                 flexDirection="column"
                 alignItems="center"
             >
-
                 <TextField
                     label="Search For a Post by Title or Tag.."
                     variant="standard"
@@ -221,11 +220,12 @@ const Posts = () => {
                         <Box
                             className="forEachPost"
                             key={post.id}
-
                             sx={{
                                 width: { xs: "90%", tablet: "70%", lg: "50%" },
+                                cursor: "pointer",
                             }}
                             margin="0.5rem"
+                            onClick={() => navigate(`/forum/posts/${post.id}`)}
                         >
                             <Paper
                                 sx={{
@@ -237,7 +237,6 @@ const Posts = () => {
                                     },
                                 }}
                             >
-
                                 <Typography
                                     color="black"
                                     variant="h1"
@@ -358,7 +357,6 @@ const Posts = () => {
                                                     </>
                                                 )}
                                             </Box>
-
                                         </Box>
                                     </Grid>
                                     <Grid item tablet={6} lg={6}>

@@ -60,14 +60,14 @@ const IndividualPost = ({ postId }) => {
             }
             if (data) {
                 setPostProfile(data);
-                getImage(data.avatar_url);
+                downloadImage(data.avatar_url);
             }
         } catch (error) {
             toast.error(error.message);
         }
     };
 
-    const getImage = async (path) => {
+    const downloadImage = async (path) => {
         try {
             const { data, status, error } = await supabase.storage
                 .from("avatars")
@@ -83,10 +83,10 @@ const IndividualPost = ({ postId }) => {
         }
     };
 
-    // use effect for getting posts
+    // use effect for getting post
     useEffect(() => {
         getPost();
-    });
+    }, []);
 
     useEffect(() => {
         if (post) {
