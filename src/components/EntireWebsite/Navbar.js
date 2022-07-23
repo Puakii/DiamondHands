@@ -41,7 +41,7 @@ const Navbar = () => {
     let navigate = useNavigate();
 
     //for profile
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
     const handleProfileClick = (event) => {
@@ -54,7 +54,7 @@ const Navbar = () => {
 
     // for alert
 
-    const [alertAnchorEl, setAlertAnchorEl] = React.useState(null);
+    const [alertAnchorEl, setAlertAnchorEl] = useState(null);
     const openAlert = Boolean(alertAnchorEl);
 
     const handleAlertClick = (event) => {
