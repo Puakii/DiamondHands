@@ -23,6 +23,7 @@ import { supabase } from "../../supabaseClient";
 import toast from "react-hot-toast";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Navbar = () => {
     const [click, setClick] = useState(false);
@@ -60,6 +61,8 @@ const Navbar = () => {
         //currentTarget refer to the element to which the event handler triggered the event
         if (isAlert) {
             setAlertAnchorEl(event.currentTarget);
+        } else {
+            toast("There are currently no alert!");
         }
     };
     const handleAlertClose = () => {
@@ -85,8 +88,19 @@ const Navbar = () => {
     const renderAlertMenu = (product) => {
         const items = product.map((p) => {
             return (
-                <MenuItem>
-                    <Typography onClick={() => navigate(`/coins/${p.coin_id}`)}>
+                <MenuItem
+                    sx={{
+                        width: {
+                            xs: "1000px",
+                            tablet: "1300px",
+                            lg: "auto",
+                        },
+                    }}
+                >
+                    <Typography
+                        onClick={() => navigate(`/coins/${p.coin_id}`)}
+                        sx={{ fontSize: { xs: 10, tablet: 14, lg: 16 } }}
+                    >
                         {p.coin_name +
                             " is trading below " +
                             p.currency +
@@ -257,23 +271,48 @@ const Navbar = () => {
                                             vertical: "bottom",
                                         }}
                                     >
-                                        <Stack
-                                            direction="row"
-                                            spacing={1}
-                                            alignItems="center"
-                                            justifyContent="right"
-                                            marginRight="20px"
+                                        <Box
+                                            sx={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                            }}
                                         >
-                                            USD
-                                            <Switch
-                                                checked={checked}
-                                                onChange={handleChange}
-                                                inputProps={{
-                                                    "aria-label": "controlled",
+                                            <Box
+                                                sx={{
+                                                    justifyContent: "left",
                                                 }}
-                                            />
-                                            SGD
-                                        </Stack>
+                                                width="100%"
+                                            >
+                                                <Tooltip title="Close">
+                                                    <IconButton
+                                                        onClick={
+                                                            handleAlertClose
+                                                        }
+                                                    >
+                                                        <ArrowBackIcon />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </Box>
+
+                                            <Stack
+                                                direction="row"
+                                                spacing={1}
+                                                alignItems="center"
+                                                justifyContent="right"
+                                                marginRight="20px"
+                                            >
+                                                USD
+                                                <Switch
+                                                    checked={checked}
+                                                    onChange={handleChange}
+                                                    inputProps={{
+                                                        "aria-label":
+                                                            "controlled",
+                                                    }}
+                                                />
+                                                SGD
+                                            </Stack>
+                                        </Box>
                                         {checked
                                             ? renderAlertMenu(sgdPriceReached)
                                             : renderAlertMenu(usdPriceReached)}
@@ -401,6 +440,12 @@ const Navbar = () => {
                             >
                                 <button
                                     className="btn"
+                                    onClick={handleAlertClick}
+                                >
+                                    Alerts
+                                </button>
+                                <button
+                                    className="btn"
                                     onClick={() => navigate("/account")}
                                 >
                                     Profile
@@ -410,7 +455,7 @@ const Navbar = () => {
                                     className="btn"
                                     onClick={() => {
                                         supabase.auth.signOut();
-                                        alert(
+                                        toast.success(
                                             "You have successfully signed out!"
                                         );
                                         navigate("/home");

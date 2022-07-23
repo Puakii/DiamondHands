@@ -109,10 +109,9 @@ const PriceAlertContext = ({ children }) => {
             if (currPrice < sgdPrice[i].price) {
                 newSgdArray = [...newSgdArray, sgdPrice[i]];
             }
-
-            setUsdPriceReached(newUsdArray);
-            setSgdPriceReached(newSgdArray);
         }
+        setUsdPriceReached(newUsdArray);
+        setSgdPriceReached(newSgdArray);
     };
 
     useEffect(() => {
