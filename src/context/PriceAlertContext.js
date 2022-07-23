@@ -66,9 +66,6 @@ const PriceAlertContext = ({ children }) => {
                 .eq("user_id", user.id)
                 .eq("currency", currency);
 
-            console.log(currency);
-            console.log(data);
-
             if (error && status !== 406) {
                 throw error;
             }
