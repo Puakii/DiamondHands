@@ -240,7 +240,7 @@ const AddPost = ({ data }) => {
                         alignItems="center"
                         paddingBottom="15px"
                     >
-                        <Avatar alt="Remy Sharp" src={navBarAvatar} />
+                        <Avatar alt={username} src={navBarAvatar} />
                         <Typography
                             fontWeight={500}
                             variant="span"
