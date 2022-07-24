@@ -109,6 +109,8 @@ const IndividualPost = ({ postId }) => {
                             borderRadius: "1rem",
                         },
                         marginBottom: "2rem",
+
+                        padding: "0.5rem",
                     }}
                 >
                     <Box
@@ -121,10 +123,10 @@ const IndividualPost = ({ postId }) => {
                         padding="2%"
                     >
                         <Typography
-                            variant="h4"
                             color="black"
-                            fontWeight={800}
-                            fontFamily="Montserrat"
+                            variant="h1"
+                            fontSize="3rem"
+                            fontFamily="Poppins"
                         >
                             {post.title}
                         </Typography>
@@ -151,6 +153,7 @@ const IndividualPost = ({ postId }) => {
                         sx={{
                             backgroundColor: "white",
                             display: "flex",
+                            justifyContent: "space-between",
                             alignItems: "center",
                             borderRadius: "1rem",
                         }}

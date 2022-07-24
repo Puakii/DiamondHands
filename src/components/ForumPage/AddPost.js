@@ -14,11 +14,11 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
-import { Add, SystemSecurityUpdateWarningOutlined } from "@mui/icons-material";
+import { Add } from "@mui/icons-material";
 import toast from "react-hot-toast";
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { Box, createTheme, ThemeProvider } from "@mui/system";
+import { Box } from "@mui/system";
 import { useCryptoState } from "../../context/CryptoContext";
 import { supabase } from "../../supabaseClient";
 
@@ -50,7 +50,7 @@ const AddPost = ({ data }) => {
     const [navBarAvatar, setNavBarAvatar] = useState(null);
 
     //get from contextAPI
-    const { session, avatar_url, username } = useCryptoState();
+    const { session, avatar_url, username, hideAddButton } = useCryptoState();
 
     //for post
     const [postTitle, setPostTitle] = useState("");
@@ -122,6 +122,7 @@ const AddPost = ({ data }) => {
                 }
                 title="Add Post"
                 sx={{
+                    display: hideAddButton ? "none" : "inline-flex",
                     position: "fixed",
                     bottom: 20,
                     left: { xs: "calc(50% - 25px)", md: "24%" },

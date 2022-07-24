@@ -87,9 +87,8 @@ const AddReply = ({ postId }) => {
                 title="Reply to Post"
                 sx={{
                     position: "fixed",
-                    bottom: 20,
-                    // left: { xs: "calc(50% - 25px)", md: "24%" },
-                    left: "50%",
+                    bottom: 50,
+                    left: { xs: "calc(50% - 25px)", lg: "12%" },
                 }}
             >
                 <Fab size="medium" color="white" aria-label="add">
