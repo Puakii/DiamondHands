@@ -190,6 +190,7 @@ const PriceAlertContext = ({ children }) => {
     }, [usdPriceReached, sgdPriceReached]);
 
     function toastFunction() {
+        console.log(session);
         if (isAlert) {
             toast("You have new price target reached!");
         }

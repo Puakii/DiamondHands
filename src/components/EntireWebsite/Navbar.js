@@ -477,6 +477,7 @@ const Navbar = () => {
                                     className="btn"
                                     onClick={() => {
                                         supabase.auth.signOut();
+
                                         toast.success(
                                             "You have successfully signed out!"
                                         );
