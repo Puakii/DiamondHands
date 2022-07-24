@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../../supabaseClient";
 import AddReply from "./AddReply";
-import { Box, Paper, Typography, TablePagination } from "@mui/material";
-import { AccessTime } from "@mui/icons-material";
+import {
+    Box,
+    Paper,
+    Typography,
+    TablePagination,
+    Tooltip,
+    IconButton,
+} from "@mui/material";
+import { AccessTime, Delete } from "@mui/icons-material";
 import { useCryptoState } from "../../context/CryptoContext";
+import toast from "react-hot-toast";
 
 const Replies = ({ postId }) => {
     const [replies, setReplies] = useState(null);
@@ -12,7 +20,12 @@ const Replies = ({ postId }) => {
     const [page, setPage] = useState(0);
     const [repliesPerPage, setRepliesPerPage] = useState(10);
 
+    //when listener is triggered, flip the state to trigger useEffect to rerender replies
+    // const [listenerTriggered, setListenerTriggered] = useState(true);
+
     const { username } = useCryptoState();
+
+    const user = supabase.auth.user();
 
     function refreshClock() {
         setDate(new Date());
@@ -28,10 +41,11 @@ const Replies = ({ postId }) => {
         try {
             //no single() as ideally we want them to be able to add multiple alerts => return us a []
 
-            const { data, error, status } = await supabase
+            //use let as we want to reassign data
+            let { data, error, status } = await supabase
                 .from("replies")
                 .select(
-                    "id, post_id, content, created_at, created_by(username)"
+                    "id, post_id, content, created_at, created_by(id, username)"
                 )
                 .eq("post_id", postId);
 
@@ -39,7 +53,7 @@ const Replies = ({ postId }) => {
                 throw error;
             }
 
-            //to display the posts originally without any events e.g. inserts
+            //to display the replies originally without any events e.g. inserts
             setReplies(data);
 
             //listener
@@ -50,16 +64,19 @@ const Replies = ({ postId }) => {
 
                     data.push(payload.new);
                     setReplies(data);
+                    console.log(data);
+                    // updateReplies();
                 })
                 .on("DELETE", (payload) => {
                     console.log("Change received!", payload);
 
-                    const removedData = data.filter((post) => {
-                        console.log(post.id !== payload.old.id);
-                        return post.id !== payload.old.id;
+                    const removedData = data.filter((reply) => {
+                        return reply.id !== payload.old.id;
                     });
+                    //need update data if not 2 consecutive delete will spoil as data is not updated
+                    data = removedData;
 
-                    setReplies(removedData);
+                    setReplies(data);
                 })
                 .subscribe((status) => console.log(status));
 
@@ -67,6 +84,28 @@ const Replies = ({ postId }) => {
             return () => {
                 supabase.removeSubscription(mySubscription);
             };
+        } catch (error) {
+            alert(error.error_description || error.message);
+        }
+    };
+
+    const updateReplies = async () => {
+        try {
+            //no single() as ideally we want them to be able to add multiple alerts => return us a []
+
+            //use let as we want to reassign data
+            let { data, error, status } = await supabase
+                .from("replies")
+                .select(
+                    "id, post_id, content, created_at, created_by(id, username)"
+                )
+                .eq("post_id", postId);
+
+            if (error && status !== 406) {
+                throw error;
+            }
+
+            setReplies(data);
         } catch (error) {
             alert(error.error_description || error.message);
         }
@@ -86,9 +125,30 @@ const Replies = ({ postId }) => {
         setPage(0);
     };
 
+    //deleting reply
+    const deleteReply = async (replyId) => {
+        try {
+            const { data, error, status } = await supabase
+                .from("replies")
+                .delete()
+                .match({ id: replyId, created_by: user.id });
+
+            if (error && status !== 406) {
+                throw error;
+            }
+
+            toast.success("Reply deleted successfully");
+        } catch (error) {
+            alert(error.error_description || error.message);
+        }
+    };
+
     if (!replies) {
         return null;
     }
+
+    console.log(replies);
+
     return (
         <Box>
             <Box
@@ -132,7 +192,12 @@ const Replies = ({ postId }) => {
                                 },
                             }}
                         >
-                            <Box className="by-who">
+                            <Box
+                                className="by-who"
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="space-between"
+                            >
                                 <Typography
                                     fontFamily="Poppins"
                                     color="black"
@@ -142,105 +207,123 @@ const Replies = ({ postId }) => {
                                     {reply.created_by.username || username}
                                 </Typography>
 
-                                <Box
-                                    className="time"
-                                    display="flex"
-                                    alignItems="center"
-                                >
-                                    {Math.ceil(
-                                        //because in milliseconds
-                                        (date.getTime() -
-                                            new Date(
-                                                reply.created_at
-                                            ).getTime()) /
-                                            60000
-                                    ) < 60 ? (
-                                        <>
-                                            <AccessTime
-                                                sx={{
-                                                    color: "black",
-                                                    width: 12.5,
-                                                }}
-                                            />
+                                {/* [ {created_by: object},  {created_by: object},  {created_by: object}, {created_by: uuid}]
+                                The created_by is an object when selected at the start but when listener push into it, the created_by is an uuid so we need a || condition */}
 
-                                            <Typography
-                                                color="black"
-                                                variant="body2"
-                                                component="p"
-                                                marginLeft={0.5}
-                                            >
-                                                {Math.ceil(
-                                                    //because in milliseconds
-                                                    (date.getTime() -
-                                                        new Date(
-                                                            reply.created_at
-                                                        ).getTime()) /
-                                                        60000
-                                                )}{" "}
-                                                min ago
-                                            </Typography>
-                                        </>
-                                    ) : Math.ceil(
-                                          //because in milliseconds
-                                          (date.getTime() -
-                                              new Date(
-                                                  reply.created_at
-                                              ).getTime()) /
-                                              3600000
-                                      ) < 24 ? (
-                                        <>
-                                            <AccessTime
-                                                sx={{
-                                                    color: "black",
-                                                    width: 12.5,
-                                                }}
-                                            />
+                                <Tooltip title="Delete alert">
+                                    <IconButton
+                                        sx={{
+                                            display:
+                                                reply.created_by.id ===
+                                                    user.id ||
+                                                reply.created_by === user.id
+                                                    ? "block"
+                                                    : "none",
+                                            color: "black",
+                                        }}
+                                        onClick={() => deleteReply(reply.id)}
+                                    >
+                                        <Delete />
+                                    </IconButton>
+                                </Tooltip>
+                            </Box>
 
-                                            <Typography
-                                                color="black"
-                                                variant="body2"
-                                                component="p"
-                                                marginLeft={0.5}
-                                            >
-                                                {Math.ceil(
-                                                    //because in milliseconds
-                                                    (date.getTime() -
-                                                        new Date(
-                                                            reply.created_at
-                                                        ).getTime()) /
-                                                        3600000
-                                                )}{" "}
-                                                hours ago
-                                            </Typography>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <AccessTime
-                                                sx={{
-                                                    color: "black",
-                                                    width: 12.5,
-                                                }}
-                                            />
+                            <Box
+                                className="time"
+                                display="flex"
+                                alignItems="center"
+                            >
+                                {Math.ceil(
+                                    //because in milliseconds
+                                    (date.getTime() -
+                                        new Date(reply.created_at).getTime()) /
+                                        60000
+                                ) < 60 ? (
+                                    <>
+                                        <AccessTime
+                                            sx={{
+                                                color: "black",
+                                                width: 12.5,
+                                            }}
+                                        />
 
-                                            <Typography
-                                                color="black"
-                                                variant="body2"
-                                                component="p"
-                                                marginLeft={0.5}
-                                            >
-                                                {Math.ceil(
-                                                    //because in milliseconds
-                                                    (date.getTime() -
-                                                        new Date(
-                                                            reply.created_at
-                                                        ).getTime()) /
-                                                        86400000
-                                                )}{" "}
-                                                days ago
-                                            </Typography>
-                                        </>
-                                    )}
-                                </Box>
+                                        <Typography
+                                            color="black"
+                                            variant="body2"
+                                            component="p"
+                                            marginLeft={0.5}
+                                        >
+                                            {Math.ceil(
+                                                //because in milliseconds
+                                                (date.getTime() -
+                                                    new Date(
+                                                        reply.created_at
+                                                    ).getTime()) /
+                                                    60000
+                                            )}{" "}
+                                            min ago
+                                        </Typography>
+                                    </>
+                                ) : Math.ceil(
+                                      //because in milliseconds
+                                      (date.getTime() -
+                                          new Date(
+                                              reply.created_at
+                                          ).getTime()) /
+                                          3600000
+                                  ) < 24 ? (
+                                    <>
+                                        <AccessTime
+                                            sx={{
+                                                color: "black",
+                                                width: 12.5,
+                                            }}
+                                        />
+
+                                        <Typography
+                                            color="black"
+                                            variant="body2"
+                                            component="p"
+                                            marginLeft={0.5}
+                                        >
+                                            {Math.ceil(
+                                                //because in milliseconds
+                                                (date.getTime() -
+                                                    new Date(
+                                                        reply.created_at
+                                                    ).getTime()) /
+                                                    3600000
+                                            )}{" "}
+                                            hours ago
+                                        </Typography>
+                                    </>
+                                ) : (
+                                    <>
+                                        <AccessTime
+                                            sx={{
+                                                color: "black",
+                                                width: 12.5,
+                                            }}
+                                        />
+
+                                        <Typography
+                                            color="black"
+                                            variant="body2"
+                                            component="p"
+                                            marginLeft={0.5}
+                                        >
+                                            {Math.ceil(
+                                                //because in milliseconds
+                                                (date.getTime() -
+                                                    new Date(
+                                                        reply.created_at
+                                                    ).getTime()) /
+                                                    86400000
+                                            )}{" "}
+                                            days ago
+                                        </Typography>
+                                    </>
+                                )}
                             </Box>
 
                             <Box>

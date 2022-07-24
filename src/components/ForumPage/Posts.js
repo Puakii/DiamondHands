@@ -67,7 +67,8 @@ const Posts = () => {
         try {
             //no single() as ideally we want them to be able to add multiple alerts => return us a []
             //created_by(username) foreign table query(profile table)
-            const { data, error, status } = await supabase
+            //use let as we want to reassign data
+            let { data, error, status } = await supabase
                 .from("posts")
                 .select(
                     "id, title, content, created_by(username), created_at, tags"
@@ -95,8 +96,11 @@ const Posts = () => {
                     const removedData = data.filter((post) => {
                         return post.id !== payload.old.id;
                     });
+                    //data need to be reassigned if not 2 subsequent delete will fail as
+                    //
+                    data = removedData;
 
-                    setPosts(customPostSorter(removedData));
+                    setPosts(customPostSorter(data));
                 })
                 .subscribe((status) => console.log(status));
 
@@ -246,6 +250,7 @@ const Posts = () => {
                                     fontWeight={500}
                                     fontFamily="Poppins"
                                     marginBottom={0.5}
+                                    style={{ wordWrap: "break-word" }}
                                 >
                                     {post.title}
                                 </Typography>
@@ -436,6 +441,7 @@ const Posts = () => {
                                         <Typography
                                             color="black"
                                             marginTop="1rem"
+                                            style={{ wordWrap: "break-word" }}
                                         >
                                             {post.content.toString()}
                                         </Typography>
@@ -443,6 +449,7 @@ const Posts = () => {
                                         <Typography
                                             color="black"
                                             marginTop="1rem"
+                                            style={{ wordWrap: "break-word" }}
                                         >
                                             {post.content
                                                 .toString()
@@ -451,9 +458,6 @@ const Posts = () => {
                                         </Typography>
                                     )}
                                 </Box>
-                                {/* <Box className="interaction" marginTop="1rem">
-                                    <ThumbUp sx={{ color: "black" }} />
-                                </Box> */}
                             </Paper>
                         </Box>
                     ))}

@@ -149,14 +149,15 @@ const IndividualPost = ({ postId }) => {
                             borderRadius: "1rem",
                             justifyContent: "space-between",
                         }}
-                        padding="2%"
-                        paddingTop="0%"
+                        padding="1%"
                     >
                         <Typography
                             sx={{ fontSize: { xs: "2.2rem", tablet: "3rem" } }}
                             color="black"
                             variant="h1"
                             fontFamily="Poppins"
+                            style={{ wordWrap: "break-word" }}
+                            width="100%"
                         >
                             {post.title}
                         </Typography>
@@ -181,13 +182,16 @@ const IndividualPost = ({ postId }) => {
                             display: "flex",
                             alignItems: "center",
                         }}
-                        padding="2%"
+                        padding="1%"
                     >
                         <Typography
                             variant="h6"
                             color="black"
                             fontWeight={800}
+                            fontSize="0.8rem"
                             fontFamily="Montserrat"
+                            width="100%"
+                            style={{ wordWrap: "break-word" }}
                         >
                             {post.content}
                         </Typography>
@@ -209,9 +213,9 @@ const IndividualPost = ({ postId }) => {
                                 alignItems: "center",
                                 justifyContent: "left",
                                 borderRadius: "1rem",
+                                width: "50%",
                             }}
                             padding="2%"
-                            width="100%"
                         >
                             {Math.ceil(
                                 //because in milliseconds
@@ -231,6 +235,7 @@ const IndividualPost = ({ postId }) => {
                                         variant="subtitle2"
                                         color="black"
                                         fontWeight={800}
+                                        fontSize="0.8rem"
                                         fontFamily="Montserrat"
                                         marginLeft={0.5}
                                     >
@@ -263,6 +268,7 @@ const IndividualPost = ({ postId }) => {
                                         variant="subtitle2"
                                         color="black"
                                         fontWeight={800}
+                                        fontSize="0.8rem"
                                         fontFamily="Montserrat"
                                         marginLeft={0.5}
                                     >
@@ -290,6 +296,7 @@ const IndividualPost = ({ postId }) => {
                                         variant="subtitle2"
                                         color="black"
                                         fontWeight={800}
+                                        fontSize="0.8rem"
                                         fontFamily="Montserrat"
                                         marginLeft={0.5}
                                     >
@@ -334,6 +341,7 @@ const IndividualPost = ({ postId }) => {
                                 <Typography
                                     variant="subtitle2"
                                     color="black"
+                                    fontSize="0.8rem"
                                     fontWeight={800}
                                     fontFamily="Montserrat"
                                 >

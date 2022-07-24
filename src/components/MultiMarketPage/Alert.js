@@ -113,11 +113,18 @@ const Alert = ({ coinId, apiData }) => {
                 toast.success("Successfully added to your price alert!");
 
                 if (equality == "higher") {
-                    if (apiData[0].current_price > alertPrice) {
+                    //we check alerts.length != 0 if not the first alert will have two toast, one from where and one in price alert context when alert become true
+                    if (
+                        apiData[0].current_price > alertPrice &&
+                        alerts.length != 0
+                    ) {
                         toast("You have new price target reached!");
                     }
                 } else {
-                    if (apiData[0].current_price < alertPrice) {
+                    if (
+                        apiData[0].current_price < alertPrice &&
+                        alerts.length != 0
+                    ) {
                         toast("You have new price target reached!");
                     }
                 }

@@ -23,7 +23,7 @@ const PriceAlertContext = ({ children }) => {
         const alertListener = supabase
             .from("price_alert")
             .on("*", (payload) => {
-                console.log("Change received!", payload);
+                // console.log("Change received!", payload);
                 mainTriggerFunction();
             })
 
