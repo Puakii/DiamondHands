@@ -139,7 +139,6 @@ const IndividualPost = ({ postId }) => {
                         marginBottom: "2rem",
 
                         padding: "0.5rem",
-                        paddingTop: "0%",
                     }}
                 >
                     <Box
@@ -148,20 +147,19 @@ const IndividualPost = ({ postId }) => {
                             display: "flex",
                             alignItems: "center",
                             borderRadius: "1rem",
+                            justifyContent: "space-between",
                         }}
                         padding="2%"
                         paddingTop="0%"
                     >
                         <Typography
                             sx={{ fontSize: { xs: "2.2rem", tablet: "3rem" } }}
-                            marginTop="1rem"
                             color="black"
                             variant="h1"
                             fontFamily="Poppins"
                         >
                             {post.title}
                         </Typography>
-
                         <Tooltip title="Delete post">
                             <IconButton
                                 sx={{
@@ -170,12 +168,6 @@ const IndividualPost = ({ postId }) => {
                                             ? "block"
                                             : "none",
                                     color: "black",
-                                    marginLeft: {
-                                        xs: "46%",
-                                        tablet: "65%",
-                                        lg: "80%",
-                                    },
-                                    marginBottom: "2rem",
                                 }}
                                 onClick={() => deletePost()}
                             >
