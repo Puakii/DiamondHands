@@ -3,6 +3,7 @@ import { supabase } from "../../supabaseClient";
 import AddReply from "./AddReply";
 import { Box, Grid, Paper, Typography, TablePagination } from "@mui/material";
 import { AccessTime } from "@mui/icons-material";
+import { useCryptoState } from "../../context/CryptoContext";
 
 const Replies = ({ postId }) => {
     const [replies, setReplies] = useState(null);
@@ -10,6 +11,8 @@ const Replies = ({ postId }) => {
     // for pagination
     const [page, setPage] = useState(0);
     const [repliesPerPage, setRepliesPerPage] = useState(10);
+
+    const { username } = useCryptoState();
 
     function refreshClock() {
         setDate(new Date());
@@ -27,7 +30,9 @@ const Replies = ({ postId }) => {
 
             const { data, error, status } = await supabase
                 .from("replies")
-                .select("*")
+                .select(
+                    "id, post_id, content, created_at, created_by(username)"
+                )
                 .eq("post_id", postId);
 
             if (error && status !== 406) {
@@ -86,6 +91,26 @@ const Replies = ({ postId }) => {
     }
     return (
         <Box>
+            <Box
+                margin="1rem"
+                className="first-row"
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                }}
+            >
+                {replies.length > 0 ? (
+                    <Typography variant="h5" fontFamily="Poppins">
+                        {replies.length} replies
+                    </Typography>
+                ) : (
+                    <Typography variant="h5" fontFamily="Poppins">
+                        {replies.length} reply
+                    </Typography>
+                )}
+            </Box>
+
             {replies
                 .slice(
                     page * repliesPerPage,
@@ -96,7 +121,7 @@ const Replies = ({ postId }) => {
                         className="forEachReply"
                         key={reply.id}
                         // sx={{ width: { xs: "90%", tablet: "70%", lg: "50%" } }}
-                        margin="0.5rem"
+                        marginBottom="0.5rem"
                     >
                         <Paper
                             sx={{
@@ -121,7 +146,8 @@ const Replies = ({ postId }) => {
                                             display="flex"
                                             flexDirection="column"
                                         >
-                                            {reply.username}
+                                            {reply.created_by.username ||
+                                                username}
                                         </Typography>
 
                                         <Box
