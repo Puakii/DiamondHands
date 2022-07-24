@@ -89,7 +89,7 @@ const AddPost = ({ data }) => {
                     title: postTitle,
                     content: postContent,
                     created_by: user.id,
-                    username: username,
+                    // username: username,
                     tags: tags,
                 },
             ]);
@@ -240,7 +240,7 @@ const AddPost = ({ data }) => {
                         alignItems="center"
                         paddingBottom="15px"
                     >
-                        <Avatar alt="Remy Sharp" src={navBarAvatar} />
+                        <Avatar alt={username} src={navBarAvatar} />
                         <Typography
                             fontWeight={500}
                             variant="span"

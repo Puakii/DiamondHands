@@ -47,6 +47,7 @@ const IndividualPost = ({ postId }) => {
         }
     };
 
+    //get profile information and avatar
     const getAvatar = async () => {
         try {
             const { data, error, status } = await supabase

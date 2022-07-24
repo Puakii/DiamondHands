@@ -11,7 +11,13 @@ import {
     Typography,
 } from "@mui/material";
 
-import { Close, AddAlert, Clear } from "@mui/icons-material";
+import {
+    Close,
+    AddAlert,
+    Clear,
+    ChevronRight,
+    ChevronLeft,
+} from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { supabase } from "../../supabaseClient";
@@ -49,8 +55,8 @@ const Alert = ({ coinId, apiData }) => {
     //get from contextAPI
     const { currency, setCurrency, session } = useCryptoState();
 
-    //get from priceAlertContext
-    const { setIsAlert } = useAlertState();
+    //for choosing higher or lower for price target
+    const [equality, setEquality] = useState("higher");
 
     const handlePriceAlert = async () => {
         if (!session) {
@@ -97,6 +103,7 @@ const Alert = ({ coinId, apiData }) => {
                         coin_name: apiData[0].name,
                         coin_id: coinId,
                         currency: currency,
+                        equality_sign: equality,
                         price: alertPrice,
                     },
                 ]);
@@ -104,6 +111,16 @@ const Alert = ({ coinId, apiData }) => {
                 if (error2) throw error2;
 
                 toast.success("Successfully added to your price alert!");
+
+                if (equality == "higher") {
+                    if (apiData[0].current_price > alertPrice) {
+                        toast("You have new price target reached!");
+                    }
+                } else {
+                    if (apiData[0].current_price < alertPrice) {
+                        toast("You have new price target reached!");
+                    }
+                }
             }
         } catch (error) {
             alert(error.error_description || error.message);
@@ -147,7 +164,7 @@ const Alert = ({ coinId, apiData }) => {
 
             const { data, error, status } = await supabase
                 .from("price_alert")
-                .select("id, coin_id, price, currency")
+                .select("id, coin_id, price, currency, equality_sign")
                 .eq("user_id", user.id)
                 .eq("coin_id", coinId)
                 .eq("currency", currency);
@@ -367,19 +384,66 @@ const Alert = ({ coinId, apiData }) => {
                                 alignItems="center"
                             >
                                 <ThemeProvider theme={lightTheme}>
-                                    <TextField
-                                        type="number"
-                                        id="standard-basic"
-                                        label="Enter price"
-                                        variant="standard"
-                                        sx={{
-                                            width: "100%",
-                                            input: { textAlign: "center" },
-                                        }}
-                                        onChange={(event) =>
-                                            setPrice(event.target.value)
-                                        }
-                                    />
+                                    <Box
+                                        className="enter-price-row"
+                                        width="100%"
+                                        display="flex"
+                                        alignItems="center"
+                                    >
+                                        {equality === "higher" ? (
+                                            <Tooltip title="Higher than">
+                                                <Button
+                                                    variant="text"
+                                                    sx={{
+                                                        paddingTop: "25px",
+                                                        paddingLeft: "0px",
+                                                        paddingRight: "0px",
+                                                    }}
+                                                    onClick={() =>
+                                                        setEquality("lower")
+                                                    }
+                                                >
+                                                    <ChevronRight
+                                                        sx={{
+                                                            width: "2rem",
+                                                            height: "2rem",
+                                                        }}
+                                                    />
+                                                </Button>
+                                            </Tooltip>
+                                        ) : (
+                                            <Tooltip title="Lower than">
+                                                <Button
+                                                    variant="text"
+                                                    sx={{ paddingTop: "25px" }}
+                                                    onClick={() =>
+                                                        setEquality("higher")
+                                                    }
+                                                >
+                                                    <ChevronLeft
+                                                        sx={{
+                                                            width: "2rem",
+                                                            height: "2rem",
+                                                        }}
+                                                    />
+                                                </Button>
+                                            </Tooltip>
+                                        )}
+
+                                        <TextField
+                                            type="number"
+                                            id="standard-basic"
+                                            label="Enter price"
+                                            variant="standard"
+                                            sx={{
+                                                width: "100%",
+                                                input: { textAlign: "center" },
+                                            }}
+                                            onChange={(event) =>
+                                                setPrice(event.target.value)
+                                            }
+                                        />
+                                    </Box>
 
                                     <Button
                                         variant="contained"
@@ -455,7 +519,28 @@ const Alert = ({ coinId, apiData }) => {
                                                     {apiData[0].symbol.toUpperCase()}{" "}
                                                     / {alert.currency}
                                                 </Typography>
-                                                <Typography color="black">
+                                                <Typography
+                                                    color="black"
+                                                    display="flex"
+                                                    alignItems="center"
+                                                >
+                                                    {alert.equality_sign ===
+                                                    "higher" ? (
+                                                        <ChevronRight
+                                                            sx={{
+                                                                width: "1.3rem",
+                                                                height: "1.3rem",
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        <ChevronLeft
+                                                            sx={{
+                                                                width: "1.3rem",
+                                                                height: "1.3rem",
+                                                            }}
+                                                        />
+                                                    )}
+
                                                     {alert.price}
                                                 </Typography>
                                             </Box>
