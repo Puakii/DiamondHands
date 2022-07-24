@@ -57,7 +57,7 @@ const IndividualPost = ({ postId }) => {
     //deleting post
     const deletePost = async () => {
         try {
-            const { data, error, status } = await supabase
+            const { error, status } = await supabase
                 .from("posts")
                 .delete()
                 .match({ id: postId, created_by: user.id });

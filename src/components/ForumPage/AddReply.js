@@ -31,7 +31,7 @@ const AddReply = ({ postId }) => {
     const [navBarAvatar, setNavBarAvatar] = useState(null);
 
     //get from contextAPI
-    const { session, avatar_url, username, hideAddButton } = useCryptoState();
+    const { session, avatar_url, username } = useCryptoState();
 
     //for post
     const [replyContent, setReplyContent] = useState("");
@@ -73,6 +73,8 @@ const AddReply = ({ postId }) => {
             }
         } catch (error) {
             alert(error.error_description || error.message);
+        } finally {
+            setReplyContent("");
         }
     };
 
@@ -86,10 +88,12 @@ const AddReply = ({ postId }) => {
                 }
                 title="Reply to Post"
                 sx={{
-                    display: hideAddButton ? "none" : "inline-flex",
+                    // display: hideAddButton ? "none" : "inline-flex",
+                    display: "inline-flex",
                     position: "fixed",
                     bottom: 50,
                     left: { xs: "calc(50% - 25px)", lg: "12%" },
+                    zIndex: 100,
                 }}
             >
                 <Fab size="medium" color="white" aria-label="add">

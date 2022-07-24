@@ -29,20 +29,12 @@ const Navbar = () => {
     //for the hamburger
     const [click, setClick] = useState(false);
     const handleClick = () => {
-        setHideAddButton(!hideAddButton);
         setClick(!click);
     };
 
     const [navBarAvatar, setNavBarAvatar] = useState(null);
-    const { session, avatar_url, hideAddButton, setHideAddButton } =
-        useCryptoState();
-    const {
-        usdPriceReached,
-        sgdPriceReached,
-        setUsdPriceReached,
-        setSgdPriceReached,
-        isAlert,
-    } = useAlertState();
+    const { session, avatar_url } = useCryptoState();
+    const { usdPriceReached, sgdPriceReached, isAlert } = useAlertState();
     let navigate = useNavigate();
 
     //for profile

@@ -210,6 +210,8 @@ const PriceAlertContext = ({ children }) => {
     return (
         <Alert.Provider
             value={{
+                usdAlert,
+                sgdAlert,
                 usdPriceReached,
                 sgdPriceReached,
                 setUsdPriceReached,
