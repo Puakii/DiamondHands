@@ -90,6 +90,13 @@ const Watchlist = () => {
         //session is null at first, when session come in will update watchlist, causing it to rerender
     }, [currency, session]);
 
+    useEffect(() => {
+        if (!session) {
+            //taking out watchlist in stack replace with sign in
+            navigate("/signin", { replace: true });
+        }
+    }, []);
+
     //no need this anymore
     // useEffect(() => {}, [watchlist]);
 
@@ -143,11 +150,6 @@ const Watchlist = () => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-
-    if (!session) {
-        //taking out watchlist in stack replace with sign in
-        navigate("/signin", { replace: true });
-    }
 
     return session ? (
         <div className="crypto-prices-all">

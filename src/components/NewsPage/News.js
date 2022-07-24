@@ -63,7 +63,10 @@ const News = () => {
         const filteredData = inputData.filter(
             (news) =>
                 news.body.toLowerCase().includes(search.toLowerCase()) ||
-                news.title.toLowerCase().includes(search.toLowerCase())
+                news.title.toLowerCase().includes(search.toLowerCase()) ||
+                news.source.toLowerCase().includes(search.toLowerCase()) ||
+                news.categories.toLowerCase().includes(search.toLowerCase()) ||
+                news.tags.toLowerCase().includes(search.toLowerCase())
         );
 
         return filteredData;
