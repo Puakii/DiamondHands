@@ -79,13 +79,27 @@ const Navbar = () => {
     };
 
     //product is the array of alerts for either usd or sgd, alert is the particular alert
-    const removeAlert = (product, alert) => {
-        if (product === sgdPriceReached) {
-            const newAlert = product.filter((p) => p !== alert);
-            setSgdPriceReached(newAlert);
-        } else {
-            const newAlert = product.filter((p) => p !== alert);
-            setUsdPriceReached(newAlert);
+    const removePriceAlert = async (rowId) => {
+        //just in case
+        if (!session) {
+            return;
+        }
+        try {
+            const user = supabase.auth.user();
+
+            //no single() as ideally we want them to be able to add multiple alerts => return us a []
+            //from the id column, select the data that meet the user_id and coin_id filter
+
+            const { error, status } = await supabase
+                .from("price_alert")
+                .delete()
+                .match({ id: rowId, user_id: user.id });
+
+            if (error && status !== 406) {
+                throw error;
+            }
+        } catch (error) {
+            toast.error(error.error_description || error.message);
         }
     };
 
@@ -133,7 +147,7 @@ const Navbar = () => {
                         </Typography>
 
                         <Tooltip title="Clear Alert">
-                            <IconButton onClick={() => removeAlert(product, p)}>
+                            <IconButton onClick={() => removePriceAlert(p.id)}>
                                 <ClearIcon />
                             </IconButton>
                         </Tooltip>

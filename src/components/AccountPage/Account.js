@@ -192,7 +192,6 @@ const Account = () => {
                         >
                             <Typography
                                 variant="body1"
-                                component="body1"
                                 fontWeight="700"
                                 paddingLeft="1.3rem"
                                 fontSize="1rem"
