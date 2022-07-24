@@ -111,12 +111,25 @@ const Navbar = () => {
                             onClick={() => navigate(`/coins/${p.coin_id}`)}
                             sx={{ fontSize: { xs: 10, tablet: 14, lg: 14 } }}
                         >
-                            {p.coin_name +
-                                " is trading below " +
-                                p.currency +
-                                " " +
-                                p.price +
-                                " now!"}
+                            {p.equality_sign === "higher" ? (
+                                <>
+                                    {p.coin_name +
+                                        " is trading above " +
+                                        p.currency +
+                                        " " +
+                                        p.price +
+                                        " now!"}
+                                </>
+                            ) : (
+                                <>
+                                    {p.coin_name +
+                                        " is trading below " +
+                                        p.currency +
+                                        " " +
+                                        p.price +
+                                        " now!"}
+                                </>
+                            )}
                         </Typography>
 
                         <Tooltip title="Clear Alert">

@@ -144,7 +144,6 @@ const PriceAlertContext = ({ children }) => {
                 }
             }
         }
-        console.log(newSgdArray);
 
         setUsdPriceReached(newUsdArray);
         setSgdPriceReached(newSgdArray);
@@ -157,8 +156,6 @@ const PriceAlertContext = ({ children }) => {
             sgdCoins
             // (sgdAlert.length !== 0 || usdAlert.length !== 0)
         ) {
-            // console.log(usdAlert);
-            console.log(sgdAlert);
             compare(usdCoins, sgdCoins, usdAlert, sgdAlert);
 
             const timerId = setInterval(() => {
@@ -179,6 +176,7 @@ const PriceAlertContext = ({ children }) => {
     }, [usdPriceReached, sgdPriceReached]);
 
     useEffect(() => {
+        console.log("called");
         if (isAlert) {
             toast("You have new price target reached!");
         }

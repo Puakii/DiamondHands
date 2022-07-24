@@ -175,7 +175,7 @@ const Alert = ({ coinId, apiData }) => {
         }
     }, [session, currency]);
 
-    console.log(alerts);
+    // console.log(alerts);
     // console.log("rerender");
     return (
         <>
