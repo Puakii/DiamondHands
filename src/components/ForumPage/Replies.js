@@ -248,20 +248,20 @@ const Replies = ({ postId }) => {
                 onPageChange={handleChangePage}
                 rowsPerPage={repliesPerPage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
-                sx={{
-                    ".MuiTablePagination-toolbar": {
-                        color: "black",
-                    },
-                    ".MuiTablePagination-selectLabel": {
-                        color: "black",
-                    },
-                    ".MuiTablePagination-spacer": {
-                        color: "black",
-                    },
-                    ".MuiTablePagination-selectIcon": {
-                        color: "black",
-                    },
-                }}
+                // sx={{
+                //     ".MuiTablePagination-toolbar": {
+                //         color: "black",
+                //     },
+                //     ".MuiTablePagination-selectLabel": {
+                //         color: "black",
+                //     },
+                //     ".MuiTablePagination-spacer": {
+                //         color: "black",
+                //     },
+                //     ".MuiTablePagination-selectIcon": {
+                //         color: "black",
+                //     },
+                // }}
             />
 
             <AddReply postId={postId} />

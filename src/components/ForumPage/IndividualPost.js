@@ -105,9 +105,10 @@ const IndividualPost = ({ postId }) => {
                 <Paper
                     sx={{
                         "&.MuiPaper-root": {
-                            backgroundColor: "rgb(240, 240, 240)",
+                            backgroundColor: "white",
                             borderRadius: "1rem",
                         },
+                        marginBottom: "2rem",
                     }}
                 >
                     <Box
@@ -115,6 +116,7 @@ const IndividualPost = ({ postId }) => {
                             backgroundColor: "white",
                             display: "flex",
                             alignItems: "center",
+                            borderRadius: "1rem",
                         }}
                         padding="2%"
                     >
@@ -150,6 +152,7 @@ const IndividualPost = ({ postId }) => {
                             backgroundColor: "white",
                             display: "flex",
                             alignItems: "center",
+                            borderRadius: "1rem",
                         }}
                     >
                         <Box
@@ -158,6 +161,7 @@ const IndividualPost = ({ postId }) => {
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "left",
+                                borderRadius: "1rem",
                             }}
                             padding="2%"
                             width="100%"
@@ -290,8 +294,8 @@ const IndividualPost = ({ postId }) => {
                             </Box>
                         </Box>
                     </Box>
-                    <Replies postId={postId} />
                 </Paper>
+                <Replies postId={postId} />
             </Box>
         </Container>
     );
