@@ -3,20 +3,27 @@ import {
     Box,
     Container,
     Divider,
+    IconButton,
     Paper,
+    Tooltip,
     Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabaseClient";
 import toast from "react-hot-toast";
-import { AccessTime } from "@mui/icons-material";
+import { AccessTime, Delete } from "@mui/icons-material";
 import Replies from "./Replies";
+import { useNavigate } from "react-router-dom";
 
 const IndividualPost = ({ postId }) => {
     const [post, setPost] = useState(null);
     const [postAvatar, setPostAvatar] = useState(null);
     const [postProfile, setPostProfile] = useState(null);
     const [date, setDate] = useState(new Date());
+
+    const navigate = useNavigate();
+
+    const user = supabase.auth.user();
 
     function refreshClock() {
         setDate(new Date());
@@ -42,6 +49,25 @@ const IndividualPost = ({ postId }) => {
 
             //to display the posts originally without any events e.g. inserts
             setPost(data);
+        } catch (error) {
+            alert(error.error_description || error.message);
+        }
+    };
+
+    //deleting post
+    const deletePost = async () => {
+        try {
+            const { data, error, status } = await supabase
+                .from("posts")
+                .delete()
+                .match({ id: postId, created_by: user.id });
+
+            if (error && status !== 406) {
+                throw error;
+            }
+
+            toast.success("Post deleted successfully");
+            navigate("/forum");
         } catch (error) {
             alert(error.error_description || error.message);
         }
@@ -113,6 +139,7 @@ const IndividualPost = ({ postId }) => {
                         marginBottom: "2rem",
 
                         padding: "0.5rem",
+                        paddingTop: "0%",
                     }}
                 >
                     <Box
@@ -123,15 +150,38 @@ const IndividualPost = ({ postId }) => {
                             borderRadius: "1rem",
                         }}
                         padding="2%"
+                        paddingTop="0%"
                     >
                         <Typography
+                            sx={{ fontSize: { xs: "2.2rem", tablet: "3rem" } }}
+                            marginTop="1rem"
                             color="black"
                             variant="h1"
-                            fontSize="3rem"
                             fontFamily="Poppins"
                         >
                             {post.title}
                         </Typography>
+
+                        <Tooltip title="Delete post">
+                            <IconButton
+                                sx={{
+                                    display:
+                                        post.created_by === user.id
+                                            ? "block"
+                                            : "none",
+                                    color: "black",
+                                    marginLeft: {
+                                        xs: "46%",
+                                        tablet: "65%",
+                                        lg: "80%",
+                                    },
+                                    marginBottom: "2rem",
+                                }}
+                                onClick={() => deletePost()}
+                            >
+                                <Delete />
+                            </IconButton>
+                        </Tooltip>
                     </Box>
                     <Box
                         sx={{

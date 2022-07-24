@@ -201,7 +201,7 @@ const PriceAlertContext = ({ children }) => {
         toastFunction();
         const timerId = setInterval(() => {
             toastFunction();
-        }, 1000);
+        }, 20000);
         return function cleanup() {
             clearInterval(timerId);
         };
