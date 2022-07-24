@@ -2,7 +2,6 @@ import { AccessTime } from "@mui/icons-material";
 import { v4 as uuid } from "uuid";
 
 import {
-    Button,
     Container,
     Grid,
     Paper,
@@ -10,7 +9,7 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import toast from "react-hot-toast";
+
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabaseClient";
@@ -42,7 +41,7 @@ const Posts = () => {
     //To keep track of number of results after filter to be used for pagination
     const [numOfResult, setNumberOfResult] = useState(0);
 
-    const { session, username } = useCryptoState();
+    const { username } = useCryptoState();
 
     function refreshClock() {
         setDate(new Date());
@@ -67,8 +66,9 @@ const Posts = () => {
     const getPostsAndSubscribe = async () => {
         try {
             //no single() as ideally we want them to be able to add multiple alerts => return us a []
-
-            const { data, error, status } = await supabase
+            //created_by(username) foreign table query(profile table)
+            //use let as we want to reassign data
+            let { data, error, status } = await supabase
                 .from("posts")
                 .select(
                     "id, title, content, created_by(username), created_at, tags"
@@ -96,8 +96,11 @@ const Posts = () => {
                     const removedData = data.filter((post) => {
                         return post.id !== payload.old.id;
                     });
+                    //data need to be reassigned if not 2 subsequent delete will fail as
+                    //
+                    data = removedData;
 
-                    setPosts(customPostSorter(removedData));
+                    setPosts(customPostSorter(data));
                 })
                 .subscribe((status) => console.log(status));
 
@@ -179,6 +182,7 @@ const Posts = () => {
                 >
                     <Typography
                         variant="h1"
+                        fontWeight="bold"
                         fontSize="3rem"
                         fontFamily="Poppins"
                     >
@@ -246,6 +250,7 @@ const Posts = () => {
                                     fontWeight={500}
                                     fontFamily="Poppins"
                                     marginBottom={0.5}
+                                    style={{ wordWrap: "break-word" }}
                                 >
                                     {post.title}
                                 </Typography>
@@ -436,6 +441,7 @@ const Posts = () => {
                                         <Typography
                                             color="black"
                                             marginTop="1rem"
+                                            style={{ wordWrap: "break-word" }}
                                         >
                                             {post.content.toString()}
                                         </Typography>
@@ -443,6 +449,7 @@ const Posts = () => {
                                         <Typography
                                             color="black"
                                             marginTop="1rem"
+                                            style={{ wordWrap: "break-word" }}
                                         >
                                             {post.content
                                                 .toString()
@@ -451,9 +458,6 @@ const Posts = () => {
                                         </Typography>
                                     )}
                                 </Box>
-                                {/* <Box className="interaction" marginTop="1rem">
-                                    <ThumbUp sx={{ color: "black" }} />
-                                </Box> */}
                             </Paper>
                         </Box>
                     ))}

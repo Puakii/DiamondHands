@@ -3,20 +3,27 @@ import {
     Box,
     Container,
     Divider,
+    IconButton,
     Paper,
+    Tooltip,
     Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabaseClient";
 import toast from "react-hot-toast";
-import { AccessTime } from "@mui/icons-material";
+import { AccessTime, Delete } from "@mui/icons-material";
 import Replies from "./Replies";
+import { useNavigate } from "react-router-dom";
 
 const IndividualPost = ({ postId }) => {
     const [post, setPost] = useState(null);
     const [postAvatar, setPostAvatar] = useState(null);
     const [postProfile, setPostProfile] = useState(null);
     const [date, setDate] = useState(new Date());
+
+    const navigate = useNavigate();
+
+    const user = supabase.auth.user();
 
     function refreshClock() {
         setDate(new Date());
@@ -47,6 +54,25 @@ const IndividualPost = ({ postId }) => {
         }
     };
 
+    //deleting post
+    const deletePost = async () => {
+        try {
+            const { data, error, status } = await supabase
+                .from("posts")
+                .delete()
+                .match({ id: postId, created_by: user.id });
+
+            if (error && status !== 406) {
+                throw error;
+            }
+
+            toast.success("Post deleted successfully");
+            navigate("/forum");
+        } catch (error) {
+            alert(error.error_description || error.message);
+        }
+    };
+
     //get profile information and avatar
     const getAvatar = async () => {
         try {
@@ -61,7 +87,9 @@ const IndividualPost = ({ postId }) => {
             }
             if (data) {
                 setPostProfile(data);
-                downloadImage(data.avatar_url);
+                if (data.avatar_url) {
+                    downloadImage(data.avatar_url);
+                }
             }
         } catch (error) {
             toast.error(error.message);
@@ -109,6 +137,8 @@ const IndividualPost = ({ postId }) => {
                             borderRadius: "1rem",
                         },
                         marginBottom: "2rem",
+
+                        padding: "0.5rem",
                     }}
                 >
                     <Box
@@ -117,17 +147,34 @@ const IndividualPost = ({ postId }) => {
                             display: "flex",
                             alignItems: "center",
                             borderRadius: "1rem",
+                            justifyContent: "space-between",
                         }}
-                        padding="2%"
+                        padding="1%"
                     >
                         <Typography
-                            variant="h4"
+                            sx={{ fontSize: { xs: "2.2rem", tablet: "3rem" } }}
                             color="black"
-                            fontWeight={800}
-                            fontFamily="Montserrat"
+                            variant="h1"
+                            fontFamily="Poppins"
+                            style={{ wordWrap: "break-word" }}
+                            width="100%"
                         >
                             {post.title}
                         </Typography>
+                        <Tooltip title="Delete post">
+                            <IconButton
+                                sx={{
+                                    display:
+                                        post.created_by === user.id
+                                            ? "block"
+                                            : "none",
+                                    color: "black",
+                                }}
+                                onClick={() => deletePost()}
+                            >
+                                <Delete />
+                            </IconButton>
+                        </Tooltip>
                     </Box>
                     <Box
                         sx={{
@@ -135,13 +182,16 @@ const IndividualPost = ({ postId }) => {
                             display: "flex",
                             alignItems: "center",
                         }}
-                        padding="2%"
+                        padding="1%"
                     >
                         <Typography
                             variant="h6"
                             color="black"
                             fontWeight={800}
+                            fontSize="0.8rem"
                             fontFamily="Montserrat"
+                            width="100%"
+                            style={{ wordWrap: "break-word" }}
                         >
                             {post.content}
                         </Typography>
@@ -151,6 +201,7 @@ const IndividualPost = ({ postId }) => {
                         sx={{
                             backgroundColor: "white",
                             display: "flex",
+                            justifyContent: "space-between",
                             alignItems: "center",
                             borderRadius: "1rem",
                         }}
@@ -162,9 +213,9 @@ const IndividualPost = ({ postId }) => {
                                 alignItems: "center",
                                 justifyContent: "left",
                                 borderRadius: "1rem",
+                                width: "50%",
                             }}
                             padding="2%"
-                            width="100%"
                         >
                             {Math.ceil(
                                 //because in milliseconds
@@ -184,6 +235,7 @@ const IndividualPost = ({ postId }) => {
                                         variant="subtitle2"
                                         color="black"
                                         fontWeight={800}
+                                        fontSize="0.8rem"
                                         fontFamily="Montserrat"
                                         marginLeft={0.5}
                                     >
@@ -216,6 +268,7 @@ const IndividualPost = ({ postId }) => {
                                         variant="subtitle2"
                                         color="black"
                                         fontWeight={800}
+                                        fontSize="0.8rem"
                                         fontFamily="Montserrat"
                                         marginLeft={0.5}
                                     >
@@ -243,6 +296,7 @@ const IndividualPost = ({ postId }) => {
                                         variant="subtitle2"
                                         color="black"
                                         fontWeight={800}
+                                        fontSize="0.8rem"
                                         fontFamily="Montserrat"
                                         marginLeft={0.5}
                                     >
@@ -287,6 +341,7 @@ const IndividualPost = ({ postId }) => {
                                 <Typography
                                     variant="subtitle2"
                                     color="black"
+                                    fontSize="0.8rem"
                                     fontWeight={800}
                                     fontFamily="Montserrat"
                                 >

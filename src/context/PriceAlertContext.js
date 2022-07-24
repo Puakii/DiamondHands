@@ -23,7 +23,7 @@ const PriceAlertContext = ({ children }) => {
         const alertListener = supabase
             .from("price_alert")
             .on("*", (payload) => {
-                console.log("Change received!", payload);
+                // console.log("Change received!", payload);
                 mainTriggerFunction();
             })
 
@@ -190,7 +190,9 @@ const PriceAlertContext = ({ children }) => {
     }, [usdPriceReached, sgdPriceReached]);
 
     function toastFunction() {
-        if (isAlert) {
+        const user = supabase.auth.user();
+
+        if (user && isAlert) {
             toast("You have new price target reached!");
         }
     }
