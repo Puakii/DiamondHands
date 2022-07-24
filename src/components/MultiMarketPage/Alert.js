@@ -111,6 +111,16 @@ const Alert = ({ coinId, apiData }) => {
                 if (error2) throw error2;
 
                 toast.success("Successfully added to your price alert!");
+
+                if (equality == "higher") {
+                    if (apiData[0].current_price > alertPrice) {
+                        toast("You have new price target reached!");
+                    }
+                } else {
+                    if (apiData[0].current_price < alertPrice) {
+                        toast("You have new price target reached!");
+                    }
+                }
             }
         } catch (error) {
             alert(error.error_description || error.message);
