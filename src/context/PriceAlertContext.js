@@ -190,8 +190,9 @@ const PriceAlertContext = ({ children }) => {
     }, [usdPriceReached, sgdPriceReached]);
 
     function toastFunction() {
-        console.log(session);
-        if (isAlert) {
+        const user = supabase.auth.user();
+
+        if (user && isAlert) {
             toast("You have new price target reached!");
         }
     }
@@ -200,7 +201,7 @@ const PriceAlertContext = ({ children }) => {
         toastFunction();
         const timerId = setInterval(() => {
             toastFunction();
-        }, 20000);
+        }, 1000);
         return function cleanup() {
             clearInterval(timerId);
         };

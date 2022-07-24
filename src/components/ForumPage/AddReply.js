@@ -31,7 +31,7 @@ const AddReply = ({ postId }) => {
     const [navBarAvatar, setNavBarAvatar] = useState(null);
 
     //get from contextAPI
-    const { session, avatar_url, username } = useCryptoState();
+    const { session, avatar_url, username, hideAddButton } = useCryptoState();
 
     //for post
     const [replyContent, setReplyContent] = useState("");
@@ -86,6 +86,7 @@ const AddReply = ({ postId }) => {
                 }
                 title="Reply to Post"
                 sx={{
+                    display: hideAddButton ? "none" : "inline-flex",
                     position: "fixed",
                     bottom: 50,
                     left: { xs: "calc(50% - 25px)", lg: "12%" },
