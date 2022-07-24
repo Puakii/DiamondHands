@@ -61,7 +61,9 @@ const IndividualPost = ({ postId }) => {
             }
             if (data) {
                 setPostProfile(data);
-                downloadImage(data.avatar_url);
+                if (data.avatar_url) {
+                    downloadImage(data.avatar_url);
+                }
             }
         } catch (error) {
             toast.error(error.message);
