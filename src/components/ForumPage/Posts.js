@@ -18,6 +18,7 @@ import axios from "axios";
 import AddPost from "./AddPost";
 import { CoinList } from "../../config/api";
 import { useNavigate } from "react-router-dom";
+import { useCryptoState } from "../../context/CryptoContext";
 
 const Posts = () => {
     const navigate = useNavigate();
@@ -40,6 +41,8 @@ const Posts = () => {
     const [postsPerPage, setPostsPerPage] = useState(10);
     //To keep track of number of results after filter to be used for pagination
     const [numOfResult, setNumberOfResult] = useState(0);
+
+    const { session, username } = useCryptoState();
 
     function refreshClock() {
         setDate(new Date());
@@ -67,7 +70,9 @@ const Posts = () => {
 
             const { data, error, status } = await supabase
                 .from("posts")
-                .select("id, title, content, created_by, created_at, tags");
+                .select(
+                    "id, title, content, created_by(username), created_at, tags"
+                );
 
             if (error && status !== 406) {
                 throw error;
@@ -162,6 +167,7 @@ const Posts = () => {
         setPage(0);
     };
 
+    console.log(posts);
     return (
         <Container>
             <Box className="heading" margin="1rem">
@@ -239,6 +245,7 @@ const Posts = () => {
                                     fontSize="2rem"
                                     fontWeight={500}
                                     fontFamily="Poppins"
+                                    marginBottom={0.5}
                                 >
                                     {post.title}
                                 </Typography>
@@ -256,7 +263,8 @@ const Posts = () => {
                                                 display="flex"
                                                 flexDirection="column"
                                             >
-                                                Tom
+                                                {post.created_by.username ||
+                                                    username}
                                             </Typography>
 
                                             <Box

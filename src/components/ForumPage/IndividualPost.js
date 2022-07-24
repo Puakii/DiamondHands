@@ -265,6 +265,7 @@ const IndividualPost = ({ postId }) => {
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "right",
+                                borderRadius: "1rem",
                             }}
                             paddingX="2%"
                             width="100%"
