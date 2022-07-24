@@ -154,7 +154,7 @@ const Alert = ({ coinId, apiData }) => {
 
             const { data, error, status } = await supabase
                 .from("price_alert")
-                .select("id, coin_id, price, currency")
+                .select("id, coin_id, price, currency, equality_sign")
                 .eq("user_id", user.id)
                 .eq("coin_id", coinId)
                 .eq("currency", currency);
@@ -175,7 +175,7 @@ const Alert = ({ coinId, apiData }) => {
         }
     }, [session, currency]);
 
-    // console.log(alerts);
+    console.log(alerts);
     // console.log("rerender");
     return (
         <>
@@ -384,7 +384,11 @@ const Alert = ({ coinId, apiData }) => {
                                             <Tooltip title="Higher than">
                                                 <Button
                                                     variant="text"
-                                                    sx={{ paddingTop: "25px" }}
+                                                    sx={{
+                                                        paddingTop: "25px",
+                                                        paddingLeft: "0px",
+                                                        paddingRight: "0px",
+                                                    }}
                                                     onClick={() =>
                                                         setEquality("lower")
                                                     }
@@ -505,7 +509,28 @@ const Alert = ({ coinId, apiData }) => {
                                                     {apiData[0].symbol.toUpperCase()}{" "}
                                                     / {alert.currency}
                                                 </Typography>
-                                                <Typography color="black">
+                                                <Typography
+                                                    color="black"
+                                                    display="flex"
+                                                    alignItems="center"
+                                                >
+                                                    {alert.equality_sign ===
+                                                    "higher" ? (
+                                                        <ChevronRight
+                                                            sx={{
+                                                                width: "1.3rem",
+                                                                height: "1.3rem",
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        <ChevronLeft
+                                                            sx={{
+                                                                width: "1.3rem",
+                                                                height: "1.3rem",
+                                                            }}
+                                                        />
+                                                    )}
+
                                                     {alert.price}
                                                 </Typography>
                                             </Box>

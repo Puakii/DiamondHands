@@ -10,11 +10,11 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
+import toast from "react-hot-toast";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabaseClient";
 import axios from "axios";
-import { ThumbUp } from "@mui/icons-material";
 import AddPost from "./AddPost";
 import { CoinList } from "../../config/api";
 import { useNavigate } from "react-router-dom";
@@ -67,9 +67,7 @@ const Posts = () => {
 
             const { data, error, status } = await supabase
                 .from("posts")
-                .select(
-                    "id, title, username, content, created_by, created_at, tags"
-                );
+                .select("id, title, content, created_by, created_at, tags");
 
             if (error && status !== 406) {
                 throw error;
@@ -131,8 +129,6 @@ const Posts = () => {
             clearInterval(timerId);
         };
     }, []);
-
-    console.log(posts);
 
     //for search function
     const handleSearch = (inputData) => {
@@ -260,7 +256,7 @@ const Posts = () => {
                                                 display="flex"
                                                 flexDirection="column"
                                             >
-                                                {post.username}
+                                                Tom
                                             </Typography>
 
                                             <Box
