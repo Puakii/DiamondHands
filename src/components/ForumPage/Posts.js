@@ -170,7 +170,6 @@ const Posts = () => {
         setPage(0);
     };
 
-    console.log(posts);
     return (
         <Container>
             <Box className="heading" margin="1rem">
