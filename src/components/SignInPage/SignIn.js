@@ -51,7 +51,7 @@ const SignIn = () => {
                     password: password,
                 });
                 if (error) throw error;
-                toast.success("Login successfully");
+                toast.success("Login successfully!");
 
                 navigate("/watchlist");
             }

@@ -33,6 +33,7 @@ const SignUp = () => {
                     },
                 ]);
                 if (error2) throw error2;
+                toast.success("Sign Up successfully!");
                 navigate("/watchlist");
             }
         } catch (error) {
@@ -62,10 +63,10 @@ const SignUp = () => {
             <div className="container">
                 <form onSubmit={handleSignUp}>
                     <div className="row">
-                        <label>Name</label>
+                        <label>Username</label>
                         <input
                             type={"text"}
-                            placeholder={"Enter your name"}
+                            placeholder={"Enter your username"}
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />

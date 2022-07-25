@@ -50,7 +50,7 @@ const AddPost = ({ data }) => {
     const [navBarAvatar, setNavBarAvatar] = useState(null);
 
     //get from contextAPI
-    const { session, avatar_url, username, hideAddButton } = useCryptoState();
+    const { session, avatar_url, username } = useCryptoState();
 
     //for post
     const [postTitle, setPostTitle] = useState("");
@@ -98,6 +98,10 @@ const AddPost = ({ data }) => {
             }
         } catch (error) {
             alert(error.error_description || error.message);
+        } finally {
+            setPostTitle("");
+            setPostContent("");
+            setTags([]);
         }
     };
 
@@ -122,10 +126,12 @@ const AddPost = ({ data }) => {
                 }
                 title="Add Post"
                 sx={{
-                    display: hideAddButton ? "none" : "inline-flex",
+                    // display: hideAddButton ? "none" : "inline-flex",
+                    display: "inline-flex",
                     position: "fixed",
                     bottom: 20,
                     left: { xs: "calc(50% - 25px)", md: "24%" },
+                    zIndex: 100,
                 }}
             >
                 <Fab size="medium" color="white" aria-label="add">

@@ -89,28 +89,6 @@ const Replies = ({ postId }) => {
         }
     };
 
-    const updateReplies = async () => {
-        try {
-            //no single() as ideally we want them to be able to add multiple alerts => return us a []
-
-            //use let as we want to reassign data
-            let { data, error, status } = await supabase
-                .from("replies")
-                .select(
-                    "id, post_id, content, created_at, created_by(id, username)"
-                )
-                .eq("post_id", postId);
-
-            if (error && status !== 406) {
-                throw error;
-            }
-
-            setReplies(data);
-        } catch (error) {
-            alert(error.error_description || error.message);
-        }
-    };
-
     useEffect(() => {
         getRepliesAndSubscribe();
     }, []);
@@ -128,7 +106,7 @@ const Replies = ({ postId }) => {
     //deleting reply
     const deleteReply = async (replyId) => {
         try {
-            const { data, error, status } = await supabase
+            const { error, status } = await supabase
                 .from("replies")
                 .delete()
                 .match({ id: replyId, created_by: user.id });

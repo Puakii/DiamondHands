@@ -23,7 +23,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const Watchlist = () => {
-    const [coins, setCoins] = useState(null);
+    const [coins, setCoins] = useState([]);
     const [loading, setLoading] = useState(false);
     //default state for search should be "" instead of null .includes will
     //return true for "" but false for null

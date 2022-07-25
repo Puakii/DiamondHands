@@ -54,6 +54,7 @@ const Alert = ({ coinId, apiData }) => {
 
     //get from contextAPI
     const { currency, setCurrency, session } = useCryptoState();
+    const { usdAlert, sgdAlert } = useAlertState();
 
     //for choosing higher or lower for price target
     const [equality, setEquality] = useState("higher");
@@ -112,18 +113,18 @@ const Alert = ({ coinId, apiData }) => {
 
                 toast.success("Successfully added to your price alert!");
 
-                if (equality == "higher") {
+                if (equality === "higher") {
                     //we check alerts.length != 0 if not the first alert will have two toast, one from where and one in price alert context when alert become true
                     if (
                         apiData[0].current_price > alertPrice &&
-                        alerts.length != 0
+                        alerts.length !== 0
                     ) {
                         toast("You have new price target reached!");
                     }
                 } else {
                     if (
                         apiData[0].current_price < alertPrice &&
-                        alerts.length != 0
+                        alerts.length !== 0
                     ) {
                         toast("You have new price target reached!");
                     }
@@ -162,38 +163,47 @@ const Alert = ({ coinId, apiData }) => {
         }
     };
 
-    const getPriceAlerts = async () => {
-        try {
-            const user = supabase.auth.user();
-
-            //no single() as ideally we want them to be able to add multiple alerts => return us a []
-            //from the id column, select the data that meet the user_id and coin_id filter
-
-            const { data, error, status } = await supabase
-                .from("price_alert")
-                .select("id, coin_id, price, currency, equality_sign")
-                .eq("user_id", user.id)
-                .eq("coin_id", coinId)
-                .eq("currency", currency);
-
-            if (error && status !== 406) {
-                throw error;
-            }
-            setAlerts(data);
-        } catch (error) {
-            alert(error.error_description || error.message);
+    const getPriceAlerts = () => {
+        if (currency === "USD") {
+            setAlerts(usdAlert);
+        } else {
+            setAlerts(sgdAlert);
         }
     };
+    // const getPriceAlerts = async () => {
+    //     try {
+    //         const user = supabase.auth.user();
+
+    //         //no single() as ideally we want them to be able to add multiple alerts => return us a []
+    //         //from the id column, select the data that meet the user_id and coin_id filter
+
+    //         const { data, error, status } = await supabase
+    //             .from("price_alert")
+    //             .select("id, coin_id, price, currency, equality_sign")
+    //             .eq("user_id", user.id)
+    //             .eq("coin_id", coinId)
+    //             .eq("currency", currency);
+
+    //         if (error && status !== 406) {
+    //             throw error;
+    //         }
+    //         setAlerts(data);
+    //     } catch (error) {
+    //         alert(error.error_description || error.message);
+    //     }
+    // };
 
     // use effect for getting alerts
     useEffect(() => {
-        if (session) {
-            getPriceAlerts();
-        }
-    }, [session, currency]);
+        // if (session) {
+        getPriceAlerts();
+        // }
+        // }, [session, currency]);
+    }, [currency, usdAlert, sgdAlert]);
 
     // console.log(alerts);
     // console.log("rerender");
+
     return (
         <>
             <Tooltip title="Add Alert">
