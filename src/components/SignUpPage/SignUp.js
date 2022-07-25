@@ -33,6 +33,7 @@ const SignUp = () => {
                     },
                 ]);
                 if (error2) throw error2;
+                toast.success("Sign Up successful!");
                 navigate("/watchlist");
             }
         } catch (error) {
