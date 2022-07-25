@@ -96,7 +96,9 @@ const Alert = ({ coinId, apiData }) => {
             }
 
             if (data.length >= 5) {
-                toast.error("Stop spamming our website");
+                toast.error(
+                    "You can only have up to 5 alerts for this coin in each currency!"
+                );
             } else {
                 const { error2 } = await supabase.from("price_alert").insert([
                     {
@@ -112,6 +114,7 @@ const Alert = ({ coinId, apiData }) => {
                 if (error2) throw error2;
 
                 toast.success("Successfully added to your price alert!");
+                setPrice("");
 
                 if (equality === "higher") {
                     //we check alerts.length != 0 if not the first alert will have two toast, one from where and one in price alert context when alert become true
@@ -170,35 +173,10 @@ const Alert = ({ coinId, apiData }) => {
             setAlerts(sgdAlert);
         }
     };
-    // const getPriceAlerts = async () => {
-    //     try {
-    //         const user = supabase.auth.user();
-
-    //         //no single() as ideally we want them to be able to add multiple alerts => return us a []
-    //         //from the id column, select the data that meet the user_id and coin_id filter
-
-    //         const { data, error, status } = await supabase
-    //             .from("price_alert")
-    //             .select("id, coin_id, price, currency, equality_sign")
-    //             .eq("user_id", user.id)
-    //             .eq("coin_id", coinId)
-    //             .eq("currency", currency);
-
-    //         if (error && status !== 406) {
-    //             throw error;
-    //         }
-    //         setAlerts(data);
-    //     } catch (error) {
-    //         alert(error.error_description || error.message);
-    //     }
-    // };
 
     // use effect for getting alerts
     useEffect(() => {
-        // if (session) {
         getPriceAlerts();
-        // }
-        // }, [session, currency]);
     }, [currency, usdAlert, sgdAlert]);
 
     // console.log(alerts);
@@ -452,6 +430,7 @@ const Alert = ({ coinId, apiData }) => {
                                             id="standard-basic"
                                             label="Enter price"
                                             variant="standard"
+                                            value={price}
                                             sx={{
                                                 width: "100%",
                                                 input: { textAlign: "center" },
