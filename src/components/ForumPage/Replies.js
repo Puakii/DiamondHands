@@ -125,8 +125,6 @@ const Replies = ({ postId }) => {
         return null;
     }
 
-    console.log(replies);
-
     return (
         <Box>
             <Box

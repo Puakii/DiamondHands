@@ -78,9 +78,6 @@ const News = () => {
 
     if (!news) return null;
 
-    console.log(date);
-    console.log(news);
-
     return (
         <>
             <Container>
