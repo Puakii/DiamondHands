@@ -82,11 +82,9 @@ const PriceAlertContext = ({ children }) => {
     };
 
     function mainTriggerFunction() {
-        if (session) {
-            refreshPrices();
-            getAlert("USD");
-            getAlert("SGD");
-        }
+        refreshPrices();
+        getAlert("USD");
+        getAlert("SGD");
     }
 
     //Useeffect to call main trigger function
