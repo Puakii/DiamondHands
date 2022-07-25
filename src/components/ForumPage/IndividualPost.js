@@ -165,7 +165,7 @@ const IndividualPost = ({ postId }) => {
                             <IconButton
                                 sx={{
                                     display:
-                                        post.created_by === user.id
+                                        post.created_by === user?.id
                                             ? "block"
                                             : "none",
                                     color: "black",

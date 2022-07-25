@@ -87,7 +87,7 @@ const Alert = ({ coinId, apiData }) => {
             const { data, error, status } = await supabase
                 .from("price_alert")
                 .select("id")
-                .eq("user_id", user.id)
+                .eq("user_id", user?.id)
                 .eq("coin_id", coinId)
                 .eq("currency", currency);
 

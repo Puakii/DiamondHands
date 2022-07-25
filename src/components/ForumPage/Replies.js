@@ -191,8 +191,8 @@ const Replies = ({ postId }) => {
                                         sx={{
                                             display:
                                                 reply.created_by.id ===
-                                                    user.id ||
-                                                reply.created_by === user.id
+                                                    user?.id ||
+                                                reply.created_by === user?.id
                                                     ? "block"
                                                     : "none",
                                             color: "black",

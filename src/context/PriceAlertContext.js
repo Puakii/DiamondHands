@@ -62,7 +62,7 @@ const PriceAlertContext = ({ children }) => {
             let { data, error, status } = await supabase
                 .from("price_alert")
                 .select("*")
-                .eq("user_id", user.id)
+                .eq("user_id", user?.id)
                 .eq("currency", currency);
 
             if (error && status !== 406) {
