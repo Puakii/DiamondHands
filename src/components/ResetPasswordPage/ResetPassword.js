@@ -23,7 +23,8 @@ const ResetPassword = () => {
             const { error } = await supabase.auth.api.resetPasswordForEmail(
                 email,
                 {
-                    redirectTo: "http://localhost:3000/updatepassword",
+                    redirectTo:
+                        "https://crypto-universe-orbital.vercel.app/updatepassword",
                 }
             );
             if (error) throw error;
