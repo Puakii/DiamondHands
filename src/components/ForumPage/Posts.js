@@ -71,7 +71,7 @@ const Posts = () => {
             let { data, error, status } = await supabase
                 .from("posts")
                 .select(
-                    "id, title, content, created_by(username), created_at, tags"
+                    "id, title, content, created_by(username), created_at, tags, username"
                 );
 
             if (error && status !== 406) {
@@ -88,6 +88,7 @@ const Posts = () => {
                     console.log("Change received!", payload);
 
                     data.push(payload.new);
+
                     setPosts(customPostSorter(data));
                 })
                 .on("DELETE", (payload) => {
@@ -268,7 +269,7 @@ const Posts = () => {
                                                 flexDirection="column"
                                             >
                                                 {post.created_by.username ||
-                                                    username}
+                                                    post.username}
                                             </Typography>
 
                                             <Box

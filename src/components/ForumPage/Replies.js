@@ -45,7 +45,7 @@ const Replies = ({ postId }) => {
             let { data, error, status } = await supabase
                 .from("replies")
                 .select(
-                    "id, post_id, content, created_at, created_by(id, username)"
+                    "id, post_id, content, created_at, created_by(id, username), username"
                 )
                 .eq("post_id", postId);
 
@@ -180,7 +180,8 @@ const Replies = ({ postId }) => {
                                     display="flex"
                                     flexDirection="column"
                                 >
-                                    {reply.created_by.username || username}
+                                    {reply.created_by.username ||
+                                        reply.username}
                                 </Typography>
 
                                 {/* [ {created_by: object},  {created_by: object},  {created_by: object}, {created_by: uuid}]

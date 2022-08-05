@@ -65,6 +65,7 @@ const AddReply = ({ postId }) => {
                     post_id: postId,
                     content: replyContent,
                     created_by: user.id,
+                    username: username,
                 },
             ]);
 

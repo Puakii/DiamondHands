@@ -89,6 +89,7 @@ const AddPost = ({ data }) => {
                     title: postTitle,
                     content: postContent,
                     created_by: user.id,
+                    username: username,
                     tags: tags,
                 },
             ]);
