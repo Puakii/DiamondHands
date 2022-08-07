@@ -27,7 +27,9 @@ const UpdatePassword = () => {
             toast.success("Updated successfully");
             navigate("/watchlist");
         } catch (error) {
-            alert(error.error_description || error.message);
+            setUpdating(false);
+            setPassword("");
+            toast.error(error.error_description || error.message);
         }
     };
 
