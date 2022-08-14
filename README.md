@@ -5,7 +5,7 @@
 
 | Item | Link |
 | --- | ----------- |
-| Poster | [Poster Link](https://drive.google.com/file/d/1zJdtHZdxENArtRzIysgqzv28Ms-pAC6E/view?usp=sharing) |
+| Poster | [Poster Link](https://drive.google.com/file/d/1L1WQnp2uO_ImzXeXJDYTAQlcaMBEgUfL/view?usp=sharing) |
 | Github Repo | [Github Repo Link](https://github.com/Puakii/DiamondHands)|
 | Website | [Website Link](https://crypto-universe-orbital.vercel.app/)|
 | Log | [Log Link](https://docs.google.com/spreadsheets/d/1kfw3d2EopZ5kIu5XbOPQGv8yOrE6kSfH_owgM1mVFho/edit#gid=0)|
@@ -15,7 +15,7 @@
 
 
 <div align="center">
-  <img src="https://user-images.githubusercontent.com/84946905/180836329-4c17e052-5614-45ab-ac39-e0e925c89b59.jpg" width="480" height="600">
+  <img src="https://user-images.githubusercontent.com/78651465/184541533-613aab12-cabe-4cd3-a777-a69c00d3362a.jpg" width="480" height="600">
 </div>
 
 <h2> Purpose of Project </h2>
