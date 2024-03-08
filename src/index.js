@@ -11,7 +11,7 @@ root.render(
     // <React.StrictMode>
     <CryptoContext>
         <PriceAlertContext>
-            <Toaster toastOptions={{ duration: 3000 }} />
+            <Toaster toastOptions={{ duration: 5000 }} />
             <App />
         </PriceAlertContext>
     </CryptoContext>
