@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
@@ -8,7 +8,7 @@ import SignInPage from "./pages/SignInPage";
 import CryptoPage from "./pages/CryptoPage";
 import ForumPage from "./pages/ForumPage";
 
-import { createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, duration, ThemeProvider } from "@mui/material";
 import { useCryptoState } from "./context/CryptoContext";
 
 import WatchlistPage from "./pages/WatchlistPage";
@@ -17,6 +17,7 @@ import MultiMarketPage from "./pages/MultiMarketPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import UpdatePasswordPage from "./pages/UpdatePasswordPage";
 import IndivForumPage from "./pages/IndivForumPage";
+import toast from "react-hot-toast";
 
 const darkTheme = createTheme({
     palette: {
@@ -41,6 +42,13 @@ const darkTheme = createTheme({
 
 function App() {
     const { loading } = useCryptoState();
+
+    useEffect(() => {
+        toast(
+            "If you are having trouble accessing cryptocurrencies information, this means that the CoinGecko API is down! We are working to upgrade to a more reliable API!"
+        );
+    }, []);
+
     return (
         <ThemeProvider theme={darkTheme}>
             <Router>
